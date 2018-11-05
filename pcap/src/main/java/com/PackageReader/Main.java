@@ -1,24 +1,32 @@
 package com.PackageReader;
 
+import com.packet.view.PacketView;
 import org.pcap4j.core.*;
 import org.pcap4j.packet.IllegalRawDataException;
 import org.pcap4j.packet.IpV4Packet;
 import org.pcap4j.packet.Packet;
 import org.pcap4j.packet.TcpPacket;
-import org.pcap4j.packet.factory.AbstractStaticPacketFactory;
-import org.pcap4j.packet.factory.PropertiesBasedPacketFactory;
 
-import java.lang.reflect.Array;
+import javax.swing.*;
+import java.security.cert.CollectionCertStoreParameters;
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class Main {
 
+    private static PacketView _list = new PacketView();
     private static ArrayList<Session> foundSessions = new ArrayList<Session>();
     private static ArrayList<Session> rawData = new ArrayList<Session>();
     private static int readPackets = 0;
 
 
     public static void main(String[] args) throws PcapNativeException, NotOpenException, IllegalRawDataException {
+
+        JFrame frame = new JFrame("packetList");
+        frame.setContentPane(_list._panelMain);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.pack();
+        frame.setVisible(true);
 
         final PcapHandle handle;
 
@@ -41,6 +49,7 @@ public class Main {
                         );
                 rawData.add(session);
                 readPackets++;
+                _list.addPacket(ipV4Packet);
             }
         };
 
@@ -53,6 +62,12 @@ public class Main {
         handle.close();
 
         foundSessions.add(rawData.get(0));
+
+        ArrayList<Integer> dstPorts = new ArrayList<Integer>();
+
+        for (int i = 0; i < rawData.size(); i++) {
+            dstPorts.add(rawData.get(i).getDestinationPort());
+        }
 
         for (int i = 1; i < rawData.size(); i++){
             boolean exists = false;
@@ -67,7 +82,7 @@ public class Main {
                         (foundSessions.get(j).getSourceIp().equals(rawData.get(i).getDestinationIp()) &&
                         foundSessions.get(j).getDestinationIp().equals(rawData.get(i).getSourceIp()) &&
                         foundSessions.get(j).getDestinationPort() == rawData.get(i).getSourcePort() &&
-                        foundSessions.get(j).getSourcePort() == rawData.get(i).getDestinationPort())) {
+                        foundSessions.get(j).getSourcePort() == rawData.get(i).getDestinationPort()) ) {
                     exists = true;
                     break;
                 }
@@ -75,9 +90,13 @@ public class Main {
             if(!exists) {
                 foundSessions.add(rawData.get(i));
             }
+
+            int ocurrences = Collections.frequency(dstPorts, rawData.get(i).getDestinationPort());
+            System.out.println("PORT: " + rawData.get(i).getDestinationPort() + ", OCURRENCES: " + ocurrences);
+
         }
 
-        System.out.println("PAQUETES LEIDOS" + readPackets);
+        System.out.println("COMUNICACIONES " + foundSessions.size());
 
     }
 

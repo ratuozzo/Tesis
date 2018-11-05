@@ -15,7 +15,7 @@ import javax.swing.*;
 @SuppressWarnings("javadoc")
 public class App {
 
-    private static packetList _list = new packetList();
+    private static PacketView _list = new PacketView();
 
     private static final String COUNT_KEY
             = App.class.getName() + ".count";

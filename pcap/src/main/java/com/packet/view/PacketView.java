@@ -10,15 +10,15 @@ import java.util.Iterator;
 import java.util.List;
 
 
-public class packetList {
+public class PacketView {
     public JPanel _panelMain;
     private JTable _packetTable;
     private DefaultTableModel _tableModel;
-    private IpV4Packet[] _packets = new IpV4Packet[5];
+    private IpV4Packet[] _packets = new IpV4Packet[2000];
 
 
-    public packetList() {
-        Object[] columnNames = {"Type", "Protocol", "Destination", "Source", "Hex"};
+    public PacketView() {
+        Object[] columnNames = {"Type", "Protocol", "Source", "Destination", "Hex", "Number"};
         _tableModel = new DefaultTableModel(columnNames,0);
 
     }
@@ -27,20 +27,21 @@ public class packetList {
         for (int i = 0; i < _packets.length; i++) {
             if (_packets[i] == null) {
                 _packets[i] = packet;
-                _tableModel.addRow(packetToArray(_packets[i]));
+                _tableModel.addRow(packetToArray(_packets[i], i));
+                break;
             }
         }
         _packetTable.setModel(_tableModel);
     }
 
-    public Object[] packetToArray(IpV4Packet packet) {
+    public Object[] packetToArray(IpV4Packet packet, int number) {
 
         String type = packet.getHeader().getVersion().name();
         String dstAddr = packet.getHeader().getDstAddr().toString();
         String srcAddr = packet.getHeader().getSrcAddr().toString();
         String protocol = packet.getHeader().getProtocol().name();
         String hexData = packet.toHexString();
-        Object[] rowData = new Object[]{type, protocol, dstAddr, srcAddr, hexData};
+        Object[] rowData = new Object[]{type, protocol, srcAddr, dstAddr, hexData, number};
         return rowData;
     }
 
