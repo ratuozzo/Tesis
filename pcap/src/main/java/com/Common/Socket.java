@@ -26,4 +26,13 @@ public class Socket {
 
         return _ip;
     }
+
+    public boolean equals(Socket aux){
+
+        if (getIp().equals(aux.getIp()) && getPort() == aux.getPort()) {
+            return true;
+        }else {
+            return false;
+        }
+    }
 }

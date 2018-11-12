@@ -4,6 +4,7 @@ import org.pcap4j.packet.IpV4Packet;
 import org.pcap4j.packet.Packet;
 import org.pcap4j.packet.TcpPacket;
 
+import javax.swing.*;
 import java.util.ArrayList;
 
 public class Connection {
@@ -16,34 +17,38 @@ public class Connection {
 
     public Connection(Packet packet) {
 
-        IpV4Packet aux = (IpV4Packet) packet;
+        IpV4Packet aux = packet.get(IpV4Packet.class);
 
         _source = new Socket(aux.getHeader().getSrcAddr().toString(),
                 packet.get(TcpPacket.class).getHeader().getSrcPort().valueAsInt());
         _destination= new Socket(aux.getHeader().getDstAddr().toString(),
                 packet.get(TcpPacket.class).getHeader().getDstPort().valueAsInt());
 
-        setProtocol();
+        _protocol = setProtocol();
 
         _packets.add(packet);
 
     }
 
-    private void setProtocol() {
+    public String getProtocol() {
+        return _protocol;
+    }
+
+    private String setProtocol() {
         if(checkSSH()){
-            _protocol = "SSH";
+            return  "SSH";
         }else if(checkFTP()){
-            _protocol = "FTP";
+            return  "FTP";
         }else if(checkHTTP()){
-            _protocol = "HTTP";
+            return  "HTTP";
         }else if(checkTELNET()){
-            _protocol = "TELNET";
+            return  "TELNET";
         }else if(checkNMAP()){
-            _protocol = "NMAP";
+            return  "NMAP";
         }else if(checkPING()){
-            _protocol = "PING";
+            return  "PING";
         }else{
-            _protocol = "Other";
+            return  "Other";
         }
 
     }
@@ -118,5 +123,18 @@ public class Connection {
     public Socket getSource() {
 
         return _source;
+    }
+
+    public ArrayList<Packet> getPackets() {
+        return _packets;
+    }
+
+    public boolean equals(Connection connection) {
+        if ((getSource().equals(connection.getSource()) && getDestination().equals(connection.getDestination())) ||
+            (getSource().equals(connection.getDestination()) && getDestination().equals(connection.getSource()))) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }

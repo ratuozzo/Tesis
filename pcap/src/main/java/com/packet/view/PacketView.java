@@ -1,47 +1,45 @@
 package com.packet.view;
 
-import org.pcap4j.packet.EthernetPacket;
+import com.Common.Connection;
 import org.pcap4j.packet.IpV4Packet;
-import org.pcap4j.packet.Packet;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import java.util.Iterator;
-import java.util.List;
 
 
 public class PacketView {
     public JPanel _panelMain;
     private JTable _packetTable;
     private DefaultTableModel _tableModel;
-    private IpV4Packet[] _packets = new IpV4Packet[2000];
+    private Connection[] _connections = new Connection[1000000];
 
 
     public PacketView() {
-        Object[] columnNames = {"Type", "Protocol", "Source", "Destination", "Hex", "Number"};
+        Object[] columnNames = {"Number", "Source Ip", "Source Port", "Destination Ip", "Destination Port", "Protocol", "Packet Count"};
         _tableModel = new DefaultTableModel(columnNames,0);
 
     }
 
-    public void addPacket(IpV4Packet packet) {
-        for (int i = 0; i < _packets.length; i++) {
-            if (_packets[i] == null) {
-                _packets[i] = packet;
-                _tableModel.addRow(packetToArray(_packets[i], i));
+    public void addConnection(Connection connection) {
+        for (int i = 0; i < _connections.length; i++) {
+            if (_connections[i] == null) {
+                _connections[i] = connection;
+                _tableModel.addRow(connectionToArray(_connections[i], i));
                 break;
             }
         }
         _packetTable.setModel(_tableModel);
     }
 
-    public Object[] packetToArray(IpV4Packet packet, int number) {
+    public Object[] connectionToArray(Connection connection, int number) {
 
-        String type = packet.getHeader().getVersion().name();
-        String dstAddr = packet.getHeader().getDstAddr().toString();
-        String srcAddr = packet.getHeader().getSrcAddr().toString();
-        String protocol = packet.getHeader().getProtocol().name();
-        String hexData = packet.toHexString();
-        Object[] rowData = new Object[]{type, protocol, srcAddr, dstAddr, hexData, number};
+        String srcAddr = connection.getSource().getIp();
+        int srcPort = connection.getSource().getPort();
+        String dstAddr = connection.getDestination().getIp();
+        int dstPort = connection.getDestination().getPort();
+        String protocol = connection.getProtocol();
+        int packetCount = connection.getPackets().size();
+        Object[] rowData = new Object[]{number, srcAddr, srcPort, dstAddr, dstPort, protocol, packetCount};
         return rowData;
     }
 
