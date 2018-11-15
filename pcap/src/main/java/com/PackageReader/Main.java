@@ -27,11 +27,11 @@ public class Main {
         frame.setVisible(true);
 
         ConnectionHandler connectionHandler = new ConnectionHandler();
-        connectionHandler.handlePcap(Registry.PCAPFILEPATH + "http.cap");
+        connectionHandler.handlePcap(Registry.PCAPFILEPATH + "clean.cap");/*
         connectionHandler.handlePcap(Registry.PCAPFILEPATH + "ftp.pcap");
         connectionHandler.handlePcap(Registry.PCAPFILEPATH + "telnet.pcap");
         connectionHandler.handlePcap(Registry.PCAPFILEPATH + "dump.pcap");
-        connectionHandler.handlePcap(Registry.PCAPFILEPATH + "remix.pcap");
+        connectionHandler.handlePcap(Registry.PCAPFILEPATH + "remix.pcap");*/
 
 
         for (int i = 0; i < connectionHandler.getConnections().size(); i++) {

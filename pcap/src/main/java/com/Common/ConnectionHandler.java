@@ -4,6 +4,7 @@ import com.PackageReader.Registry;
 import org.pcap4j.core.*;
 import org.pcap4j.packet.IpV4Packet;
 import org.pcap4j.packet.Packet;
+import org.pcap4j.packet.TcpPacket;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -26,6 +27,12 @@ public class ConnectionHandler {
             public void gotPacket(Packet packet) {
                 readPackets++;
                 Connection aux = new Connection(packet);
+
+                TcpPacket tcp = packet.get(TcpPacket.class);
+
+                System.out.println("SYN: " + tcp.getHeader().getSyn() + " ACK: "+tcp.getHeader().getAck() );
+                System.out.println("SEQNUM: " + tcp.getHeader().getSequenceNumber()+ " ACKNUM: "+tcp.getHeader().getAcknowledgmentNumber() );
+                System.out.println("FIN: " + tcp.getHeader().getFin() );
 
                 int index = checkIfExists(aux);
                 if( index == -1) {
