@@ -26,20 +26,37 @@ public class ConnectionHandler {
             @Override
             public void gotPacket(Packet packet) {
                 readPackets++;
-                Connection aux = new Connection(packet);
 
-                TcpPacket tcp = packet.get(TcpPacket.class);
+                TcpPacket aux = packet.get(TcpPacket.class);
 
-                System.out.println("SYN: " + tcp.getHeader().getSyn() + " ACK: "+tcp.getHeader().getAck() );
-                System.out.println("SEQNUM: " + tcp.getHeader().getSequenceNumber()+ " ACKNUM: "+tcp.getHeader().getAcknowledgmentNumber() );
-                System.out.println("FIN: " + tcp.getHeader().getFin() );
+               /* System.out.println("SYN: " + aux.getHeader().getSyn() + " ACK: "+aux.getHeader().getAck() );
+                System.out.println("SEQNUM: " + aux.getHeader().getSequenceNumber()+ " ACKNUM: "+aux.getHeader().getAcknowledgmentNumber() );
+                System.out.println("FIN: " + aux.getHeader().getFin() );*/
 
-                int index = checkIfExists(aux);
-                if( index == -1) {
-                    _connections.add(aux);
-                } else {
-                    _connections.get(index).getPackets().add(packet);
+                if(aux.getHeader().getSyn() && !aux.getHeader().getAck()){
+                    _connections.add(new Connection(packet.get(IpV4Packet.class)));
+                }else{
+
+                    int index = getIndexIfExists(packet);
+                    if( index == -1) {
+                        _connections.add(new Connection(packet.get(IpV4Packet.class)));
+                    } else {
+                        if(aux.getHeader().getFin() && !_connections.get(index).getStatus().equals("Closing")){
+                            _connections.get(index).addPacket(packet);
+                            _connections.get(index).prepareToClose(packet);
+                        }else{
+                            _connections.get(index).addPacket(packet);
+                        }
+
+                    }
+
+
                 }
+
+
+
+
+
                 ipV4ReadPackets++;
             }
         };
@@ -55,9 +72,12 @@ public class ConnectionHandler {
         System.out.println("IPV4 READ PACKETS: " + ipV4ReadPackets);
     }
 
-    private int checkIfExists(Connection connection) {
+    private int getIndexIfExists(Packet packet) {
+
+        Connection aux = new Connection(packet.get(IpV4Packet.class));
+
         for (int i = 0; i < _connections.size(); i++) {
-            if(_connections.get(i).equals(connection)){
+            if(_connections.get(i).equals(aux)){
                 return i;
             }
         }

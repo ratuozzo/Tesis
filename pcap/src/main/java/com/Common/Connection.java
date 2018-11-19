@@ -7,12 +7,19 @@ import org.pcap4j.packet.TcpPacket;
 import javax.swing.*;
 import java.util.ArrayList;
 
+import static java.lang.Math.abs;
+
 public class Connection {
 
     private Socket _source;
     private Socket _destination;
     private String _protocol;
     private ArrayList<Packet> _packets = new ArrayList<Packet>();
+    private String _status;
+    private String _openned;
+    private String _closed;
+    private int _seqToClose;
+    private int _ackToClose;
 
 
     public Connection(Packet packet) {
@@ -25,6 +32,13 @@ public class Connection {
                 packet.get(TcpPacket.class).getHeader().getDstPort().valueAsInt());
 
         _protocol = setProtocol();
+
+        _status = "Opened";
+        if (packet.get(TcpPacket.class).getHeader().getSyn()){
+            _openned = "Opened Cleanly";
+        }else {
+            _openned = "Opened Dirtily";
+        }
 
         _packets.add(packet);
 
@@ -130,11 +144,62 @@ public class Connection {
     }
 
     public boolean equals(Connection connection) {
-        if ((getSource().equals(connection.getSource()) && getDestination().equals(connection.getDestination())) ||
-            (getSource().equals(connection.getDestination()) && getDestination().equals(connection.getSource()))) {
+        if ((getSource().getIp().equals(connection.getSource().getIp()) && getDestination().equals(connection.getDestination())) ||
+            (getSource().getIp().equals(connection.getDestination().getIp()) && getDestination().equals(connection.getSource()))) {
             return true;
         } else {
             return false;
         }
+    }
+
+    public void setStatus(String status) {
+        _status = status;
+    }
+
+    public void prepareToClose(Packet packet) {
+
+        _status = "Closing";
+
+        TcpPacket aux = packet.get(TcpPacket.class);
+
+        _seqToClose = abs(aux.getHeader().getSequenceNumber());
+        _ackToClose = abs(aux.getHeader().getAcknowledgmentNumber());
+
+    }
+
+    public void addPacket(Packet packet) {
+
+        if(!_status.equals("Closing")){
+            _packets.add(packet);
+        }else {
+
+            TcpPacket aux = packet.get(TcpPacket.class);
+
+            if(aux.getHeader().getAck() && !aux.getHeader().getFin() &&
+               abs(aux.getHeader().getSequenceNumber())+1==_seqToClose &&
+               abs(aux.getHeader().getAcknowledgmentNumber())+1==_ackToClose){
+
+                _packets.add(packet);
+                _status = "Closed";
+                _closed = "Closed Cleanly";
+            }else {
+
+                _packets.add(packet);
+
+            }
+        }
+
+    }
+
+    public String getOpened() {
+        return _openned;
+    }
+
+    public String getClosed() {
+        return _closed;
+    }
+
+    public String getStatus() {
+        return _status;
     }
 }

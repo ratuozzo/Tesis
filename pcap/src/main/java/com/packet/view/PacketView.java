@@ -15,7 +15,7 @@ public class PacketView {
 
 
     public PacketView() {
-        Object[] columnNames = {"Number", "Source Ip", "Source Port", "Destination Ip", "Destination Port", "Protocol", "Packet Count"};
+        Object[] columnNames = {"Number", "Source Ip", "Source Port", "Destination Ip", "Destination Port", "Protocol", "Packet Count", "Opened", "Closed", "Status"};
         _tableModel = new DefaultTableModel(columnNames,0);
 
     }
@@ -39,7 +39,11 @@ public class PacketView {
         int dstPort = connection.getDestination().getPort();
         String protocol = connection.getProtocol();
         int packetCount = connection.getPackets().size();
-        Object[] rowData = new Object[]{number, srcAddr, srcPort, dstAddr, dstPort, protocol, packetCount};
+        String opened = connection.getOpened();
+        String closed = connection.getClosed();
+        String status = connection.getStatus();
+
+        Object[] rowData = new Object[]{number, srcAddr, srcPort, dstAddr, dstPort, protocol, packetCount,opened,closed,status};
         return rowData;
     }
 
