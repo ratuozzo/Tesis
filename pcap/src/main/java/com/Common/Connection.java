@@ -175,7 +175,7 @@ public class Connection {
 
             TcpPacket aux = packet.get(TcpPacket.class);
 
-            if(aux.getHeader().getAck() && !aux.getHeader().getFin() &&
+                if(aux.getHeader().getAck() && !aux.getHeader().getFin() &&
                abs(aux.getHeader().getSequenceNumber())+1==_seqToClose &&
                abs(aux.getHeader().getAcknowledgmentNumber())+1==_ackToClose){
 

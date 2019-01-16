@@ -28,18 +28,18 @@ public class Main {
 
         ConnectionHandler connectionHandler = new ConnectionHandler();
 
-       /* connectionHandler.handlePcap(Registry.PCAPFILEPATH + "clean.cap");
-        connectionHandler.handlePcap(Registry.PCAPFILEPATH + "http.cap");*//*
-        connectionHandler.handlePcap(Registry.PCAPFILEPATH + "ftp.pcap");
-        connectionHandler.handlePcap(Registry.PCAPFILEPATH + "telnet.pcap");*/
-        connectionHandler.handlePcap(Registry.PCAPFILEPATH + "bigFlows.pcap");
+        //connectionHandler.handlePcap(Registry.PCAPFILEPATH + "clean.cap");
+        //connectionHandler.handlePcap(Registry.PCAPFILEPATH + "http.cap");
+        //connectionHandler.handlePcap(Registry.PCAPFILEPATH + "ftp.pcap");
+        connectionHandler.handlePcap(Registry.PCAPFILEPATH + "telent-CWSW-C.pcap");
+        //connectionHandler.handlePcap(Registry.PCAPFILEPATH + "bigFlows.pcap");
 
 
         for (int i = 0; i < connectionHandler.getConnections().size(); i++) {
             _list.addConnection(connectionHandler.getConnections().get(i));
         }
-        
-        
+
+
 
     }
 

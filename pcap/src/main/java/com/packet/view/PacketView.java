@@ -2,9 +2,13 @@ package com.packet.view;
 
 import com.Common.Connection;
 import org.pcap4j.packet.IpV4Packet;
+import org.pcap4j.packet.Packet;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 
 
 public class PacketView {
@@ -12,12 +16,27 @@ public class PacketView {
     private JTable _packetTable;
     private DefaultTableModel _tableModel;
     private Connection[] _connections = new Connection[1000000];
+    private PacketDetail _packetDetail = new PacketDetail();
+    private ArrayList<Packet> _packets = new ArrayList<Packet>();
 
 
     public PacketView() {
         Object[] columnNames = {"Number", "Source Ip", "Source Port", "Destination Ip", "Destination Port", "Protocol", "Packet Count", "Opened", "Closed", "Status"};
         _tableModel = new DefaultTableModel(columnNames,0);
 
+        _packetTable.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                int index = +_packetTable.getSelectedRow();
+                System.out.println(_connections[index]);
+                for (int i = 0;i < _connections[index].getPackets().size(); i++) {
+                    System.out.println(_connections[index].getPackets().get(i));
+                    _packets = (_connections[index].getPackets());
+                }
+                _packetDetail.addPackets(_packets);
+            }
+        });
     }
 
     public void addConnection(Connection connection) {
