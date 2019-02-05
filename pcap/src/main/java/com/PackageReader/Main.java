@@ -31,7 +31,7 @@ public class Main {
         //connectionHandler.handlePcap(Registry.PCAPFILEPATH + "clean.cap");
         //connectionHandler.handlePcap(Registry.PCAPFILEPATH + "http.cap");
         //connectionHandler.handlePcap(Registry.PCAPFILEPATH + "ftp.pcap");
-        connectionHandler.handlePcap(Registry.PCAPFILEPATH + "telent-CWSW-C.pcap");
+        connectionHandler.handlePcap(Registry.PCAPFILEPATH + "telnet-slcw-c.pcap");
         //connectionHandler.handlePcap(Registry.PCAPFILEPATH + "bigFlows.pcap");
 
 
