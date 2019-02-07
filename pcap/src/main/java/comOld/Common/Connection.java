@@ -1,10 +1,9 @@
-package com.Common;
+package comOld.Common;
 
 import org.pcap4j.packet.IpV4Packet;
 import org.pcap4j.packet.Packet;
 import org.pcap4j.packet.TcpPacket;
 
-import javax.swing.*;
 import java.util.ArrayList;
 
 import static java.lang.Math.abs;

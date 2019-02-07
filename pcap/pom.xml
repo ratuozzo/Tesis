@@ -21,12 +21,6 @@
   <url>http://maven.apache.org</url>
   <dependencies>
     <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>3.8.1</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
       <groupId>org.pcap4j</groupId>
       <artifactId>pcap4j-core</artifactId>
       <version>1.7.3</version>
@@ -42,5 +36,11 @@
       <artifactId>pcap4j-packetfactory-static</artifactId>
       <version>1.7.3</version>
     </dependency>
+      <dependency>
+          <groupId>org.junit.jupiter</groupId>
+          <artifactId>junit-jupiter-api</artifactId>
+          <version>5.3.1</version>
+          <scope>test</scope>
+      </dependency>
   </dependencies>
 </project>

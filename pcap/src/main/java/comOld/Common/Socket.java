@@ -1,9 +1,4 @@
-package com.Common;
-
-import org.pcap4j.packet.IpV4Packet;
-import org.pcap4j.packet.Packet;
-
-import java.awt.font.ShapeGraphicAttribute;
+package comOld.Common;
 
 public class Socket {
 

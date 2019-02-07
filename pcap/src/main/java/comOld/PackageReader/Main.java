@@ -1,17 +1,10 @@
-package com.PackageReader;
+package comOld.PackageReader;
 
-import com.Common.Connection;
-import com.Common.ConnectionHandler;
-import com.packet.view.PacketView;
+import comOld.Common.ConnectionHandler;
+import comOld.packet.view.PacketView;
 import org.pcap4j.core.*;
-import org.pcap4j.packet.IllegalRawDataException;
-import org.pcap4j.packet.IpV4Packet;
-import org.pcap4j.packet.Packet;
-import org.pcap4j.packet.TcpPacket;
 
 import javax.swing.*;
-import java.util.ArrayList;
-import java.util.Collections;
 
 public class Main {
 

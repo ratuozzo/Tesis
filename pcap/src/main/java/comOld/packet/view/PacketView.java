@@ -1,7 +1,6 @@
-package com.packet.view;
+package comOld.packet.view;
 
-import com.Common.Connection;
-import org.pcap4j.packet.IpV4Packet;
+import comOld.Common.Connection;
 import org.pcap4j.packet.Packet;
 
 import javax.swing.*;
