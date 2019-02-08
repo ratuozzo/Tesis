@@ -1,22 +1,51 @@
 package com.Common.Entity.Connections;
 
+import com.Common.Entity.ConnectionTree;
+import com.scalified.tree.TreeNode;
 import org.pcap4j.packet.TcpPacket;
 
-@SuppressWarnings("Duplicates")
+import java.util.Iterator;
+
 public class TelnetConnection extends TcpConnection {
 
+
+    public TelnetConnection(){
+        super();
+
+        ConnectionTree aux = null;
+        for (TreeNode<Integer> node : _tree) {
+            if (node.isLeaf()) {
+                aux = (ConnectionTree) node;
+            }
+
+        }
+
+       ConnectionTree telnetTree = new ConnectionTree(ConnectionTree.FIN_ACK);
+
+
+
+        ConnectionTree il1 = new ConnectionTree(ConnectionTree.ACK);
+        il1.addFinAck().addAck();
+        il1.addRst();
+
+        ConnectionTree ir1 = new ConnectionTree(ConnectionTree.FIN_ACK);
+        ir1.addAck();
+
+        telnetTree.add(il1);
+        telnetTree.add(ir1);
+
+        aux.add(telnetTree);
+
+    }
 
     @Override
     public void addPacket(TcpPacket input) {
 
         _packets.add(input);
 
-        boolean syn = input.getHeader().getSyn();
-        boolean fin = input.getHeader().getFin();
-        boolean ack = input.getHeader().getAck();
-        boolean rst = input.getHeader().getRst();
+        packetToInteger(input);
 
-        //Begin Open
+      /*  //Begin Open
         if (_openedStatus.equals(NOT_OPENED) && syn && !ack) {
             _openedStatus = OPENING;
         }
@@ -43,7 +72,7 @@ public class TelnetConnection extends TcpConnection {
             _closedStatus = CLOSED_CLEANLY;
         }
         //End Close
-
+*/
 
     }
 }

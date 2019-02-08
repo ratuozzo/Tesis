@@ -1,6 +1,9 @@
 package com.Common.Entity.Connections;
 
+import com.Common.Entity.ConnectionTree;
 import com.Common.Entity.Socket;
+import com.scalified.tree.TreeNode;
+import com.scalified.tree.multinode.ArrayMultiTreeNode;
 import org.pcap4j.packet.Packet;
 import org.pcap4j.packet.TcpPacket;
 
@@ -13,6 +16,7 @@ public abstract class TcpConnection {
     protected ArrayList<TcpPacket> _packets;
     protected String _openedStatus;
     protected String _closedStatus;
+    protected ConnectionTree _tree;
 
 
 
@@ -32,10 +36,39 @@ public abstract class TcpConnection {
         _packets = new ArrayList<TcpPacket>();
         _openedStatus = NOT_OPENED;
         _closedStatus = NOT_CLOSED;
+        _tree = new ConnectionTree();
     }
 
 
     public abstract void addPacket(TcpPacket input);
+
+    public int packetToInteger(TcpPacket input) {
+
+        int output = 0;
+
+        boolean syn = input.getHeader().getSyn();
+        boolean ack = input.getHeader().getAck();
+        boolean fin = input.getHeader().getFin();
+        boolean rst = input.getHeader().getRst();
+
+        if (syn) {
+            output += 8;
+        }
+
+        if (ack) {
+            output += 4;
+        }
+
+        if (fin) {
+            output += 2;
+        }
+
+        if (rst) {
+            output += 1;
+        }
+
+        return output;
+    }
 
 
     public ArrayList<TcpPacket> getPackets() {
@@ -48,5 +81,9 @@ public abstract class TcpConnection {
 
     public String getClosedStatus() {
         return _closedStatus;
+    }
+
+    public ConnectionTree getTree() {
+        return _tree;
     }
 }
