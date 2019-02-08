@@ -1,4 +1,4 @@
-package comOld.Common;
+package com.Common.Entity;
 
 public class Socket {
 
@@ -7,10 +7,8 @@ public class Socket {
 
 
     public Socket(String ip, int port) {
-
         _ip = ip;
         _port = port;
-
     }
 
     public int getPort() {
@@ -18,16 +16,11 @@ public class Socket {
     }
 
     public String getIp() {
-
         return _ip;
     }
 
     public boolean equals(Socket aux){
 
-        if (getIp().equals(aux.getIp()) && getPort() == aux.getPort()) {
-            return true;
-        }else {
-            return false;
-        }
+        return getIp().equals(aux.getIp()) && getPort() == aux.getPort();
     }
 }

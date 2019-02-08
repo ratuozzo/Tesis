@@ -1,5 +1,7 @@
 package comOld.PackageReader;
 
+import com.Common.Entity.Connections.TelnetConnection;
+import com.Common.Registry;
 import comOld.Common.ConnectionHandler;
 import comOld.packet.view.PacketView;
 import org.pcap4j.core.*;

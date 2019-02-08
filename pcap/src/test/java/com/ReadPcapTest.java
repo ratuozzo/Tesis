@@ -1,14 +1,13 @@
-package comTest;
+package com;
 
 import com.DomainLogicLayer.CommandFactory;
 import com.DomainLogicLayer.ReadPcap;
-import com.Registry;
-import org.junit.jupiter.api.AfterEach;
+import com.Common.Registry;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 class ReadPcapTest {
 

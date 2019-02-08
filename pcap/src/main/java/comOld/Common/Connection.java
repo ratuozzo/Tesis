@@ -1,5 +1,6 @@
 package comOld.Common;
 
+import com.Common.Entity.Socket;
 import org.pcap4j.packet.IpV4Packet;
 import org.pcap4j.packet.Packet;
 import org.pcap4j.packet.TcpPacket;

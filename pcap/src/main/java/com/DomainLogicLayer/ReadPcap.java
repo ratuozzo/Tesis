@@ -11,10 +11,11 @@ import java.util.ArrayList;
 public class ReadPcap extends Command{
 
     private String _filePath;
-    public ArrayList<Packet> _output = new ArrayList<Packet>();
+    public ArrayList<Packet> _output;
 
     public ReadPcap(String filePath) {
         _filePath = filePath;
+        _output = new ArrayList<Packet>();
     }
     @Override
     public void execute() {
