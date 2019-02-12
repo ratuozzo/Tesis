@@ -1,16 +1,23 @@
 package com.Common.Entity;
 
+import com.scalified.tree.TreeNode;
 import com.scalified.tree.multinode.ArrayMultiTreeNode;
+import comOld.Common.Connection;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
 
 public class ConnectionTree extends ArrayMultiTreeNode<Integer> {
 
 
     public static final int SYN = 8;
-    public static final int SIN_ACK = 12;
+    public static final int SYN_ACK = 12;
     public static final int ACK = 4;
     public static final int FIN_ACK = 6;
     public static final int RST = 1;
     public static final int RST_ACK = 5;
+
 
 
     public ConnectionTree() {
@@ -32,7 +39,7 @@ public class ConnectionTree extends ArrayMultiTreeNode<Integer> {
     }
 
     public ConnectionTree addSynAck() {
-        ConnectionTree output = new ConnectionTree(SIN_ACK);
+        ConnectionTree output = new ConnectionTree(SYN_ACK);
         add(output);
         return output;
     }
@@ -61,6 +68,21 @@ public class ConnectionTree extends ArrayMultiTreeNode<Integer> {
         return output;
     }
 
+    public ArrayList<ConnectionTree> getNodesByLevel(int level) {
+
+        ArrayList<ConnectionTree> output = new ArrayList<>();
+        for (TreeNode<Integer> node : this) {
+            if (level == node.level()) {
+                output.add((ConnectionTree) node);
+            }
+        }
+        return output;
+    }
+
+    public boolean checkDimensions(ConnectionTree input) {
+
+        return ((height()==input.height())&&(size()==input.size()));
+    }
 
 
 }
