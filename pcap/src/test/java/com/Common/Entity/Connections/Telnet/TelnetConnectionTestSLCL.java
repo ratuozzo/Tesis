@@ -2,13 +2,17 @@ package com.Common.Entity.Connections.Telnet;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import com.Common.Entity.Connections.SshConnection;
 import com.Common.Entity.Connections.TelnetConnection;
+import com.Common.Entity.Socket;
 import com.Common.Registry;
 import com.DomainLogicLayer.CommandFactory;
 import com.DomainLogicLayer.ReadPcap;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.pcap4j.packet.TcpPacket;
+
+import java.util.ArrayList;
 
 class TelnetConnectionTestSLCL {
 
@@ -29,7 +33,9 @@ class TelnetConnectionTestSLCL {
         readCommandServer = (ReadPcap) CommandFactory.instantiateReadPcap(_filePath);
         readCommandServer.execute();
 
-        tc = new TelnetConnection();
+        ArrayList<Socket> sockets = Socket.packetToSockets(readCommandClient._output.get(0));
+
+        tc = new TelnetConnection(sockets.get(0), sockets.get(1));
 
     }
 

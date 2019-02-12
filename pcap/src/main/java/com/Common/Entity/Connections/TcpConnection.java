@@ -31,6 +31,15 @@ public abstract class TcpConnection {
 
 
 
+    public TcpConnection(Socket src, Socket dst) {
+        _packets = new ArrayList<TcpPacket>();
+        _openedStatus = NOT_OPENED;
+        _closedStatus = NOT_CLOSED;
+        _modelTree = new ConnectionTree();
+        _src = src;
+        _dst = dst;
+    }
+
     public TcpConnection() {
         _packets = new ArrayList<TcpPacket>();
         _openedStatus = NOT_OPENED;
@@ -42,7 +51,12 @@ public abstract class TcpConnection {
 
         _packets.add(input);
 
-        buildTree(packetToInteger(input));
+        if (((_dst.getPort() == input.getHeader().getSrcPort().valueAsInt()) &&
+            (_src.getPort() == input.getHeader().getDstPort().valueAsInt())) ||
+            ((_src.getPort() == input.getHeader().getSrcPort().valueAsInt()) &&
+            (_dst.getPort() == input.getHeader().getDstPort().valueAsInt()))) {
+            buildTree(packetToInteger(input));
+        }
 
         checkStatus();
 
@@ -105,7 +119,7 @@ public abstract class TcpConnection {
     }
 
     private boolean checkClosedCleanly() {
-        return _modelTree.checkDimensions(_packetTree);
+        return _modelTree.checkEndingNode(_packetTree);
     }
 
 

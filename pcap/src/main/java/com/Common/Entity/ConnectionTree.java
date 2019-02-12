@@ -18,19 +18,23 @@ public class ConnectionTree extends ArrayMultiTreeNode<Integer> {
     public static final int RST = 1;
     public static final int RST_ACK = 5;
 
-
+    private boolean _endingNode;
 
     public ConnectionTree() {
         super(SYN);
         addSynAck().addAck();
-
-
+        _endingNode = false;
     }
 
     public ConnectionTree(int i) {
         super(i);
+        _endingNode = false;
     }
 
+    public ConnectionTree(int i, boolean endingNode) {
+        super(i);
+        _endingNode = endingNode;
+    }
 
     public ConnectionTree addSyn() {
         ConnectionTree output = new ConnectionTree(SYN);
@@ -68,6 +72,34 @@ public class ConnectionTree extends ArrayMultiTreeNode<Integer> {
         return output;
     }
 
+    public ConnectionTree addEndingAck() {
+        ConnectionTree output = new ConnectionTree(ACK, true);
+        add(output);
+        return output;
+    }
+
+    public ConnectionTree addEndingFinAck() {
+        ConnectionTree output = new ConnectionTree(FIN_ACK, true);
+        add(output);
+        return output;
+    }
+
+    public ConnectionTree addEndingRst() {
+        ConnectionTree output = new ConnectionTree(RST,  true);
+        add(output);
+        return output;
+    }
+
+    public ConnectionTree addEndingRstAck() {
+        ConnectionTree output = new ConnectionTree(RST_ACK, true);
+        add(output);
+        return output;
+    }
+
+    public boolean isEndingNode() {
+        return _endingNode;
+    }
+
     public ArrayList<ConnectionTree> getNodesByLevel(int level) {
 
         ArrayList<ConnectionTree> output = new ArrayList<>();
@@ -79,9 +111,16 @@ public class ConnectionTree extends ArrayMultiTreeNode<Integer> {
         return output;
     }
 
-    public boolean checkDimensions(ConnectionTree input) {
+    public boolean checkEndingNode(ConnectionTree input) {
 
-        return ((height()==input.height())&&(size()==input.size()));
+        for (TreeNode<Integer> node : this) {
+            ConnectionTree aux = (ConnectionTree) node;
+            if (input.height() == aux.level() && (aux.isEndingNode())) {
+                return true;
+            }
+        }
+        return false;
+
     }
 
 

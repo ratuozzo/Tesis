@@ -1,12 +1,13 @@
 package com.Common.Entity.Connections;
 
 import com.Common.Entity.ConnectionTree;
+import com.Common.Entity.Socket;
 import com.scalified.tree.TreeNode;
 
 public class TelnetConnection extends TcpConnection {
 
-    public TelnetConnection() {
-        super();
+    public TelnetConnection(Socket src, Socket dst) {
+        super(src, dst);
 
         ConnectionTree aux = null;
         for (TreeNode<Integer> node : _modelTree) {
@@ -16,24 +17,20 @@ public class TelnetConnection extends TcpConnection {
 
         }
 
-        ConnectionTree telnetTree = new ConnectionTree(ConnectionTree.FIN_ACK);
+        ConnectionTree baseTree = new ConnectionTree(ConnectionTree.FIN_ACK);
 
 
         ConnectionTree il1 = new ConnectionTree(ConnectionTree.ACK);
-        il1.addFinAck().addAck();
-        il1.addRst();
+        il1.addFinAck().addEndingAck();
+        il1.addEndingRst();
 
         ConnectionTree ir1 = new ConnectionTree(ConnectionTree.FIN_ACK);
-        ir1.addAck();
+        ir1.addEndingAck();
 
-        telnetTree.add(il1);
-        telnetTree.add(ir1);
+        baseTree.add(il1);
+        baseTree.add(ir1);
 
-        aux.add(telnetTree);
+        aux.add(baseTree);
 
     }
-
-
-
-
 }

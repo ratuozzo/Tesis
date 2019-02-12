@@ -1,6 +1,6 @@
-package com.Common.Entity.Connections.Telnet;
+package com.Common.Entity.Connections.Http;
 
-import com.Common.Entity.Connections.TelnetConnection;
+import com.Common.Entity.Connections.HttpConnection;
 import com.Common.Entity.Socket;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -8,9 +8,9 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-class TelnetConnectionTest {
+class HttpConnectionTest {
 
-    TelnetConnection tc;
+    HttpConnection hc;
 
 
     @BeforeEach
@@ -18,16 +18,16 @@ class TelnetConnectionTest {
 
         Socket src = new Socket("192.168.1.112",5554);
         Socket dst = new Socket("192.168.1.112",5554);
-        tc = new TelnetConnection(src, dst);
+        hc = new HttpConnection(src, dst);
 
     }
 
     @Test
     void testTree() {
 
-        assertTrue(tc.getModelTree().isRoot());
-        assertEquals(10,tc.getModelTree().size());
-        assertEquals(6,tc.getModelTree().height());
+        assertTrue(hc.getModelTree().isRoot());
+        assertEquals(10, hc.getModelTree().size());
+        assertEquals(6, hc.getModelTree().height());
 
     }
 
