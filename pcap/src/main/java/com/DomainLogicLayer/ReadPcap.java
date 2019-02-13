@@ -11,7 +11,7 @@ import java.util.ArrayList;
 public class ReadPcap extends Command{
 
     private String _filePath;
-    public ArrayList<Packet> _output;
+    private ArrayList<Packet> _output;
 
     public ReadPcap(String filePath) {
         _filePath = filePath;
@@ -38,5 +38,9 @@ public class ReadPcap extends Command{
             handle.close();
         }
 
+    }
+
+    public ArrayList<Packet> getOutput() {
+        return _output;
     }
 }

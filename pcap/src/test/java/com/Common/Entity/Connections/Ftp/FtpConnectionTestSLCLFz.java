@@ -33,7 +33,7 @@ class FtpConnectionTestSLCLFz {
         readCommandServer = (ReadPcap) CommandFactory.instantiateReadPcap(_filePath);
         readCommandServer.execute();
 
-        ArrayList<Socket> sockets = Socket.packetToSockets(readCommandClient._output.get(0));
+        ArrayList<Socket> sockets = Socket.packetToSockets(readCommandClient.getOutput().get(0));
 
         fc = new FtpConnection(sockets.get(0), sockets.get(1));
 
@@ -44,7 +44,7 @@ class FtpConnectionTestSLCLFz {
     void addPacketPlus1Client() {
 
         int oldSize = fc.getPackets().size();
-        fc.addPacket(readCommandClient._output.get(0).get(TcpPacket.class));
+        fc.addPacket(readCommandClient.getOutput().get(0).get(TcpPacket.class));
 
         assertEquals(oldSize+1, fc.getPackets().size());
 
@@ -53,9 +53,9 @@ class FtpConnectionTestSLCLFz {
     @Test
     void openingClient() {
 
-        fc.addPacket(readCommandClient._output.get(0).get(TcpPacket.class));
+        fc.addPacket(readCommandClient.getOutput().get(0).get(TcpPacket.class));
         assertEquals(TelnetConnection.OPENING, fc.getOpenedStatus());
-        fc.addPacket(readCommandClient._output.get(1).get(TcpPacket.class));
+        fc.addPacket(readCommandClient.getOutput().get(1).get(TcpPacket.class));
         assertEquals(TelnetConnection.OPENING, fc.getOpenedStatus());
 
     }
@@ -63,8 +63,8 @@ class FtpConnectionTestSLCLFz {
     @Test
     void openedCleanlyClient() {
 
-        for (int i = 0; i < readCommandClient._output.size() ; i++) {
-            fc.addPacket(readCommandClient._output.get(i).get(TcpPacket.class));
+        for (int i = 0; i < readCommandClient.getOutput().size() ; i++) {
+            fc.addPacket(readCommandClient.getOutput().get(i).get(TcpPacket.class));
         }
 
         assertEquals(TelnetConnection.OPENED_CLEANLY, fc.getOpenedStatus());
@@ -73,16 +73,16 @@ class FtpConnectionTestSLCLFz {
 
     @Test
     void closingClient() {
-        for (int i = 0; i < readCommandClient._output.size() - 4; i++) {
-            fc.addPacket(readCommandClient._output.get(i).get(TcpPacket.class));
+        for (int i = 0; i < readCommandClient.getOutput().size() - 4; i++) {
+            fc.addPacket(readCommandClient.getOutput().get(i).get(TcpPacket.class));
         }
         assertEquals(TelnetConnection.CLOSING, fc.getClosedStatus());
     }
 
     @Test
     void closedCleanlyClient() {
-        for (int i = 0; i < readCommandClient._output.size(); i++) {
-            fc.addPacket(readCommandClient._output.get(i).get(TcpPacket.class));
+        for (int i = 0; i < readCommandClient.getOutput().size(); i++) {
+            fc.addPacket(readCommandClient.getOutput().get(i).get(TcpPacket.class));
         }
         assertEquals(TelnetConnection.CLOSED_CLEANLY, fc.getClosedStatus());
     }
@@ -93,7 +93,7 @@ class FtpConnectionTestSLCLFz {
     void addPacketPlus1Server() {
 
         int oldSize = fc.getPackets().size();
-        fc.addPacket(readCommandServer._output.get(0).get(TcpPacket.class));
+        fc.addPacket(readCommandServer.getOutput().get(0).get(TcpPacket.class));
 
         assertEquals(oldSize+1, fc.getPackets().size());
 
@@ -102,9 +102,9 @@ class FtpConnectionTestSLCLFz {
     @Test
     void openingServer() {
 
-        fc.addPacket(readCommandServer._output.get(0).get(TcpPacket.class));
+        fc.addPacket(readCommandServer.getOutput().get(0).get(TcpPacket.class));
         assertEquals(TelnetConnection.OPENING, fc.getOpenedStatus());
-        fc.addPacket(readCommandServer._output.get(1).get(TcpPacket.class));
+        fc.addPacket(readCommandServer.getOutput().get(1).get(TcpPacket.class));
         assertEquals(TelnetConnection.OPENING, fc.getOpenedStatus());
 
     }
@@ -112,8 +112,8 @@ class FtpConnectionTestSLCLFz {
     @Test
     void openedCleanlyServer() {
 
-        for (int i = 0; i < readCommandServer._output.size() ; i++) {
-            fc.addPacket(readCommandServer._output.get(i).get(TcpPacket.class));
+        for (int i = 0; i < readCommandServer.getOutput().size() ; i++) {
+            fc.addPacket(readCommandServer.getOutput().get(i).get(TcpPacket.class));
         }
 
         assertEquals(TelnetConnection.OPENED_CLEANLY, fc.getOpenedStatus());
@@ -122,16 +122,16 @@ class FtpConnectionTestSLCLFz {
 
     @Test
     void closingServer() {
-        for (int i = 0; i < readCommandServer._output.size() - 4; i++) {
-            fc.addPacket(readCommandServer._output.get(i).get(TcpPacket.class));
+        for (int i = 0; i < readCommandServer.getOutput().size() - 4; i++) {
+            fc.addPacket(readCommandServer.getOutput().get(i).get(TcpPacket.class));
         }
         assertEquals(TelnetConnection.CLOSING, fc.getClosedStatus());
     }
 
     @Test
     void closedCleanlyServer() {
-        for (int i = 0; i < readCommandServer._output.size(); i++) {
-            fc.addPacket(readCommandServer._output.get(i).get(TcpPacket.class));
+        for (int i = 0; i < readCommandServer.getOutput().size(); i++) {
+            fc.addPacket(readCommandServer.getOutput().get(i).get(TcpPacket.class));
         }
         assertEquals(TelnetConnection.CLOSED_CLEANLY, fc.getClosedStatus());
     }

@@ -1,5 +1,7 @@
 package com.DomainLogicLayer;
 
+import org.pcap4j.packet.Packet;
+
 import java.util.ArrayList;
 
 public class CommandFactory {
@@ -10,5 +12,9 @@ public class CommandFactory {
 
     public static Object instantiateReadMultiplePcaps(ArrayList<String> filePaths) {
         return new ReadMultiplePcaps(filePaths);
+    }
+
+    public static Object instantiateOrchestrateCommand(ArrayList<Packet> packets) {
+        return new OrchestrateCommand(packets);
     }
 }

@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 public class ReadMultiplePcaps extends Command {
 
-    public ArrayList<Packet> _output;
+    private ArrayList<Packet> _output;
     ArrayList<String> _filePaths;
 
     public ReadMultiplePcaps(ArrayList<String> filePaths) {
@@ -20,11 +20,15 @@ public class ReadMultiplePcaps extends Command {
         for (int i = 0; i < _filePaths.size() ; i++) {
             ReadPcap command = (ReadPcap) CommandFactory.instantiateReadPcap(_filePaths.get(i));
             command.execute();
-            for (int j = 0; j < command._output.size() ; j++) {
-                _output.add(command._output.get(j));
+            for (int j = 0; j < command.getOutput().size() ; j++) {
+                _output.add(command.getOutput().get(j));
             }
         }
 
 
+    }
+
+    public ArrayList<Packet> getOutput() {
+        return _output;
     }
 }

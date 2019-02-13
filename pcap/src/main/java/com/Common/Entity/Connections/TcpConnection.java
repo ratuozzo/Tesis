@@ -3,6 +3,7 @@ package com.Common.Entity.Connections;
 import com.Common.Entity.ConnectionTree;
 import com.Common.Entity.Socket;
 import com.scalified.tree.TreeNode;
+import org.pcap4j.packet.Packet;
 import org.pcap4j.packet.TcpPacket;
 
 import java.util.ArrayList;
@@ -11,8 +12,8 @@ import java.util.Iterator;
 
 public abstract class TcpConnection {
 
-    protected Socket _dst;
     protected Socket _src;
+    protected Socket _dst;
     protected ArrayList<TcpPacket> _packets;
     protected String _openedStatus;
     protected String _closedStatus;
@@ -168,5 +169,24 @@ public abstract class TcpConnection {
 
     public ConnectionTree getModelTree() {
         return _modelTree;
+    }
+
+    public Socket getSrc() {
+        return _src;
+    }
+
+    public Socket getDst() {
+        return _dst;
+    }
+
+    public boolean belongsTo(Packet packet) {
+
+        ArrayList<Socket> sockets = new ArrayList<>(Socket.packetToSockets(packet));
+
+        if ((_src.equals(sockets.get(0)) && _dst.equals(sockets.get(1))) ||
+                ((_src.equals(sockets.get(1)) && _dst.equals(sockets.get(0))))) {
+            return true;
+        }
+        return false;
     }
 }

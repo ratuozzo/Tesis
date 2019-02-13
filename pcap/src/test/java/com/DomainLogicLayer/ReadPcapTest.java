@@ -1,7 +1,5 @@
-package com;
+package com.DomainLogicLayer;
 
-import com.DomainLogicLayer.CommandFactory;
-import com.DomainLogicLayer.ReadPcap;
 import com.Common.Registry;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -24,7 +22,7 @@ class ReadPcapTest {
         ReadPcap command = (ReadPcap) CommandFactory.instantiateReadPcap(_filePath);
         command.execute();
 
-        assertNotNull(command._output);
-        assertEquals(180,command._output.size());
+        assertNotNull(command.getOutput());
+        assertEquals(180, command.getOutput().size());
     }
 }

@@ -33,7 +33,7 @@ class SshConnectionTestSWCWPutty {
         readCommandServer = (ReadPcap) CommandFactory.instantiateReadPcap(_filePath);
         readCommandServer.execute();
 
-        ArrayList<Socket> sockets = Socket.packetToSockets(readCommandClient._output.get(0));
+        ArrayList<Socket> sockets = Socket.packetToSockets(readCommandClient.getOutput().get(0));
 
         sc = new SshConnection(sockets.get(0), sockets.get(1));
 
@@ -44,7 +44,7 @@ class SshConnectionTestSWCWPutty {
     void addPacketPlus1Client() {
 
         int oldSize = sc.getPackets().size();
-        sc.addPacket(readCommandClient._output.get(0).get(TcpPacket.class));
+        sc.addPacket(readCommandClient.getOutput().get(0).get(TcpPacket.class));
 
         assertEquals(oldSize+1, sc.getPackets().size());
 
@@ -53,9 +53,9 @@ class SshConnectionTestSWCWPutty {
     @Test
     void openingClient() {
 
-        sc.addPacket(readCommandClient._output.get(0).get(TcpPacket.class));
+        sc.addPacket(readCommandClient.getOutput().get(0).get(TcpPacket.class));
         assertEquals(TelnetConnection.OPENING, sc.getOpenedStatus());
-        sc.addPacket(readCommandClient._output.get(1).get(TcpPacket.class));
+        sc.addPacket(readCommandClient.getOutput().get(1).get(TcpPacket.class));
         assertEquals(TelnetConnection.OPENING, sc.getOpenedStatus());
 
     }
@@ -63,8 +63,8 @@ class SshConnectionTestSWCWPutty {
     @Test
     void openedCleanlyClient() {
 
-        for (int i = 0; i < readCommandClient._output.size() ; i++) {
-            sc.addPacket(readCommandClient._output.get(i).get(TcpPacket.class));
+        for (int i = 0; i < readCommandClient.getOutput().size() ; i++) {
+            sc.addPacket(readCommandClient.getOutput().get(i).get(TcpPacket.class));
         }
 
         assertEquals(TelnetConnection.OPENED_CLEANLY, sc.getOpenedStatus());
@@ -73,8 +73,8 @@ class SshConnectionTestSWCWPutty {
 
     @Test
     void closedCleanlyClient() {
-        for (int i = 0; i < readCommandClient._output.size(); i++) {
-            sc.addPacket(readCommandClient._output.get(i).get(TcpPacket.class));
+        for (int i = 0; i < readCommandClient.getOutput().size(); i++) {
+            sc.addPacket(readCommandClient.getOutput().get(i).get(TcpPacket.class));
         }
         assertEquals(TelnetConnection.CLOSED_CLEANLY, sc.getClosedStatus());
     }
@@ -85,7 +85,7 @@ class SshConnectionTestSWCWPutty {
     void addPacketPlus1Server() {
 
         int oldSize = sc.getPackets().size();
-        sc.addPacket(readCommandServer._output.get(0).get(TcpPacket.class));
+        sc.addPacket(readCommandServer.getOutput().get(0).get(TcpPacket.class));
 
         assertEquals(oldSize+1, sc.getPackets().size());
 
@@ -94,9 +94,9 @@ class SshConnectionTestSWCWPutty {
     @Test
     void openingServer() {
 
-        sc.addPacket(readCommandServer._output.get(0).get(TcpPacket.class));
+        sc.addPacket(readCommandServer.getOutput().get(0).get(TcpPacket.class));
         assertEquals(TelnetConnection.OPENING, sc.getOpenedStatus());
-        sc.addPacket(readCommandServer._output.get(1).get(TcpPacket.class));
+        sc.addPacket(readCommandServer.getOutput().get(1).get(TcpPacket.class));
         assertEquals(TelnetConnection.OPENING, sc.getOpenedStatus());
 
     }
@@ -104,8 +104,8 @@ class SshConnectionTestSWCWPutty {
     @Test
     void openedCleanlyServer() {
 
-        for (int i = 0; i < readCommandServer._output.size() ; i++) {
-            sc.addPacket(readCommandServer._output.get(i).get(TcpPacket.class));
+        for (int i = 0; i < readCommandServer.getOutput().size() ; i++) {
+            sc.addPacket(readCommandServer.getOutput().get(i).get(TcpPacket.class));
         }
 
         assertEquals(TelnetConnection.OPENED_CLEANLY, sc.getOpenedStatus());
@@ -114,8 +114,8 @@ class SshConnectionTestSWCWPutty {
 
     @Test
     void closedCleanlyServer() {
-        for (int i = 0; i < readCommandServer._output.size(); i++) {
-            sc.addPacket(readCommandServer._output.get(i).get(TcpPacket.class));
+        for (int i = 0; i < readCommandServer.getOutput().size(); i++) {
+            sc.addPacket(readCommandServer.getOutput().get(i).get(TcpPacket.class));
         }
         assertEquals(TelnetConnection.CLOSED_CLEANLY, sc.getClosedStatus());
     }

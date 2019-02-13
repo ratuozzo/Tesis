@@ -96,7 +96,7 @@ public class ConnectionTree extends ArrayMultiTreeNode<Integer> {
         return output;
     }
 
-    public boolean isEndingNode() {
+    private boolean isEndingNode() {
         return _endingNode;
     }
 

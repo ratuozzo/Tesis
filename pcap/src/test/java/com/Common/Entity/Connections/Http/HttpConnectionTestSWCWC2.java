@@ -33,7 +33,7 @@ class HttpConnectionTestSWCWC2 {
         readCommandServer = (ReadPcap) CommandFactory.instantiateReadPcap(_filePath);
         readCommandServer.execute();
 
-        ArrayList<Socket> sockets = Socket.packetToSockets(readCommandClient._output.get(0));
+        ArrayList<Socket> sockets = Socket.packetToSockets(readCommandClient.getOutput().get(0));
 
         hc = new HttpConnection(sockets.get(0), sockets.get(1));
 
@@ -44,7 +44,7 @@ class HttpConnectionTestSWCWC2 {
     void addPacketPlus1Client() {
 
         int oldSize = hc.getPackets().size();
-        hc.addPacket(readCommandClient._output.get(0).get(TcpPacket.class));
+        hc.addPacket(readCommandClient.getOutput().get(0).get(TcpPacket.class));
 
         assertEquals(oldSize+1, hc.getPackets().size());
 
@@ -53,9 +53,9 @@ class HttpConnectionTestSWCWC2 {
     @Test
     void openingClient() {
 
-        hc.addPacket(readCommandClient._output.get(0).get(TcpPacket.class));
+        hc.addPacket(readCommandClient.getOutput().get(0).get(TcpPacket.class));
         assertEquals(TelnetConnection.OPENING, hc.getOpenedStatus());
-        hc.addPacket(readCommandClient._output.get(1).get(TcpPacket.class));
+        hc.addPacket(readCommandClient.getOutput().get(1).get(TcpPacket.class));
         assertEquals(TelnetConnection.OPENING, hc.getOpenedStatus());
 
     }
@@ -63,8 +63,8 @@ class HttpConnectionTestSWCWC2 {
     @Test
     void openedCleanlyClient() {
 
-        for (int i = 0; i < readCommandClient._output.size() ; i++) {
-            hc.addPacket(readCommandClient._output.get(i).get(TcpPacket.class));
+        for (int i = 0; i < readCommandClient.getOutput().size() ; i++) {
+            hc.addPacket(readCommandClient.getOutput().get(i).get(TcpPacket.class));
         }
 
         assertEquals(TelnetConnection.OPENED_CLEANLY, hc.getOpenedStatus());
@@ -73,16 +73,16 @@ class HttpConnectionTestSWCWC2 {
 
     @Test
     void closingClient() {
-        for (int i = 0; i < readCommandClient._output.size() - 1; i++) {
-            hc.addPacket(readCommandClient._output.get(i).get(TcpPacket.class));
+        for (int i = 0; i < readCommandClient.getOutput().size() - 1; i++) {
+            hc.addPacket(readCommandClient.getOutput().get(i).get(TcpPacket.class));
         }
         assertEquals(TelnetConnection.CLOSING, hc.getClosedStatus());
     }
 
     @Test
     void closedCleanlyClient() {
-        for (int i = 0; i < readCommandClient._output.size(); i++) {
-            hc.addPacket(readCommandClient._output.get(i).get(TcpPacket.class));
+        for (int i = 0; i < readCommandClient.getOutput().size(); i++) {
+            hc.addPacket(readCommandClient.getOutput().get(i).get(TcpPacket.class));
         }
         assertEquals(TelnetConnection.CLOSED_CLEANLY, hc.getClosedStatus());
     }
@@ -93,7 +93,7 @@ class HttpConnectionTestSWCWC2 {
     void addPacketPlus1Server() {
 
         int oldSize = hc.getPackets().size();
-        hc.addPacket(readCommandServer._output.get(0).get(TcpPacket.class));
+        hc.addPacket(readCommandServer.getOutput().get(0).get(TcpPacket.class));
 
         assertEquals(oldSize+1, hc.getPackets().size());
 
@@ -102,9 +102,9 @@ class HttpConnectionTestSWCWC2 {
     @Test
     void openingServer() {
 
-        hc.addPacket(readCommandServer._output.get(0).get(TcpPacket.class));
+        hc.addPacket(readCommandServer.getOutput().get(0).get(TcpPacket.class));
         assertEquals(TelnetConnection.OPENING, hc.getOpenedStatus());
-        hc.addPacket(readCommandServer._output.get(1).get(TcpPacket.class));
+        hc.addPacket(readCommandServer.getOutput().get(1).get(TcpPacket.class));
         assertEquals(TelnetConnection.OPENING, hc.getOpenedStatus());
 
     }
@@ -112,8 +112,8 @@ class HttpConnectionTestSWCWC2 {
     @Test
     void openedCleanlyServer() {
 
-        for (int i = 0; i < readCommandServer._output.size() ; i++) {
-            hc.addPacket(readCommandServer._output.get(i).get(TcpPacket.class));
+        for (int i = 0; i < readCommandServer.getOutput().size() ; i++) {
+            hc.addPacket(readCommandServer.getOutput().get(i).get(TcpPacket.class));
         }
 
         assertEquals(TelnetConnection.OPENED_CLEANLY, hc.getOpenedStatus());
@@ -122,16 +122,16 @@ class HttpConnectionTestSWCWC2 {
 
     @Test
     void closingServer() {
-        for (int i = 0; i < readCommandServer._output.size() - 1; i++) {
-            hc.addPacket(readCommandServer._output.get(i).get(TcpPacket.class));
+        for (int i = 0; i < readCommandServer.getOutput().size() - 1; i++) {
+            hc.addPacket(readCommandServer.getOutput().get(i).get(TcpPacket.class));
         }
         assertEquals(TelnetConnection.CLOSING, hc.getClosedStatus());
     }
 
     @Test
     void closedCleanlyServer() {
-        for (int i = 0; i < readCommandServer._output.size(); i++) {
-            hc.addPacket(readCommandServer._output.get(i).get(TcpPacket.class));
+        for (int i = 0; i < readCommandServer.getOutput().size(); i++) {
+            hc.addPacket(readCommandServer.getOutput().get(i).get(TcpPacket.class));
         }
         assertEquals(TelnetConnection.CLOSED_CLEANLY, hc.getClosedStatus());
     }

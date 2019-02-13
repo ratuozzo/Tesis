@@ -1,7 +1,5 @@
-package com;
+package com.DomainLogicLayer;
 
-import com.DomainLogicLayer.CommandFactory;
-import com.DomainLogicLayer.ReadMultiplePcaps;
 import com.Common.Registry;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -41,8 +39,8 @@ class ReadMultiplePcapsTest {
 
         command.execute();
 
-        assertNotNull(command._output);
-        assertEquals(180+358+8+8+10+13+48+135+667+198,command._output.size());
+        assertNotNull(command.getOutput());
+        assertEquals(180+358+8+8+10+13+48+135+667+198, command.getOutput().size());
 
 
     }

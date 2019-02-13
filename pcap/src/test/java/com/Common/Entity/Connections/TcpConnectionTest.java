@@ -6,7 +6,6 @@ import com.DomainLogicLayer.CommandFactory;
 import com.DomainLogicLayer.ReadPcap;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.pcap4j.packet.Packet;
 import org.pcap4j.packet.TcpPacket;
 
 import java.util.ArrayList;
@@ -27,12 +26,12 @@ class TcpConnectionTest {
         readCommand = (ReadPcap) CommandFactory.instantiateReadPcap(_filePath);
         readCommand.execute();
 
-        ArrayList<Socket> sockets = Socket.packetToSockets(readCommand._output.get(0));
+        ArrayList<Socket> sockets = Socket.packetToSockets(readCommand.getOutput().get(0));
 
         tc = new TelnetConnection(sockets.get(0), sockets.get(1));
 
-        for (int i = 0; i < readCommand._output.size() ; i++) {
-            tc.addPacket(readCommand._output.get(i).get(TcpPacket.class));
+        for (int i = 0; i < readCommand.getOutput().size() ; i++) {
+            tc.addPacket(readCommand.getOutput().get(i).get(TcpPacket.class));
         }
 
     }

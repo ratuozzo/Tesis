@@ -37,7 +37,7 @@ public class Socket {
     }
 
     public boolean equals(Socket aux){
-
         return getIp().equals(aux.getIp()) && getPort() == aux.getPort();
     }
+
 }
