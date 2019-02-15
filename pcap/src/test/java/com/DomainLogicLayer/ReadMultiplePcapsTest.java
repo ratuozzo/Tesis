@@ -16,20 +16,20 @@ class ReadMultiplePcapsTest {
     @BeforeAll
     static void setUp() {
         _filePaths = new ArrayList<String>();
-        _filePaths.add(Registry.PCAPFILEPATH+"telnet/telnet-slcl-c.pcap");
-        _filePaths.add(Registry.PCAPFILEPATH+"telnet/telnet-swcl-c.pcap");
+        _filePaths.add(Registry.getPCAPFILEPATH() +"telnet/telnet-slcl-c.pcap");
+        _filePaths.add(Registry.getPCAPFILEPATH() +"telnet/telnet-swcl-c.pcap");
 
-        _filePaths.add(Registry.PCAPFILEPATH+"ssh/ssh-slcl-c.pcap");
-        _filePaths.add(Registry.PCAPFILEPATH+"ssh/ssh-swcl-c.pcap");
+        _filePaths.add(Registry.getPCAPFILEPATH() +"ssh/ssh-slcl-c.pcap");
+        _filePaths.add(Registry.getPCAPFILEPATH() +"ssh/ssh-swcl-c.pcap");
 
-        _filePaths.add(Registry.PCAPFILEPATH+"ftp/ftp-slcl-c-fz.pcap");
-        _filePaths.add(Registry.PCAPFILEPATH+"ftp/ftp-swcl-c-cmd.pcap");
+        _filePaths.add(Registry.getPCAPFILEPATH() +"ftp/ftp-slcl-c-fz.pcap");
+        _filePaths.add(Registry.getPCAPFILEPATH() +"ftp/ftp-swcl-c-cmd.pcap");
 
-        _filePaths.add(Registry.PCAPFILEPATH+"http/http-slcl-c-c1.pcap");
-        _filePaths.add(Registry.PCAPFILEPATH+"http/http-swcl-c-c3.pcap");
+        _filePaths.add(Registry.getPCAPFILEPATH() +"http/http-slcl-c-c1.pcap");
+        _filePaths.add(Registry.getPCAPFILEPATH() +"http/http-swcl-c-c3.pcap");
 
-        _filePaths.add(Registry.PCAPFILEPATH+"ping/ping-slcl-c.pcap");
-        _filePaths.add(Registry.PCAPFILEPATH+"ping/ping-swcl-c.pcap");
+        _filePaths.add(Registry.getPCAPFILEPATH() +"ping/ping-slcl-c.pcap");
+        _filePaths.add(Registry.getPCAPFILEPATH() +"ping/ping-swcl-c.pcap");
     }
 
     @Test

@@ -25,11 +25,11 @@ class SshConnectionTestSWCL {
 
     @BeforeEach
     void setUp() {
-        _filePath = Registry.PCAPFILEPATH+"ssh/ssh-swcl-c.pcap";
+        _filePath = Registry.getPCAPFILEPATH() +"ssh/ssh-swcl-c.pcap";
         readCommandClient = (ReadPcap) CommandFactory.instantiateReadPcap(_filePath);
         readCommandClient.execute();
 
-        _filePath = Registry.PCAPFILEPATH+"ssh/ssh-swcl-s.pcap";
+        _filePath = Registry.getPCAPFILEPATH() +"ssh/ssh-swcl-s.pcap";
         readCommandServer = (ReadPcap) CommandFactory.instantiateReadPcap(_filePath);
         readCommandServer.execute();
 

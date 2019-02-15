@@ -25,11 +25,11 @@ class SshConnectionTestSLCWPutty {
 
     @BeforeEach
     void setUp() {
-        _filePath = Registry.PCAPFILEPATH+"ssh/ssh-slcw-c-putty.pcap";
+        _filePath = Registry.getPCAPFILEPATH() +"ssh/ssh-slcw-c-putty.pcap";
         readCommandClient = (ReadPcap) CommandFactory.instantiateReadPcap(_filePath);
         readCommandClient.execute();
 
-        _filePath = Registry.PCAPFILEPATH+"ssh/ssh-slcw-s-putty.pcap";
+        _filePath = Registry.getPCAPFILEPATH() +"ssh/ssh-slcw-s-putty.pcap";
         readCommandServer = (ReadPcap) CommandFactory.instantiateReadPcap(_filePath);
         readCommandServer.execute();
 

@@ -25,11 +25,11 @@ class SshConnectionTestSLCWCmd {
 
     @BeforeEach
     void setUp() {
-        _filePath = Registry.PCAPFILEPATH+"ssh/ssh-slcw-c-cmd.pcap";
+        _filePath = Registry.getPCAPFILEPATH() +"ssh/ssh-slcw-c-cmd.pcap";
         readCommandClient = (ReadPcap) CommandFactory.instantiateReadPcap(_filePath);
         readCommandClient.execute();
 
-        _filePath = Registry.PCAPFILEPATH+"ssh/ssh-slcw-s-cmd.pcap";
+        _filePath = Registry.getPCAPFILEPATH() +"ssh/ssh-slcw-s-cmd.pcap";
         readCommandServer = (ReadPcap) CommandFactory.instantiateReadPcap(_filePath);
         readCommandServer.execute();
 

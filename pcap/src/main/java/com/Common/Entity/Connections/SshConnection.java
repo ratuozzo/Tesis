@@ -3,6 +3,7 @@ package com.Common.Entity.Connections;
 import com.Common.Entity.ConnectionTree;
 import com.Common.Entity.Socket;
 import com.scalified.tree.TreeNode;
+import org.pcap4j.packet.Packet;
 
 public class SshConnection extends TcpConnection {
 
@@ -27,5 +28,10 @@ public class SshConnection extends TcpConnection {
         aux.add(l11);
         aux.addEndingRstAck().addEndingRstAck();
 
+    }
+
+    @Override
+    public boolean shouldAdd(Packet packet) {
+        return false;
     }
 }

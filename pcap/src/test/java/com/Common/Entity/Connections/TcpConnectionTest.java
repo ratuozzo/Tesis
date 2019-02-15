@@ -22,7 +22,7 @@ class TcpConnectionTest {
 
     @BeforeEach
     void setUp() {
-        _filePath = Registry.PCAPFILEPATH+"telnet/telnet-slcw-c-cmd.pcap";
+        _filePath = Registry.getPCAPFILEPATH() +"telnet/telnet-slcw-c-cmd.pcap";
         readCommand = (ReadPcap) CommandFactory.instantiateReadPcap(_filePath);
         readCommand.execute();
 
@@ -39,11 +39,11 @@ class TcpConnectionTest {
     @Test
     void getPacketInteger() {
 
-        assertEquals(8,tc.packetToInteger(tc._packets.get(0)));
-        assertEquals(8+4,tc.packetToInteger(tc._packets.get(1)));
-        assertEquals(4,tc.packetToInteger(tc._packets.get(2)));
-        assertEquals(4+2,tc.packetToInteger(tc._packets.get(293)));
-        assertEquals(1,tc.packetToInteger(tc._packets.get(296)));
+        assertEquals(8,tc.packetToInteger(tc._packets.get(0).get(TcpPacket.class)));
+        assertEquals(8+4,tc.packetToInteger(tc._packets.get(1).get(TcpPacket.class)));
+        assertEquals(4,tc.packetToInteger(tc._packets.get(2).get(TcpPacket.class)));
+        assertEquals(4+2,tc.packetToInteger(tc._packets.get(293).get(TcpPacket.class)));
+        assertEquals(1,tc.packetToInteger(tc._packets.get(296).get(TcpPacket.class)));
 
     }
 

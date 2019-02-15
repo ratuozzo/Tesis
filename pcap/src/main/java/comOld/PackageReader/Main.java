@@ -1,6 +1,5 @@
 package comOld.PackageReader;
 
-import com.Common.Entity.Connections.TelnetConnection;
 import com.Common.Registry;
 import comOld.Common.ConnectionHandler;
 import comOld.packet.view.PacketView;
@@ -26,7 +25,7 @@ public class Main {
         //connectionHandler.handlePcap(Registry.PCAPFILEPATH + "clean.cap");
         //connectionHandler.handlePcap(Registry.PCAPFILEPATH + "http.cap");
         //connectionHandler.handlePcap(Registry.PCAPFILEPATH + "ftp.pcap");
-        connectionHandler.handlePcap(Registry.PCAPFILEPATH + "telnet-slcw-c.pcap");
+        connectionHandler.handlePcap(Registry.getPCAPFILEPATH() + "telnet-slcw-c.pcap");
         //connectionHandler.handlePcap(Registry.PCAPFILEPATH + "bigFlows.pcap");
 
 

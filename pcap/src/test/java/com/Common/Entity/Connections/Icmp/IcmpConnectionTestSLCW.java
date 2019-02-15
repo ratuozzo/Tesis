@@ -24,11 +24,11 @@ class IcmpConnectionTestSLCW {
     @BeforeEach
     void setUp() {
 
-        _filePath = Registry.PCAPFILEPATH+"ping/ping-slcw-c.pcap";
+        _filePath = Registry.getPCAPFILEPATH() +"ping/ping-slcw-c.pcap";
         readCommandClient = (ReadPcap) CommandFactory.instantiateReadPcap(_filePath);
         readCommandClient.execute();
 
-        _filePath = Registry.PCAPFILEPATH+"ping/ping-slcw-s.pcap";
+        _filePath = Registry.getPCAPFILEPATH() +"ping/ping-slcw-s.pcap";
         readCommandServer = (ReadPcap) CommandFactory.instantiateReadPcap(_filePath);
         readCommandServer.execute();
 

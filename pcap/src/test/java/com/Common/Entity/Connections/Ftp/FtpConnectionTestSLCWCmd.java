@@ -25,11 +25,11 @@ class FtpConnectionTestSLCWCmd {
 
     @BeforeEach
     void setUp() {
-        _filePath = Registry.PCAPFILEPATH+"ftp/ftp-slcw-c-cmd.pcap";
+        _filePath = Registry.getPCAPFILEPATH() +"ftp/ftp-slcw-c-cmd.pcap";
         readCommandClient = (ReadPcap) CommandFactory.instantiateReadPcap(_filePath);
         readCommandClient.execute();
 
-        _filePath = Registry.PCAPFILEPATH+"ftp/ftp-slcw-s-cmd.pcap";
+        _filePath = Registry.getPCAPFILEPATH() +"ftp/ftp-slcw-s-cmd.pcap";
         readCommandServer = (ReadPcap) CommandFactory.instantiateReadPcap(_filePath);
         readCommandServer.execute();
 

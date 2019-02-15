@@ -25,11 +25,11 @@ class HttpConnectionTestSLCLC2 {
 
     @BeforeEach
     void setUp() {
-        _filePath = Registry.PCAPFILEPATH+"http/http-slcl-c-c2.pcap";
+        _filePath = Registry.getPCAPFILEPATH() +"http/http-slcl-c-c2.pcap";
         readCommandClient = (ReadPcap) CommandFactory.instantiateReadPcap(_filePath);
         readCommandClient.execute();
 
-        _filePath = Registry.PCAPFILEPATH+"http/http-slcl-s-c2.pcap";
+        _filePath = Registry.getPCAPFILEPATH() +"http/http-slcl-s-c2.pcap";
         readCommandServer = (ReadPcap) CommandFactory.instantiateReadPcap(_filePath);
         readCommandServer.execute();
 

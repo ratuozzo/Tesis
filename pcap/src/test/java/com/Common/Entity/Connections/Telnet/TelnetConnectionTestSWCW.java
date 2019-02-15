@@ -24,11 +24,11 @@ class TelnetConnectionTestSWCW {
 
     @BeforeEach
     void setUp() {
-        _filePath = Registry.PCAPFILEPATH+"telnet/telnet-swcw-c.pcap";
+        _filePath = Registry.getPCAPFILEPATH() +"telnet/telnet-swcw-c.pcap";
         readCommandClient = (ReadPcap) CommandFactory.instantiateReadPcap(_filePath);
         readCommandClient.execute();
 
-        _filePath = Registry.PCAPFILEPATH+"telnet/telnet-swcw-s.pcap";
+        _filePath = Registry.getPCAPFILEPATH() +"telnet/telnet-swcw-s.pcap";
         readCommandServer = (ReadPcap) CommandFactory.instantiateReadPcap(_filePath);
         readCommandServer.execute();
 

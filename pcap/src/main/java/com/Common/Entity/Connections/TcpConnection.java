@@ -10,30 +10,15 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 
-public abstract class TcpConnection {
+public abstract class TcpConnection extends Connection{
 
     protected Socket _src;
     protected Socket _dst;
-    protected ArrayList<TcpPacket> _packets;
-    protected String _openedStatus;
-    protected String _closedStatus;
     protected ConnectionTree _modelTree;
     protected ConnectionTree _packetTree;
 
-    public static final String NOT_OPENED = "Not Opened";
-    public static final String OPENING = "Opening";
-    public static final String OPENED_CLEANLY = "Opened Cleanly";
-    public static final String OPENED_DIRTILY = "Opened Dirtily";
-
-    public static final String NOT_CLOSED = "Not Closed";
-    public static final String CLOSING = "Closing";
-    public static final String CLOSED_CLEANLY = "Closed Cleanly";
-    public static final String CLOSED_DIRTILY = "Closed Dirtily";
-
-
-
     public TcpConnection(Socket src, Socket dst) {
-        _packets = new ArrayList<TcpPacket>();
+        _packets = new ArrayList<>();
         _openedStatus = NOT_OPENED;
         _closedStatus = NOT_CLOSED;
         _modelTree = new ConnectionTree();
@@ -41,15 +26,23 @@ public abstract class TcpConnection {
         _dst = dst;
     }
 
-    public TcpConnection() {
-        _packets = new ArrayList<TcpPacket>();
+    public TcpConnection(Packet packet) {
+
+        ArrayList<Socket> sockets = Socket.packetToSockets(packet);
+
+        _packets = new ArrayList<>();
         _openedStatus = NOT_OPENED;
         _closedStatus = NOT_CLOSED;
         _modelTree = new ConnectionTree();
+        _src = sockets.get(0);
+        _dst = sockets.get(1);
     }
 
-    public void addPacket(TcpPacket input) {
 
+    public void addPacket(Packet inputPacket) {
+
+
+        TcpPacket input = inputPacket.get(TcpPacket.class);
         _packets.add(input);
 
         if (((_dst.getPort() == input.getHeader().getSrcPort().valueAsInt()) &&
@@ -154,19 +147,6 @@ public abstract class TcpConnection {
         return output;
     }
 
-
-    public ArrayList<TcpPacket> getPackets() {
-        return _packets;
-    }
-
-    public String getOpenedStatus() {
-        return _openedStatus;
-    }
-
-    public String getClosedStatus() {
-        return _closedStatus;
-    }
-
     public ConnectionTree getModelTree() {
         return _modelTree;
     }
@@ -177,16 +157,5 @@ public abstract class TcpConnection {
 
     public Socket getDst() {
         return _dst;
-    }
-
-    public boolean belongsTo(Packet packet) {
-
-        ArrayList<Socket> sockets = new ArrayList<>(Socket.packetToSockets(packet));
-
-        if ((_src.equals(sockets.get(0)) && _dst.equals(sockets.get(1))) ||
-                ((_src.equals(sockets.get(1)) && _dst.equals(sockets.get(0))))) {
-            return true;
-        }
-        return false;
     }
 }

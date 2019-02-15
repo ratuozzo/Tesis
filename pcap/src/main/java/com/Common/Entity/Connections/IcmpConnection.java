@@ -1,15 +1,15 @@
 package com.Common.Entity.Connections;
 
 import org.pcap4j.packet.IcmpV4CommonPacket;
+import org.pcap4j.packet.IpV4Packet;
+import org.pcap4j.packet.Packet;
 
 import java.util.ArrayList;
-import java.util.BitSet;
 
-public class IcmpConnection {
+public class IcmpConnection extends Connection{
 
     private String _src;
     private String _dst;
-    private ArrayList<IcmpV4CommonPacket> _packets;
     protected String _openedStatus;
     protected String _closedStatus;
 
@@ -27,14 +27,17 @@ public class IcmpConnection {
         _closedStatus = NOT_CLOSED;
     }
 
-
-    public ArrayList<IcmpV4CommonPacket> getPackets() {
-        return _packets;
+    public IcmpConnection(Packet packet) {
+        _src = packet.get(IpV4Packet.class).getHeader().getSrcAddr().toString();
+        _dst = packet.get(IpV4Packet.class).getHeader().getDstAddr().toString();
+        _packets = new ArrayList<>();
+        _openedStatus = OPENED_CLEANLY;
+        _closedStatus = NOT_CLOSED;
     }
 
-    public void addPacket(IcmpV4CommonPacket packet) {
+    public void addPacket(Packet packet) {
         _packets.add(packet);
-        if (packet.getHeader().getType().name().equals("Echo")) {
+        if (packet.get(IcmpV4CommonPacket.class).getHeader().getType().name().equals("Echo")) {
             _closedStatus = NOT_CLOSED;
         } else {
             _closedStatus = CLOSED_CLEANLY;
@@ -47,5 +50,17 @@ public class IcmpConnection {
 
     public String getClosedStatus() {
         return _closedStatus;
+    }
+
+    @Override
+    public boolean shouldAdd(Packet packet) {
+
+        String pSrc = packet.get(IpV4Packet.class).getHeader().getSrcAddr().toString();
+        String pDst = packet.get(IpV4Packet.class).getHeader().getDstAddr().toString();
+
+        if (((pSrc.equals(_src) && pDst.equals(_dst)) || (pSrc.equals(_dst) && pDst.equals(_src)))) {
+            return true;
+        }
+        return false;
     }
 }

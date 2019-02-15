@@ -1,5 +1,6 @@
 package com.DomainLogicLayer;
 
+import com.Common.Entity.Connections.TcpConnection;
 import org.pcap4j.packet.Packet;
 
 import java.util.ArrayList;

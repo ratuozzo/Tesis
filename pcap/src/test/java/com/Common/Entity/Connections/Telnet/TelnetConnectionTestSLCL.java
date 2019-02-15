@@ -24,11 +24,11 @@ class TelnetConnectionTestSLCL {
 
     @BeforeEach
     void setUp() {
-        _filePath = Registry.PCAPFILEPATH+"telnet/telnet-slcl-c.pcap";
+        _filePath = Registry.getPCAPFILEPATH() +"telnet/telnet-slcl-c.pcap";
         readCommandClient = (ReadPcap) CommandFactory.instantiateReadPcap(_filePath);
         readCommandClient.execute();
 
-        _filePath = Registry.PCAPFILEPATH+"telnet/telnet-slcl-s.pcap";
+        _filePath = Registry.getPCAPFILEPATH() +"telnet/telnet-slcl-s.pcap";
         readCommandServer = (ReadPcap) CommandFactory.instantiateReadPcap(_filePath);
         readCommandServer.execute();
 

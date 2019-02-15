@@ -13,7 +13,7 @@ class ReadPcapTest {
 
     @BeforeAll
     static void setUp() {
-       _filePath = Registry.PCAPFILEPATH+"telnet/telnet-slcl-c.pcap";
+       _filePath = Registry.getPCAPFILEPATH() +"telnet/telnet-slcl-c.pcap";
     }
 
     @Test

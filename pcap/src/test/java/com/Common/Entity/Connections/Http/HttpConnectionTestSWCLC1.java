@@ -25,11 +25,11 @@ class HttpConnectionTestSWCLC1 {
 
     @BeforeEach
     void setUp() {
-        _filePath = Registry.PCAPFILEPATH+"http/http-swcl-c-c1.pcap";
+        _filePath = Registry.getPCAPFILEPATH() +"http/http-swcl-c-c1.pcap";
         readCommandClient = (ReadPcap) CommandFactory.instantiateReadPcap(_filePath);
         readCommandClient.execute();
 
-        _filePath = Registry.PCAPFILEPATH+"http/http-swcl-s-c1.pcap";
+        _filePath = Registry.getPCAPFILEPATH() +"http/http-swcl-s-c1.pcap";
         readCommandServer = (ReadPcap) CommandFactory.instantiateReadPcap(_filePath);
         readCommandServer.execute();
 
