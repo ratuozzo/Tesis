@@ -7,9 +7,17 @@ import org.pcap4j.packet.Packet;
 
 public class FtpConnection extends TcpConnection {
 
+
     public FtpConnection(Socket src, Socket dst) {
         super(src, dst);
+    }
 
+    public FtpConnection(Packet packet) {
+        super(packet);
+    }
+
+    @Override
+    protected void instantiateTree() {
         ConnectionTree aux = null;
         for (TreeNode<Integer> node : _modelTree) {
             if (node.isLeaf()) {
@@ -24,7 +32,6 @@ public class FtpConnection extends TcpConnection {
         l1.addAck().addFinAck().addEndingAck();
 
         aux.add(l1);
-
     }
 
     @Override

@@ -40,4 +40,9 @@ public class Socket {
         return getIp().equals(aux.getIp()) && getPort() == aux.getPort();
     }
 
+    public static boolean dualEquals(ArrayList<Socket> sockets) {
+        return  ((sockets.get(0).equals(sockets.get(2)) && sockets.get(1).equals(sockets.get(3))) ||
+                (sockets.get(0).equals(sockets.get(3)) && sockets.get(1).equals(sockets.get(2))));
+    }
+
 }

@@ -1,8 +1,6 @@
 package com.DomainLogicLayer;
 
-import com.Common.Entity.Connections.Connection;
-import com.Common.Entity.Connections.IcmpConnection;
-import com.Common.Entity.Connections.TelnetConnection;
+import com.Common.Entity.Connections.*;
 import org.pcap4j.packet.Packet;
 import org.pcap4j.packet.TcpPacket;
 
@@ -30,8 +28,6 @@ public class OrchestrateCommand extends Command {
                 instantiateConnection(packet);
             }
         }
-
-
     }
 
     public ArrayList<Connection> getConnections() {
@@ -42,18 +38,14 @@ public class OrchestrateCommand extends Command {
 
         Iterator iterator = _connections.iterator();
 
-        try {
+
             while (iterator.hasNext()) {
                 Connection aux = (Connection) iterator.next();
-                if (aux.shouldAdd(packet)) {
-                    aux.addPacket(packet);
-                    return false;
-                }
+                    if (aux.shouldAdd(packet)) {
+                        aux.addPacket(packet);
+                        return false;
+                    }
             }
-        } catch (NullPointerException ex) {
-            return true;
-        }
-
         return true;
     }
 
@@ -64,13 +56,30 @@ public class OrchestrateCommand extends Command {
                 TelnetConnection tc = new TelnetConnection(packet);
                 tc.addPacket(packet);
                 _connections.add(tc);
-
                 break;
 
             case "Icmp":
                 IcmpConnection ic = new IcmpConnection(packet);
                 ic.addPacket(packet);
                 _connections.add(ic);
+                break;
+
+            case "SSH":
+                SshConnection sc = new SshConnection(packet);
+                sc.addPacket(packet);
+                _connections.add(sc);
+                break;
+
+            case "Ftp":
+                FtpConnection fc = new FtpConnection(packet);
+                fc.addPacket(packet);
+                _connections.add(fc);
+                break;
+
+            case "Http":
+                HttpConnection hc = new HttpConnection(packet);
+                hc.addPacket(packet);
+                _connections.add(hc);
                 break;
         }
     }

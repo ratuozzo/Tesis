@@ -9,7 +9,14 @@ public class HttpConnection extends TcpConnection {
 
     public HttpConnection(Socket src, Socket dst) {
         super(src, dst);
+    }
 
+    public HttpConnection(Packet packet) {
+        super(packet);
+    }
+
+    @Override
+    protected void instantiateTree() {
         ConnectionTree aux = null;
         for (TreeNode<Integer> node : _modelTree) {
             if (node.isLeaf()) {
@@ -27,7 +34,6 @@ public class HttpConnection extends TcpConnection {
         l11.addFinAck().addEndingAck();
 
         aux.add(l11);
-
     }
 
     @Override

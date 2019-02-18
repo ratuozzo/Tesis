@@ -1,8 +1,6 @@
 package com.Common.Entity.Connections;
 
-import org.pcap4j.packet.IcmpV4CommonPacket;
-import org.pcap4j.packet.IpV4Packet;
-import org.pcap4j.packet.Packet;
+import org.pcap4j.packet.*;
 
 import java.util.ArrayList;
 
@@ -55,11 +53,27 @@ public class IcmpConnection extends Connection{
     @Override
     public boolean shouldAdd(Packet packet) {
 
+        int pSeq, cSeq;
+
         String pSrc = packet.get(IpV4Packet.class).getHeader().getSrcAddr().toString();
         String pDst = packet.get(IpV4Packet.class).getHeader().getDstAddr().toString();
 
         if (((pSrc.equals(_src) && pDst.equals(_dst)) || (pSrc.equals(_dst) && pDst.equals(_src)))) {
-            return true;
+
+            try {
+                if (packet.get(IcmpV4CommonPacket.class).getHeader().getType().name().equals("Echo")) {
+                    cSeq = _packets.get(_packets.size() - 1).get(IcmpV4EchoReplyPacket.class).getHeader().getSequenceNumberAsInt();
+                    pSeq = packet.get(IcmpV4EchoPacket.class).getHeader().getSequenceNumberAsInt();
+                    return pSeq == cSeq + 1;
+                } else {
+                    cSeq = _packets.get(_packets.size() - 1).get(IcmpV4EchoPacket.class).getHeader().getSequenceNumberAsInt();
+                    pSeq = packet.get(IcmpV4EchoReplyPacket.class).getHeader().getSequenceNumberAsInt();
+                    return pSeq == cSeq;
+                }
+            } catch (NullPointerException ex) {
+                //ex.printStackTrace();
+                return false;
+            }
         }
         return false;
     }

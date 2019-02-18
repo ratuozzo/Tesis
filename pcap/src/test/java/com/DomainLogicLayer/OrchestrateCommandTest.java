@@ -1,8 +1,6 @@
 package com.DomainLogicLayer;
 
-import com.Common.Entity.Connections.Connection;
-import com.Common.Entity.Connections.TcpConnection;
-import com.Common.Entity.Connections.TelnetConnection;
+import com.Common.Entity.Connections.*;
 import com.Common.Registry;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -19,12 +17,12 @@ class OrchestrateCommandTest {
     @BeforeAll
     static void setUp() {
         ArrayList<String> _filePaths;
-        _filePaths = new ArrayList<String>();
+        _filePaths = new ArrayList<>();
 
-        _filePaths.add(Registry.getPCAPFILEPATH() +"telnet/telnet-slcl-c.pcap");
-        _filePaths.add(Registry.getPCAPFILEPATH() +"telnet/telnet-slcl-s.pcap");
+        //_filePaths.add(Registry.getPCAPFILEPATH() +"telnet/telnet-slcl-c.pcap");
+        //_filePaths.add(Registry.getPCAPFILEPATH() +"telnet/telnet-slcl-s.pcap");
         _filePaths.add(Registry.getPCAPFILEPATH() +"telnet/telnet-slcw-c-cmd.pcap");
-        _filePaths.add(Registry.getPCAPFILEPATH() +"telnet/telnet-slcw-s-cmd.pcap");
+        /*_filePaths.add(Registry.getPCAPFILEPATH() +"telnet/telnet-slcw-s-cmd.pcap");
         _filePaths.add(Registry.getPCAPFILEPATH() +"telnet/telnet-slcw-c-putty.pcap");
         _filePaths.add(Registry.getPCAPFILEPATH() +"telnet/telnet-slcw-s-putty.pcap");
         _filePaths.add(Registry.getPCAPFILEPATH() +"telnet/telnet-swcl-c.pcap");
@@ -32,7 +30,7 @@ class OrchestrateCommandTest {
         _filePaths.add(Registry.getPCAPFILEPATH() +"telnet/telnet-swcw-c.pcap");
         _filePaths.add(Registry.getPCAPFILEPATH() +"telnet/telnet-swcw-s.pcap");
 
-        _filePaths.add(Registry.getPCAPFILEPATH() +"ssh/ssh-slcl-c.pcap");
+        /*_filePaths.add(Registry.getPCAPFILEPATH() +"ssh/ssh-slcl-c.pcap");
         _filePaths.add(Registry.getPCAPFILEPATH() +"ssh/ssh-slcl-s.pcap");
         _filePaths.add(Registry.getPCAPFILEPATH() +"ssh/ssh-slcw-c-cmd.pcap");
         _filePaths.add(Registry.getPCAPFILEPATH() +"ssh/ssh-slcw-s-cmd.pcap");
@@ -43,9 +41,9 @@ class OrchestrateCommandTest {
         _filePaths.add(Registry.getPCAPFILEPATH() +"ssh/ssh-swcw-c-cmd.pcap");
         _filePaths.add(Registry.getPCAPFILEPATH() +"ssh/ssh-swcw-s-cmd.pcap");
         _filePaths.add(Registry.getPCAPFILEPATH() +"ssh/ssh-swcw-c-putty.pcap");
-        _filePaths.add(Registry.getPCAPFILEPATH() +"ssh/ssh-swcw-s-putty.pcap");
+        _filePaths.add(Registry.getPCAPFILEPATH() +"ssh/ssh-swcw-s-putty.pcap");*/
 
-        _filePaths.add(Registry.getPCAPFILEPATH() +"ftp/ftp-slcl-c-cmd.pcap");
+        /*_filePaths.add(Registry.getPCAPFILEPATH() +"ftp/ftp-slcl-c-cmd.pcap");
         _filePaths.add(Registry.getPCAPFILEPATH() +"ftp/ftp-slcl-s-cmd.pcap");
         _filePaths.add(Registry.getPCAPFILEPATH() +"ftp/ftp-slcl-c-fz.pcap");
         _filePaths.add(Registry.getPCAPFILEPATH() +"ftp/ftp-slcl-s-fz.pcap");
@@ -95,6 +93,7 @@ class OrchestrateCommandTest {
         _filePaths.add(Registry.getPCAPFILEPATH() +"ping/ping-swcl-s.pcap");
         _filePaths.add(Registry.getPCAPFILEPATH() +"ping/ping-swcw-c.pcap");
         _filePaths.add(Registry.getPCAPFILEPATH() +"ping/ping-swcw-s.pcap");
+        _filePaths.add(Registry.getPCAPFILEPATH() +"ping/ping-slcl-c-onlyC.pcap");*/
 
         ReadMultiplePcaps commandReadMultiple = (ReadMultiplePcaps) CommandFactory.instantiateReadMultiplePcaps(_filePaths);
         commandReadMultiple.execute();
@@ -104,12 +103,7 @@ class OrchestrateCommandTest {
     }
 
     @Test
-    void GetProtocolClassTest(){
-
-    }
-
-    @Test
-    void TelnetClasification(){
+    void TelnetClassification(){
 
         int count = 0;
         for (Connection connection: command.getConnections()) {
@@ -118,6 +112,58 @@ class OrchestrateCommandTest {
             }
         }
         assertEquals(10,count);
+
+    }
+
+    @Test
+    void IcmpClassification(){
+
+        int count = 0;
+        for (Connection connection: command.getConnections()) {
+            if (connection.getClass() == IcmpConnection.class) {
+                count++;
+            }
+        }
+        assertEquals(8+4,count);
+
+    }
+
+    @Test
+    void SshClassification(){
+
+        int count = 0;
+        for (Connection connection: command.getConnections()) {
+            if (connection.getClass() == SshConnection.class) {
+                count++;
+            }
+        }
+        assertEquals(12,count);
+
+    }
+
+    @Test
+    void FtpClassification(){
+
+        int count = 0;
+        for (Connection connection: command.getConnections()) {
+            if (connection.getClass() == FtpConnection.class) {
+                count++;
+            }
+        }
+        assertEquals(16,count);
+
+    }
+
+    @Test
+    void HttpClassification(){
+
+        int count = 0;
+        for (Connection connection: command.getConnections()) {
+            if (connection.getClass() == HttpConnection.class) {
+                count++;
+            }
+        }
+        assertEquals(24,count);
 
     }
 

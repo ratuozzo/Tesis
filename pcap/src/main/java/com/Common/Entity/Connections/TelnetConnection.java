@@ -11,16 +11,13 @@ public class TelnetConnection extends TcpConnection {
 
     public TelnetConnection(Socket src, Socket dst) {
         super(src, dst);
-        buildTree();
-
     }
 
     public TelnetConnection(Packet packet) {
         super(packet);
-        buildTree();
     }
 
-    private void buildTree() {
+    protected void instantiateTree() {
         ConnectionTree aux = null;
         for (TreeNode<Integer> node : _modelTree) {
             if (node.isLeaf()) {
@@ -47,13 +44,18 @@ public class TelnetConnection extends TcpConnection {
 
     @Override
     public boolean shouldAdd(Packet packet) {
-        ArrayList<Socket> sockets = new ArrayList<>(Socket.packetToSockets(packet));
 
-        if (((_src.equals(sockets.get(0)) && _dst.equals(sockets.get(1))) ||
-                (_src.equals(sockets.get(1)) && _dst.equals(sockets.get(0)))) &&
-                    !_closedStatus.equals(CLOSED_CLEANLY)) {
-            return true;
+        try {
+
+            ArrayList<Socket> sockets = new ArrayList<>(Socket.packetToSockets(packet));
+            sockets.add(_src);
+            sockets.add(_dst);
+
+            return Socket.dualEquals(sockets) && checkSeqAck(packet);
+
+        } catch (NullPointerException ex) {
+            //ex.printStackTrace();
+            return false;
         }
-        return false;
     }
 }

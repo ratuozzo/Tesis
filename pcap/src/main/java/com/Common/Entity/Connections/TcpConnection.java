@@ -24,6 +24,7 @@ public abstract class TcpConnection extends Connection{
         _modelTree = new ConnectionTree();
         _src = src;
         _dst = dst;
+        instantiateTree();
     }
 
     public TcpConnection(Packet packet) {
@@ -36,8 +37,10 @@ public abstract class TcpConnection extends Connection{
         _modelTree = new ConnectionTree();
         _src = sockets.get(0);
         _dst = sockets.get(1);
+        instantiateTree();
     }
 
+    protected abstract void instantiateTree();
 
     public void addPacket(Packet inputPacket) {
 
@@ -116,9 +119,6 @@ public abstract class TcpConnection extends Connection{
         return _modelTree.checkEndingNode(_packetTree);
     }
 
-
-
-
     public int packetToInteger(TcpPacket input) {
 
         int output = 0;
@@ -145,6 +145,33 @@ public abstract class TcpConnection extends Connection{
         }
 
         return output;
+    }
+
+    protected boolean checkSeqAck(Packet packet) {
+
+        long inputSeq = packet.get(TcpPacket.class).getHeader().getSequenceNumber();
+        long inputAck = packet.get(TcpPacket.class).getHeader().getAcknowledgmentNumber();
+        long lastSeq = _packets.get(_packets.size() - 1).get(TcpPacket.class).getHeader().getSequenceNumber();
+        long lastAck = _packets.get(_packets.size() - 1).get(TcpPacket.class).getHeader().getAcknowledgmentNumber();
+        long lastLength;
+
+        if (_packets.get(_packets.size() - 1).get(TcpPacket.class).getPayload() == null) {
+            lastLength = 0;
+        } else {
+            lastLength = _packets.get(_packets.size() - 1).get(TcpPacket.class).getPayload().length();
+        }
+
+
+        if (lastAck == 0) {
+            return true;
+        }
+
+        if (inputAck == 0) {
+            return (inputSeq == lastSeq || inputSeq == lastAck);
+        }
+
+        return ((lastSeq == inputSeq && lastAck == inputAck) ||(lastSeq == inputAck && lastAck == inputSeq) || (lastSeq + lastLength == inputAck) || (lastAck + lastLength == inputSeq));
+
     }
 
     public ConnectionTree getModelTree() {
