@@ -4,6 +4,7 @@ import com.Common.Entity.ConnectionTree;
 import com.Common.Entity.Socket;
 import com.scalified.tree.TreeNode;
 import org.pcap4j.packet.Packet;
+import org.pcap4j.packet.TcpPacket;
 
 import java.util.ArrayList;
 
@@ -42,20 +43,4 @@ public class TelnetConnection extends TcpConnection {
         aux.add(baseTree);
     }
 
-    @Override
-    public boolean shouldAdd(Packet packet) {
-
-        try {
-
-            ArrayList<Socket> sockets = new ArrayList<>(Socket.packetToSockets(packet));
-            sockets.add(_src);
-            sockets.add(_dst);
-
-            return Socket.dualEquals(sockets) && checkSeqAck(packet);
-
-        } catch (NullPointerException ex) {
-            //ex.printStackTrace();
-            return false;
-        }
-    }
 }

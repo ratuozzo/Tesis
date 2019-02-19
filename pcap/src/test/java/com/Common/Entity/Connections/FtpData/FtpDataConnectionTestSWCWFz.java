@@ -1,6 +1,7 @@
-package com.Common.Entity.Connections.Ftp;
+package com.Common.Entity.Connections.FtpData;
 
-import com.Common.Entity.Connections.FtpConnection;
+import com.Common.Entity.Connections.FtpCommandConnection;
+import com.Common.Entity.Connections.FtpDataConnection;
 import com.Common.Entity.Connections.TelnetConnection;
 import com.Common.Entity.Socket;
 import com.Common.Registry;
@@ -14,9 +15,9 @@ import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class FtpConnectionTestSWCLFz {
+class FtpDataConnectionTestSWCWFz {
 
-    FtpConnection fc;
+    FtpDataConnection fc;
 
     String _filePath;
 
@@ -25,17 +26,17 @@ class FtpConnectionTestSWCLFz {
 
     @BeforeEach
     void setUp() {
-        _filePath = Registry.getPCAPFILEPATH() +"ftp/ftp-swcl-c-fz.pcap";
+        _filePath = Registry.getPCAPFILEPATH() +"ftp/ftp-swcw-c-fz.pcap";
         readCommandClient = (ReadPcap) CommandFactory.instantiateReadPcap(_filePath);
         readCommandClient.execute();
 
-        _filePath = Registry.getPCAPFILEPATH() +"ftp/ftp-swcl-s-fz.pcap";
+        _filePath = Registry.getPCAPFILEPATH() +"ftp/ftp-swcw-s-fz.pcap";
         readCommandServer = (ReadPcap) CommandFactory.instantiateReadPcap(_filePath);
         readCommandServer.execute();
 
         ArrayList<Socket> sockets = Socket.packetToSockets(readCommandClient.getOutput().get(0));
 
-        fc = new FtpConnection(sockets.get(0), sockets.get(1));
+        fc = new FtpDataConnection(sockets.get(0), sockets.get(1));
 
     }
 
@@ -73,7 +74,7 @@ class FtpConnectionTestSWCLFz {
 
     @Test
     void closingClient() {
-        for (int i = 0; i < readCommandClient.getOutput().size() - 1; i++) {
+        for (int i = 0; i < readCommandClient.getOutput().size() - 5; i++) {
             fc.addPacket(readCommandClient.getOutput().get(i).get(TcpPacket.class));
         }
         assertEquals(TelnetConnection.CLOSING, fc.getClosedStatus());
@@ -122,7 +123,7 @@ class FtpConnectionTestSWCLFz {
 
     @Test
     void closingServer() {
-        for (int i = 0; i < readCommandServer.getOutput().size() - 1; i++) {
+        for (int i = 0; i < readCommandServer.getOutput().size() - 5; i++) {
             fc.addPacket(readCommandServer.getOutput().get(i).get(TcpPacket.class));
         }
         assertEquals(TelnetConnection.CLOSING, fc.getClosedStatus());

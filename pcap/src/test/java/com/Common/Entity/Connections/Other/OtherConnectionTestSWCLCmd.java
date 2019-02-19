@@ -1,6 +1,7 @@
-package com.Common.Entity.Connections.Ftp;
+package com.Common.Entity.Connections.Other;
 
-import com.Common.Entity.Connections.FtpConnection;
+import com.Common.Entity.Connections.FtpDataConnection;
+import com.Common.Entity.Connections.OtherConnection;
 import com.Common.Entity.Connections.TelnetConnection;
 import com.Common.Entity.Socket;
 import com.Common.Registry;
@@ -14,9 +15,9 @@ import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class FtpConnectionTestSLCLCmd {
+class OtherConnectionTestSWCLCmd {
 
-    FtpConnection fc;
+    OtherConnection fc;
 
     String _filePath;
 
@@ -25,17 +26,17 @@ class FtpConnectionTestSLCLCmd {
 
     @BeforeEach
     void setUp() {
-        _filePath = Registry.getPCAPFILEPATH() +"ftp/ftp-slcl-c-cmd.pcap";
+        _filePath = Registry.getPCAPFILEPATH() +"ftp/ftp-swcl-c-cmd.pcap";
         readCommandClient = (ReadPcap) CommandFactory.instantiateReadPcap(_filePath);
         readCommandClient.execute();
 
-        _filePath = Registry.getPCAPFILEPATH() +"ftp/ftp-slcl-s-cmd.pcap";
+        _filePath = Registry.getPCAPFILEPATH() +"ftp/ftp-swcl-s-cmd.pcap";
         readCommandServer = (ReadPcap) CommandFactory.instantiateReadPcap(_filePath);
         readCommandServer.execute();
 
         ArrayList<Socket> sockets = Socket.packetToSockets(readCommandClient.getOutput().get(0));
 
-        fc = new FtpConnection(sockets.get(0), sockets.get(1));
+        fc = new OtherConnection(sockets.get(0), sockets.get(1));
 
     }
 

@@ -38,22 +38,4 @@ public class SshConnection extends TcpConnection {
         aux.addEndingRstAck().addEndingRstAck();
     }
 
-
-    @Override
-    public boolean shouldAdd(Packet packet) {
-
-        try {
-            ArrayList<Socket> sockets = new ArrayList<>(Socket.packetToSockets(packet));
-
-            if (((_src.equals(sockets.get(0)) && _dst.equals(sockets.get(1))) ||
-                    (_src.equals(sockets.get(1)) && _dst.equals(sockets.get(0)))) &&
-                    !_closedStatus.equals(CLOSED_CLEANLY)) {
-                return true;
-            }
-        } catch (NullPointerException ex) {
-            //ex.printStackTrace();
-            return false;
-        }
-        return false;
-    }
 }

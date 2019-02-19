@@ -5,14 +5,14 @@ import com.Common.Entity.Socket;
 import com.scalified.tree.TreeNode;
 import org.pcap4j.packet.Packet;
 
-public class FtpConnection extends TcpConnection {
+public class FtpDataConnection extends TcpConnection {
 
 
-    public FtpConnection(Socket src, Socket dst) {
+    public FtpDataConnection(Socket src, Socket dst) {
         super(src, dst);
     }
 
-    public FtpConnection(Packet packet) {
+    public FtpDataConnection(Packet packet) {
         super(packet);
     }
 
@@ -34,8 +34,5 @@ public class FtpConnection extends TcpConnection {
         aux.add(l1);
     }
 
-    @Override
-    public boolean shouldAdd(Packet packet) {
-        return false;
-    }
+
 }

@@ -70,16 +70,28 @@ public class OrchestrateCommand extends Command {
                 _connections.add(sc);
                 break;
 
-            case "Ftp":
-                FtpConnection fc = new FtpConnection(packet);
+            case "File Transfer [Control]":
+                FtpCommandConnection fc = new FtpCommandConnection(packet);
                 fc.addPacket(packet);
                 _connections.add(fc);
                 break;
 
-            case "Http":
+            case "File Transfer [Default Data]":
+                FtpDataConnection trc = new FtpDataConnection(packet);
+                trc.addPacket(packet);
+                _connections.add(trc);
+                break;
+
+            case "HTTP":
                 HttpConnection hc = new HttpConnection(packet);
                 hc.addPacket(packet);
                 _connections.add(hc);
+                break;
+
+            default:
+                OtherConnection oc = new OtherConnection(packet);
+                oc.addPacket(packet);
+                _connections.add(oc);
                 break;
         }
     }

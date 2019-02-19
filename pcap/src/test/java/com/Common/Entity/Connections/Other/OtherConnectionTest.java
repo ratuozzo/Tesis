@@ -1,7 +1,7 @@
-package com.Common.Entity.Connections.Ftp;
+package com.Common.Entity.Connections.Other;
 
-import com.Common.Entity.Connections.FtpConnection;
-import com.Common.Entity.Connections.SshConnection;
+import com.Common.Entity.Connections.FtpDataConnection;
+import com.Common.Entity.Connections.OtherConnection;
 import com.Common.Entity.Socket;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -9,9 +9,9 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-class FtpConnectionTest {
+class OtherConnectionTest {
 
-    FtpConnection fc;
+    OtherConnection fc;
 
 
     @BeforeEach
@@ -19,7 +19,7 @@ class FtpConnectionTest {
 
         Socket src = new Socket("192.168.1.112",5554);
         Socket dst = new Socket("192.168.1.112",5554);
-        fc = new FtpConnection(src, dst);
+        fc = new OtherConnection(src, dst);
 
     }
 

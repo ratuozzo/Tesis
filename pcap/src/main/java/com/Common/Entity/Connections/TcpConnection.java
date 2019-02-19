@@ -147,42 +147,25 @@ public abstract class TcpConnection extends Connection{
         return output;
     }
 
-    protected boolean checkSeqAck(Packet packet) {
+    @Override
+    public boolean shouldAdd(Packet packet) {
 
-        long inputSeq = packet.get(TcpPacket.class).getHeader().getSequenceNumber();
-        long inputAck = packet.get(TcpPacket.class).getHeader().getAcknowledgmentNumber();
-        long lastSeq = _packets.get(_packets.size() - 1).get(TcpPacket.class).getHeader().getSequenceNumber();
-        long lastAck = _packets.get(_packets.size() - 1).get(TcpPacket.class).getHeader().getAcknowledgmentNumber();
-        long lastLength;
+        try {
 
-        if (_packets.get(_packets.size() - 1).get(TcpPacket.class).getPayload() == null) {
-            lastLength = 0;
-        } else {
-            lastLength = _packets.get(_packets.size() - 1).get(TcpPacket.class).getPayload().length();
+            ArrayList<Socket> sockets = new ArrayList<>(Socket.packetToSockets(packet));
+            sockets.add(_src);
+            sockets.add(_dst);
+
+            return Socket.dualEquals(sockets);
+
+        } catch (NullPointerException ex) {
+            //ex.printStackTrace();
+            return false;
         }
-
-
-        if (lastAck == 0) {
-            return true;
-        }
-
-        if (inputAck == 0) {
-            return (inputSeq == lastSeq || inputSeq == lastAck);
-        }
-
-        return ((lastSeq == inputSeq && lastAck == inputAck) ||(lastSeq == inputAck && lastAck == inputSeq) || (lastSeq + lastLength == inputAck) || (lastAck + lastLength == inputSeq));
-
     }
 
     public ConnectionTree getModelTree() {
         return _modelTree;
     }
 
-    public Socket getSrc() {
-        return _src;
-    }
-
-    public Socket getDst() {
-        return _dst;
-    }
 }
