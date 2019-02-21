@@ -39,8 +39,8 @@ class ReadMultiplePcapsTest {
 
         command.execute();
 
-        assertNotNull(command.getOutput());
-        assertEquals(180+358+8+8+10+13+48+135+667+198, command.getOutput().size());
+        assertNotNull(command.getPackets());
+        assertEquals(180+358+8+8+10+13+48+135+667+198, command.getPackets().size());
 
 
     }

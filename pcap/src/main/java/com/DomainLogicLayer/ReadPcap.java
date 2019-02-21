@@ -1,9 +1,6 @@
 package com.DomainLogicLayer;
 
-import org.pcap4j.core.NotOpenException;
-import org.pcap4j.core.PcapHandle;
-import org.pcap4j.core.PcapNativeException;
-import org.pcap4j.core.Pcaps;
+import org.pcap4j.core.*;
 import org.pcap4j.packet.IcmpV4CommonPacket;
 import org.pcap4j.packet.Packet;
 import org.pcap4j.packet.TcpPacket;

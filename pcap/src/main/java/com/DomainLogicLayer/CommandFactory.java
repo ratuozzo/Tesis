@@ -1,6 +1,7 @@
 package com.DomainLogicLayer;
 
-import com.Common.Entity.Connections.TcpConnection;
+import com.Common.Entity.Connections.Connection;
+import com.DomainLogicLayer.Filters.FilterByProtocol;
 import org.pcap4j.packet.Packet;
 
 import java.util.ArrayList;
@@ -16,6 +17,10 @@ public class CommandFactory {
     }
 
     public static Object instantiateOrchestrateCommand(ArrayList<Packet> packets) {
-        return new OrchestrateCommand(packets);
+        return new Orchestrate(packets);
+    }
+
+    public static Object instantiateFilterByProtocol(ArrayList<Connection> connections) {
+        return new FilterByProtocol(connections);
     }
 }

@@ -9,10 +9,10 @@ import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class OrchestrateCommandTestClient {
+class OrchestrateTestClient {
 
 
-    static OrchestrateCommand command;
+    static Orchestrate command;
 
     @BeforeAll
     static void setUp() {
@@ -64,7 +64,7 @@ class OrchestrateCommandTestClient {
         ReadMultiplePcaps commandReadMultiple = (ReadMultiplePcaps) CommandFactory.instantiateReadMultiplePcaps(_filePaths);
         commandReadMultiple.execute();
 
-        command = (OrchestrateCommand) CommandFactory.instantiateOrchestrateCommand(commandReadMultiple.getOutput());
+        command = (Orchestrate) CommandFactory.instantiateOrchestrateCommand(commandReadMultiple.getPackets());
         command.execute();
     }
 

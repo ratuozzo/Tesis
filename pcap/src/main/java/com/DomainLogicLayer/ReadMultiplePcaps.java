@@ -28,7 +28,7 @@ public class ReadMultiplePcaps extends Command {
 
     }
 
-    public ArrayList<Packet> getOutput() {
+    public ArrayList<Packet> getPackets() {
         return _output;
     }
 }

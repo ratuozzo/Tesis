@@ -6,13 +6,13 @@ import org.pcap4j.packet.*;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-public class OrchestrateCommand extends Command {
+public class Orchestrate extends Command {
 
     private ArrayList<Connection>[] _connections;
     private ArrayList<Packet> _packets;
     private ArrayList<Packet> _dumpedPackets;
 
-    public OrchestrateCommand(ArrayList<Packet> packets) {
+    public Orchestrate(ArrayList<Packet> packets) {
         _packets = packets;
         _dumpedPackets = new ArrayList<>();
         _connections = new ArrayList [1000];

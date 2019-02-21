@@ -2,11 +2,8 @@ package com.Common.Entity;
 
 import com.scalified.tree.TreeNode;
 import com.scalified.tree.multinode.ArrayMultiTreeNode;
-import comOld.Common.Connection;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
 
 public class ConnectionTree extends ArrayMultiTreeNode<Integer> {
 
