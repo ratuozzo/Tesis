@@ -4,7 +4,9 @@ import org.pcap4j.core.NotOpenException;
 import org.pcap4j.core.PcapHandle;
 import org.pcap4j.core.PcapNativeException;
 import org.pcap4j.core.Pcaps;
+import org.pcap4j.packet.IcmpV4CommonPacket;
 import org.pcap4j.packet.Packet;
+import org.pcap4j.packet.TcpPacket;
 
 import java.util.ArrayList;
 
@@ -24,19 +26,27 @@ public class ReadPcap extends Command{
 
         try {
             handle = Pcaps.openOffline(_filePath);
-
-            Packet aux;
-            while ((aux = handle.getNextPacket()) != null) {
-                _output.add(aux);
-            }
-
         } catch (PcapNativeException e) {
             e.printStackTrace();
-        } catch (NotOpenException e) {
-            e.printStackTrace();
-        } finally {
-            handle.close();
         }
+
+        while (true) {
+            try {
+
+                Packet aux = handle.getNextPacket();
+                if (aux == null) {
+                    break;
+                }
+                if (aux.get(TcpPacket.class) != null || aux.get(IcmpV4CommonPacket.class) != null) {
+                    _output.add(aux);
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        handle.close();
 
     }
 

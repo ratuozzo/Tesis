@@ -25,3 +25,5 @@ hs_err_pid*
 pcap/\.idea/
 
 \.idea/
+
+pcap/pcaps/Generated/bigFlows\.pcap

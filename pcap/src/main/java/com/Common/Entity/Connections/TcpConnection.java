@@ -61,9 +61,9 @@ public abstract class TcpConnection extends Connection{
 
     protected void buildTree(int packetInt) {
 
-        if (_packetTree==null && packetInt == _modelTree.data()) {
+        if (_packetTree == null) {
 
-            _packetTree = new ConnectionTree(ConnectionTree.SYN);
+            _packetTree = new ConnectionTree(packetInt);
 
 
         }else {

@@ -35,6 +35,7 @@ public class IcmpConnection extends Connection{
 
     public void addPacket(Packet packet) {
         _packets.add(packet);
+
         if (packet.get(IcmpV4CommonPacket.class).getHeader().getType().name().equals("Echo")) {
             _closedStatus = NOT_CLOSED;
         } else {

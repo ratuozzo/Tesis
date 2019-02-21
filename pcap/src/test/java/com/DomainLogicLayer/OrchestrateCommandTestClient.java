@@ -20,7 +20,6 @@ class OrchestrateCommandTestClient {
         _filePaths = new ArrayList<>();
 
 
-
         _filePaths.add(Registry.getPCAPFILEPATH() +"telnet/telnet-slcl-c.pcap");
         _filePaths.add(Registry.getPCAPFILEPATH() +"telnet/telnet-slcw-c-cmd.pcap");
         _filePaths.add(Registry.getPCAPFILEPATH() +"telnet/telnet-slcw-c-putty.pcap");
@@ -73,7 +72,7 @@ class OrchestrateCommandTestClient {
     void TelnetClassification(){
 
         int count = 0;
-        for (Connection connection: command.getConnections()) {
+        for (Connection connection: command.getClosedConnections()) {
             if (connection.getClass() == TelnetConnection.class) {
                 count++;
             }
@@ -86,12 +85,12 @@ class OrchestrateCommandTestClient {
     void IcmpClassification(){
 
         int count = 0;
-        for (Connection connection: command.getConnections()) {
+        for (Connection connection: command.getClosedConnections()) {
             if (connection.getClass() == IcmpConnection.class) {
                 count++;
             }
         }
-        assertEquals(4+4,count);
+        assertEquals(4,count);
 
     }
 
@@ -99,7 +98,7 @@ class OrchestrateCommandTestClient {
     void SshClassification(){
 
         int count = 0;
-        for (Connection connection: command.getConnections()) {
+        for (Connection connection: command.getClosedConnections()) {
             if (connection.getClass() == SshConnection.class) {
                 count++;
             }
@@ -112,12 +111,12 @@ class OrchestrateCommandTestClient {
     void FtpCommandClassification(){
 
         int count = 0;
-        for (Connection connection: command.getConnections()) {
+        for (Connection connection: command.getClosedConnections()) {
             if (connection.getClass() == FtpCommandConnection.class) {
                 count++;
             }
         }
-        assertEquals(12,count);
+        assertEquals(10,count);
 
     }
 
@@ -125,7 +124,7 @@ class OrchestrateCommandTestClient {
     void FtpDataClassification(){
 
         int count = 0;
-        for (Connection connection: command.getConnections()) {
+        for (Connection connection: command.getClosedConnections()) {
             if (connection.getClass() == FtpDataConnection.class) {
                 count++;
             }
@@ -138,7 +137,7 @@ class OrchestrateCommandTestClient {
     void HttpClassification(){
 
         int count = 0;
-        for (Connection connection: command.getConnections()) {
+        for (Connection connection: command.getClosedConnections()) {
             if (connection.getClass() == HttpConnection.class) {
                 count++;
             }
@@ -151,7 +150,7 @@ class OrchestrateCommandTestClient {
     void OtherClassification(){
 
         int count = 0;
-        for (Connection connection: command.getConnections()) {
+        for (Connection connection: command.getClosedConnections()) {
             if (connection.getClass() == OtherConnection.class) {
                 count++;
             }

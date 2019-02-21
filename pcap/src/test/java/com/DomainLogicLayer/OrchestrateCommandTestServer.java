@@ -72,7 +72,7 @@ class OrchestrateCommandTestServer {
     void TelnetClassification(){
 
         int count = 0;
-        for (Connection connection: command.getConnections()) {
+        for (Connection connection: command.getClosedConnections()) {
             if (connection.getClass() == TelnetConnection.class) {
                 count++;
             }
@@ -85,12 +85,12 @@ class OrchestrateCommandTestServer {
     void IcmpClassification(){
 
         int count = 0;
-        for (Connection connection: command.getConnections()) {
+        for (Connection connection: command.getClosedConnections()) {
             if (connection.getClass() == IcmpConnection.class) {
                 count++;
             }
         }
-        assertEquals(4+4,count);
+        assertEquals(4,count);
 
     }
 
@@ -98,7 +98,7 @@ class OrchestrateCommandTestServer {
     void SshClassification(){
 
         int count = 0;
-        for (Connection connection: command.getConnections()) {
+        for (Connection connection: command.getClosedConnections()) {
             if (connection.getClass() == SshConnection.class) {
                 count++;
             }
@@ -111,12 +111,12 @@ class OrchestrateCommandTestServer {
     void FtpCommandClassification(){
 
         int count = 0;
-        for (Connection connection: command.getConnections()) {
+        for (Connection connection: command.getClosedConnections()) {
             if (connection.getClass() == FtpCommandConnection.class) {
                 count++;
             }
         }
-        assertEquals(12,count);
+        assertEquals(10,count);
 
     }
 
@@ -124,7 +124,7 @@ class OrchestrateCommandTestServer {
     void FtpDataClassification(){
 
         int count = 0;
-        for (Connection connection: command.getConnections()) {
+        for (Connection connection: command.getClosedConnections()) {
             if (connection.getClass() == FtpDataConnection.class) {
                 count++;
             }
@@ -137,7 +137,7 @@ class OrchestrateCommandTestServer {
     void HttpClassification(){
 
         int count = 0;
-        for (Connection connection: command.getConnections()) {
+        for (Connection connection: command.getClosedConnections()) {
             if (connection.getClass() == HttpConnection.class) {
                 count++;
             }
@@ -150,7 +150,7 @@ class OrchestrateCommandTestServer {
     void OtherClassification(){
 
         int count = 0;
-        for (Connection connection: command.getConnections()) {
+        for (Connection connection: command.getClosedConnections()) {
             if (connection.getClass() == OtherConnection.class) {
                 count++;
             }
