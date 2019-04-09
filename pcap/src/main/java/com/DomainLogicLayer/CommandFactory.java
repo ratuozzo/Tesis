@@ -23,4 +23,9 @@ public class CommandFactory {
     public static Object instantiateFilterByProtocol(ArrayList<Connection> connections) {
         return new FilterByProtocol(connections);
     }
+
+    public static Object instantiateWriteToCSV(ArrayList<Connection> connections) {
+        return new WriteToCSV(connections);
+    }
+
 }

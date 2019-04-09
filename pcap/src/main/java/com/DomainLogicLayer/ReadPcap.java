@@ -38,6 +38,8 @@ public class ReadPcap extends Command{
                     _output.add(aux);
                 }
 
+            } catch (IllegalArgumentException e) {
+
             } catch (Exception e) {
                 e.printStackTrace();
             }

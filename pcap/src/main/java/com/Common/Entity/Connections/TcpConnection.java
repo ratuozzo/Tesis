@@ -46,7 +46,7 @@ public abstract class TcpConnection extends Connection{
 
 
         TcpPacket input = inputPacket.get(TcpPacket.class);
-        _packets.add(input);
+        _packets.add(inputPacket);
 
         if (((_dst.getPort() == input.getHeader().getSrcPort().valueAsInt()) &&
             (_src.getPort() == input.getHeader().getDstPort().valueAsInt())) ||
@@ -162,6 +162,14 @@ public abstract class TcpConnection extends Connection{
             //ex.printStackTrace();
             return false;
         }
+    }
+
+    public Socket getSrc() {
+        return _src;
+    }
+
+    public Socket getDst() {
+        return _dst;
     }
 
     public ConnectionTree getModelTree() {

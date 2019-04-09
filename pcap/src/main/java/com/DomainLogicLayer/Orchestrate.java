@@ -1,6 +1,7 @@
 package com.DomainLogicLayer;
 
 import com.Common.Entity.Connections.*;
+import org.pcap4j.core.PcapPacket;
 import org.pcap4j.packet.*;
 
 import java.util.ArrayList;
@@ -27,6 +28,7 @@ public class Orchestrate extends Command {
         Iterator iterator = _packets.iterator();
         while ( iterator.hasNext() ) {
             Packet packet = (Packet) iterator.next();
+
             if (distributePacket(packet)) {
                 instantiateConnection(packet);
             }

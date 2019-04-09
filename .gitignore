@@ -27,3 +27,7 @@ pcap/\.idea/
 \.idea/
 
 pcap/pcaps/Generated/bigFlows\.pcap
+
+pcap/csv/bigflows\.csv
+
+pcap/csv/telnet\.csv

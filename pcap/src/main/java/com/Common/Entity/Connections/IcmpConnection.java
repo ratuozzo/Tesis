@@ -78,4 +78,13 @@ public class IcmpConnection extends Connection{
         }
         return false;
     }
+
+    public String getSrc() {
+        return _src;
+    }
+
+    public String getDst() {
+        return _dst;
+    }
+
 }
