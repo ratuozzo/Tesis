@@ -1,7 +1,6 @@
-package com.DomainLogicLayer;
+package com.DomainLogicLayer.Commands;
 
 import com.Common.Entity.Connections.*;
-import org.pcap4j.core.PcapPacket;
 import org.pcap4j.packet.*;
 
 import java.util.ArrayList;

@@ -1,4 +1,4 @@
-package com.DomainLogicLayer;
+package com.DomainLogicLayer.Commands;
 
 import com.Common.Entity.Connections.*;
 import com.Common.Registry;
@@ -64,7 +64,7 @@ class OrchestrateTestClient {
         ReadMultiplePcaps commandReadMultiple = (ReadMultiplePcaps) CommandFactory.instantiateReadMultiplePcaps(_filePaths);
         commandReadMultiple.execute();
 
-        command = (Orchestrate) CommandFactory.instantiateOrchestrateCommand(commandReadMultiple.getPackets());
+        command = (Orchestrate) CommandFactory.instantiateOrchestrate(commandReadMultiple.getPackets());
         command.execute();
     }
 

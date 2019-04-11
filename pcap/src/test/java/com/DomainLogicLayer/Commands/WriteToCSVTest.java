@@ -1,23 +1,25 @@
-package com.DomainLogicLayer.Filters;
+package com.DomainLogicLayer.Commands;
 
-import com.Common.Entity.Connections.*;
 import com.Common.Registry;
-import com.DomainLogicLayer.CommandFactory;
-import com.DomainLogicLayer.Orchestrate;
-import com.DomainLogicLayer.ReadMultiplePcaps;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-class FilterByProtocolTest {
+class WriteToCSVTest {
 
-    static FilterByProtocol command;
+    static WriteToCSV writeToCSVCommandTrain;
+    static WriteToCSV writeToCSVCommandBigFlows;
+    static WriteToCSV writeToCSVCommandDownloaded;
 
     @BeforeAll
     static void setUp() {
+
+        ArrayList<String> _filePathBigFlow = new ArrayList<>();
+        _filePathBigFlow.add(Registry.getPCAPFILEPATH() +"bigFlows.pcap");
+
         ArrayList<String> _filePaths;
         _filePaths = new ArrayList<>();
 
@@ -62,109 +64,55 @@ class FilterByProtocolTest {
         _filePaths.add(Registry.getPCAPFILEPATH() +"ping/ping-swcw-c.pcap");
         _filePaths.add(Registry.getPCAPFILEPATH() +"ping/ping-slcl-c-onlyC.pcap");
 
+        ArrayList<String> _filePathsDownloaded;
+        _filePathsDownloaded = new ArrayList<>();
+        String _downloadedPath = "/home/andres/Documents/Developing/Projects/Universidad/Tesis/Tesis/pcap/pcaps/Downloaded/";
+
+        _filePathsDownloaded.add(_downloadedPath+"arp.pcap");
+        _filePathsDownloaded.add(_downloadedPath +"clean.pcap");
+        _filePathsDownloaded.add(_downloadedPath+"dhcp.pcap");
+        _filePathsDownloaded.add(_downloadedPath +"dns.pcap");
+        _filePathsDownloaded.add(_downloadedPath +"dump.pcap");
+        _filePathsDownloaded.add(_downloadedPath +"ftp.pcap");
+        _filePathsDownloaded.add(_downloadedPath+"http.pcap");
+        _filePathsDownloaded.add(_downloadedPath+"icmp.pcap");
+        _filePathsDownloaded.add(_downloadedPath+"remix.pcap");
+        _filePathsDownloaded.add(_downloadedPath+"telnet.pcap");
+        _filePathsDownloaded.add(_downloadedPath+"test.pcap");
+
+        ReadMultiplePcaps commandReadMultipleBigFlow = (ReadMultiplePcaps) CommandFactory.instantiateReadMultiplePcaps(_filePathBigFlow);
+        //commandReadMultiple.execute();
+
+        Orchestrate commandOrchestrateBigFlow = (Orchestrate) CommandFactory.instantiateOrchestrate(commandReadMultipleBigFlow.getPackets());
+        //commandOrchestrate.execute();
+
+        writeToCSVCommandBigFlows = (WriteToCSV) CommandFactory.instantiateWriteToCSV(commandOrchestrateBigFlow.getClosedConnections(),"evaluate.csv");
+        //writeToCSVCommandBigFlows.execute();
 
         ReadMultiplePcaps commandReadMultiple = (ReadMultiplePcaps) CommandFactory.instantiateReadMultiplePcaps(_filePaths);
         commandReadMultiple.execute();
 
+        Orchestrate commandOrchestrate = (Orchestrate) CommandFactory.instantiateOrchestrate(commandReadMultiple.getPackets());
+        commandOrchestrate.execute();
 
+        writeToCSVCommandTrain = (WriteToCSV) CommandFactory.instantiateWriteToCSV(commandOrchestrate.getClosedConnections(),"train.csv");
+        writeToCSVCommandTrain.execute();
 
-        Orchestrate orchCommand = (Orchestrate) CommandFactory.instantiateOrchestrateCommand(commandReadMultiple.getPackets());
-        orchCommand.execute();
+        ReadMultiplePcaps commandReadMultipleDownloaded = (ReadMultiplePcaps) CommandFactory.instantiateReadMultiplePcaps(_filePathsDownloaded);
+        commandReadMultipleDownloaded.execute();
 
-        command = (FilterByProtocol) CommandFactory.instantiateFilterByProtocol(orchCommand.getClosedConnections());
-        command.execute();
+        Orchestrate commandOrchestrateDownloaded = (Orchestrate) CommandFactory.instantiateOrchestrate(commandReadMultipleDownloaded.getPackets());
+        commandOrchestrateDownloaded.execute();
+
+        writeToCSVCommandDownloaded = (WriteToCSV) CommandFactory.instantiateWriteToCSV(commandOrchestrateDownloaded.getClosedConnections(),"evaluateDownloaded.csv");
+        writeToCSVCommandDownloaded.execute();
     }
 
     @Test
-    void TelnetClassification(){
+    void csvWriter(){
 
-        int connectionSize = 0;
-        for (ArrayList<Connection> protocolConnections: command.getOutput()) {
-                if (protocolConnections.get(0).getClass() == TelnetConnection.class) {
-                    connectionSize = protocolConnections.size();
-                }
-        }
-        assertEquals(5,connectionSize);
+        assertTrue(true);
 
     }
-
-    @Test
-    void SshClassification(){
-
-        int connectionSize = 0;
-        for (ArrayList<Connection> protocolConnections: command.getOutput()) {
-            if (protocolConnections.get(0).getClass() == SshConnection.class) {
-                connectionSize = protocolConnections.size();
-            }
-        }
-        assertEquals(6,connectionSize);
-
-    }
-
-    @Test
-    void FtpCommandClassification(){
-
-        int connectionSize = 0;
-        for (ArrayList<Connection> protocolConnections: command.getOutput()) {
-            if (protocolConnections.get(0).getClass() == FtpCommandConnection.class) {
-                connectionSize = protocolConnections.size();
-            }
-        }
-        assertEquals(10,connectionSize);
-
-    }
-
-    @Test
-    void FtpDataClassification(){
-
-        int connectionSize = 0;
-        for (ArrayList<Connection> protocolConnections: command.getOutput()) {
-            if (protocolConnections.get(0).getClass() == FtpDataConnection.class) {
-                connectionSize = protocolConnections.size();
-            }
-        }
-        assertEquals(10,connectionSize);
-
-    }
-
-    @Test
-    void HttpClassification(){
-
-        int connectionSize = 0;
-        for (ArrayList<Connection> protocolConnections: command.getOutput()) {
-            if (protocolConnections.get(0).getClass() == HttpConnection.class) {
-                connectionSize = protocolConnections.size();
-            }
-        }
-        assertEquals(15,connectionSize);
-
-    }
-
-    @Test
-    void IcmpClassification(){
-
-        int connectionSize = 0;
-        for (ArrayList<Connection> protocolConnections: command.getOutput()) {
-            if (protocolConnections.get(0).getClass() == IcmpConnection.class) {
-                connectionSize = protocolConnections.size();
-            }
-        }
-        assertEquals(4,connectionSize);
-
-    }
-
-    @Test
-    void OtherClassification(){
-
-        int connectionSize = 0;
-        for (ArrayList<Connection> protocolConnections: command.getOutput()) {
-            if (protocolConnections.get(0).getClass() == OtherConnection.class) {
-                connectionSize = protocolConnections.size();
-            }
-        }
-        assertEquals(14,connectionSize);
-
-    }
-
 
 }

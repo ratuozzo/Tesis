@@ -1,12 +1,11 @@
 package com.Common.Entity.Connections.FtpData;
 
-import com.Common.Entity.Connections.FtpCommandConnection;
 import com.Common.Entity.Connections.FtpDataConnection;
 import com.Common.Entity.Connections.TelnetConnection;
 import com.Common.Entity.Socket;
 import com.Common.Registry;
-import com.DomainLogicLayer.CommandFactory;
-import com.DomainLogicLayer.ReadPcap;
+import com.DomainLogicLayer.Commands.CommandFactory;
+import com.DomainLogicLayer.Commands.ReadPcap;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.pcap4j.packet.TcpPacket;

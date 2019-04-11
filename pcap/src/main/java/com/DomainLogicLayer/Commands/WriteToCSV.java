@@ -1,8 +1,6 @@
-package com.DomainLogicLayer;
+package com.DomainLogicLayer.Commands;
 
 import com.Common.Entity.Connections.Connection;
-import com.Common.Entity.Connections.IcmpConnection;
-import com.Common.Entity.Connections.TcpConnection;
 import com.Common.Registry;
 import com.opencsv.CSVWriter;
 import org.pcap4j.packet.IcmpV4CommonPacket;
@@ -10,21 +8,20 @@ import org.pcap4j.packet.IpV4Packet;
 import org.pcap4j.packet.Packet;
 import org.pcap4j.packet.TcpPacket;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.List;
 
 public class WriteToCSV extends Command {
 
     private ArrayList<Connection> _connections;
+    private String _name;
 
-    public WriteToCSV(ArrayList<Connection> connections) {
+    public WriteToCSV(ArrayList<Connection> connections, String name) {
         _connections = connections;
+        _name = name;
     }
 
     @Override
@@ -34,7 +31,7 @@ public class WriteToCSV extends Command {
 
         try {
 
-            Writer writer = Files.newBufferedWriter(Paths.get(Registry.getCSVFILEPATH() + "bigflows.csv"));
+            Writer writer = Files.newBufferedWriter(Paths.get(Registry.getCSVFILEPATH() + _name));
 
             csvWriter = new CSVWriter(writer,
                     CSVWriter.DEFAULT_SEPARATOR,

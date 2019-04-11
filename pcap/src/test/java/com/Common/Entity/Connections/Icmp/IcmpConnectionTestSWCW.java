@@ -2,8 +2,8 @@ package com.Common.Entity.Connections.Icmp;
 
 import com.Common.Entity.Connections.IcmpConnection;
 import com.Common.Registry;
-import com.DomainLogicLayer.CommandFactory;
-import com.DomainLogicLayer.ReadPcap;
+import com.DomainLogicLayer.Commands.CommandFactory;
+import com.DomainLogicLayer.Commands.ReadPcap;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.pcap4j.packet.IcmpV4CommonPacket;
