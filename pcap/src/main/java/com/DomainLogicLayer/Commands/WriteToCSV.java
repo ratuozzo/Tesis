@@ -13,6 +13,8 @@ import java.io.Writer;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Random;
 
 public class WriteToCSV extends Command {
 
@@ -28,6 +30,8 @@ public class WriteToCSV extends Command {
     public void execute() {
 
         CSVWriter csvWriter = null;
+
+        doShuffle();
 
         try {
 
@@ -57,6 +61,13 @@ public class WriteToCSV extends Command {
 
     }
 
+    private void doShuffle() {
+        Collections.shuffle(_connections, new Random());
+        for (Connection connection:_connections) {
+            Collections.shuffle(connection.getPackets(), new Random());
+        }
+    }
+
     private String[] extractConnectionData(Packet input) {
 
         IpV4Packet ipV4Packet = input.get(IpV4Packet.class);
@@ -72,6 +83,11 @@ public class WriteToCSV extends Command {
             aux.addAll(formatIp(ipV4Packet.getHeader().getDstAddr().toString()));
             aux.add(Integer.toString(input.get(TcpPacket.class).getHeader().getSrcPort().valueAsInt()));
             aux.add(Integer.toString(input.get(TcpPacket.class).getHeader().getDstPort().valueAsInt()));
+            aux.add(Byte.toString(ipV4Packet.getHeader().getTtl()));
+            aux.add(Byte.toString(ipV4Packet.getHeader().getTos().value()));
+            aux.add(Integer.toString(ipV4Packet.getPayload().length()));
+            aux.add(Integer.toString(input.get(TcpPacket.class).getHeader().getWindowAsInt()));
+
 
             String[] output = new String[aux.size()];
             aux.toArray(output);
@@ -90,6 +106,10 @@ public class WriteToCSV extends Command {
             ArrayList<String> aux = formatIp(ipV4Packet.getHeader().getSrcAddr().toString());
             aux.addAll(formatIp(ipV4Packet.getHeader().getDstAddr().toString()));
             aux.add("0");
+            aux.add("0");
+            aux.add(Byte.toString(ipV4Packet.getHeader().getTtl()));
+            aux.add(Byte.toString(ipV4Packet.getHeader().getTos().value()));
+            aux.add(Integer.toString(ipV4Packet.getPayload().length()));
             aux.add("0");
 
             String[] output = new String[aux.size()];

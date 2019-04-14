@@ -3,6 +3,8 @@ package com.DomainLogicLayer.Commands;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import java.util.Scanner;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class EvaluateDataTest {
@@ -21,7 +23,8 @@ class EvaluateDataTest {
 
     @Test
     void TrainNeuralNet(){
-
+        Scanner sc = new Scanner(System.in);
+        sc.next();
         assertNotNull(_evaluateDataCommand);
 
     }

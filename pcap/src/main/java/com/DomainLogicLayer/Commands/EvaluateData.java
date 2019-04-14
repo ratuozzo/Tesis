@@ -31,7 +31,7 @@ public class EvaluateData extends Command {
 
         try {
             _trainIter = new AnomalyDataSetIterator(new ClassPathResource("NetData/train.csv").getFile().getPath(), 1);
-            _testIter = new AnomalyDataSetIterator(new ClassPathResource("NetData/train.csv").getFile().getPath(), 1);
+            _testIter = new AnomalyDataSetIterator(new ClassPathResource("NetData/evaluate.csv").getFile().getPath(), 1);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -46,7 +46,9 @@ public class EvaluateData extends Command {
             DataSet testdata = _testIter.next();
             INDArray testFeatures = testdata.getFeatures();
             INDArray result = _vae.activate(testFeatures, false, LayerWorkspaceMgr.noWorkspaces());
-            belongsTo(result.getDouble(0,0),result.getDouble(0,1));
+            boolean belongs = belongsTo(result.getDouble(0,0),result.getDouble(0,1));
+            //System.out.println("Data: " + testFeatures + " X: " + result.getDouble(0, 0) + " Y: " + result.getDouble(0, 1) + " Belongs: " + belongs);
+
         }
         System.out.println("Belongs: "+belongCount + " Not Belongs: " + notBelongCount);
 
@@ -64,7 +66,6 @@ public class EvaluateData extends Command {
 
             double x = result.getDouble(0,0);
             double y = result.getDouble(0,1);
-            System.out.println("X: "+ x + " Y: " + y);
             if (x <= minX) {
                 minX = x;
             }

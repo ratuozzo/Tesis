@@ -64,30 +64,14 @@ class WriteToCSVTest {
         _filePaths.add(Registry.getPCAPFILEPATH() +"ping/ping-swcw-c.pcap");
         _filePaths.add(Registry.getPCAPFILEPATH() +"ping/ping-slcl-c-onlyC.pcap");
 
-        ArrayList<String> _filePathsDownloaded;
-        _filePathsDownloaded = new ArrayList<>();
-        String _downloadedPath = "/home/andres/Documents/Developing/Projects/Universidad/Tesis/Tesis/pcap/pcaps/Downloaded/";
-
-        _filePathsDownloaded.add(_downloadedPath+"arp.pcap");
-        _filePathsDownloaded.add(_downloadedPath +"clean.pcap");
-        _filePathsDownloaded.add(_downloadedPath+"dhcp.pcap");
-        _filePathsDownloaded.add(_downloadedPath +"dns.pcap");
-        _filePathsDownloaded.add(_downloadedPath +"dump.pcap");
-        _filePathsDownloaded.add(_downloadedPath +"ftp.pcap");
-        _filePathsDownloaded.add(_downloadedPath+"http.pcap");
-        _filePathsDownloaded.add(_downloadedPath+"icmp.pcap");
-        _filePathsDownloaded.add(_downloadedPath+"remix.pcap");
-        _filePathsDownloaded.add(_downloadedPath+"telnet.pcap");
-        _filePathsDownloaded.add(_downloadedPath+"test.pcap");
-
         ReadMultiplePcaps commandReadMultipleBigFlow = (ReadMultiplePcaps) CommandFactory.instantiateReadMultiplePcaps(_filePathBigFlow);
-        //commandReadMultiple.execute();
+        commandReadMultipleBigFlow.execute();
 
         Orchestrate commandOrchestrateBigFlow = (Orchestrate) CommandFactory.instantiateOrchestrate(commandReadMultipleBigFlow.getPackets());
-        //commandOrchestrate.execute();
+        commandOrchestrateBigFlow.execute();
 
         writeToCSVCommandBigFlows = (WriteToCSV) CommandFactory.instantiateWriteToCSV(commandOrchestrateBigFlow.getClosedConnections(),"evaluate.csv");
-        //writeToCSVCommandBigFlows.execute();
+        writeToCSVCommandBigFlows.execute();
 
         ReadMultiplePcaps commandReadMultiple = (ReadMultiplePcaps) CommandFactory.instantiateReadMultiplePcaps(_filePaths);
         commandReadMultiple.execute();
@@ -97,15 +81,6 @@ class WriteToCSVTest {
 
         writeToCSVCommandTrain = (WriteToCSV) CommandFactory.instantiateWriteToCSV(commandOrchestrate.getClosedConnections(),"train.csv");
         writeToCSVCommandTrain.execute();
-
-        ReadMultiplePcaps commandReadMultipleDownloaded = (ReadMultiplePcaps) CommandFactory.instantiateReadMultiplePcaps(_filePathsDownloaded);
-        commandReadMultipleDownloaded.execute();
-
-        Orchestrate commandOrchestrateDownloaded = (Orchestrate) CommandFactory.instantiateOrchestrate(commandReadMultipleDownloaded.getPackets());
-        commandOrchestrateDownloaded.execute();
-
-        writeToCSVCommandDownloaded = (WriteToCSV) CommandFactory.instantiateWriteToCSV(commandOrchestrateDownloaded.getClosedConnections(),"evaluateDownloaded.csv");
-        writeToCSVCommandDownloaded.execute();
     }
 
     @Test
