@@ -29,7 +29,7 @@ public class AnomalyDataSetReader {
         this.skipNumLines = 0;
         this.skipNumColumns = 0;
         this.longestTimeSequence = 0;
-        this.shortest = 14;
+        this.shortest = 10;
         this.filePath = file.toPath();
         this.currentLines =  new LinkedList<String>();
         doInitialize();

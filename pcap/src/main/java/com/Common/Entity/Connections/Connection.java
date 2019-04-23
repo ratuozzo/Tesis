@@ -1,8 +1,6 @@
 package com.Common.Entity.Connections;
 
-import com.Common.Entity.Socket;
 import org.pcap4j.packet.Packet;
-import org.pcap4j.packet.TcpPacket;
 
 import java.util.ArrayList;
 
@@ -39,4 +37,6 @@ public abstract class Connection {
     public abstract boolean shouldAdd(Packet packet);
 
     public abstract void addPacket(Packet packet);
+
+    public abstract ArrayList<Packet> getUniquePackets();
 }

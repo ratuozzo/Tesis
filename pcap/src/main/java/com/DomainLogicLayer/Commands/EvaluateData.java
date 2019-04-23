@@ -22,8 +22,8 @@ public class EvaluateData extends Command {
     private double minY = 1000000;
     private double maxY = -1000000;
 
-    private int belongCount = 0;
-    private int notBelongCount = 0;
+    private float belongCount = 0;
+    private float notBelongCount = 0;
 
     public EvaluateData(org.deeplearning4j.nn.layers.variational.VariationalAutoencoder vae ) {
 
@@ -31,7 +31,7 @@ public class EvaluateData extends Command {
 
         try {
             _trainIter = new AnomalyDataSetIterator(new ClassPathResource("NetData/train.csv").getFile().getPath(), 1);
-            _testIter = new AnomalyDataSetIterator(new ClassPathResource("NetData/evaluate.csv").getFile().getPath(), 1);
+            _testIter = new AnomalyDataSetIterator(new ClassPathResource("NetData/train.csv").getFile().getPath(), 1);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -41,7 +41,6 @@ public class EvaluateData extends Command {
     public void execute() {
 
         calculateArea();
-
         while (_testIter.hasNext()) {
             DataSet testdata = _testIter.next();
             INDArray testFeatures = testdata.getFeatures();
@@ -50,7 +49,7 @@ public class EvaluateData extends Command {
             //System.out.println("Data: " + testFeatures + " X: " + result.getDouble(0, 0) + " Y: " + result.getDouble(0, 1) + " Belongs: " + belongs);
 
         }
-        System.out.println("Belongs: "+belongCount + " Not Belongs: " + notBelongCount);
+        System.out.println("Belongs: "+belongCount + " Not Belongs: " + notBelongCount + " %:" + (belongCount/(notBelongCount+belongCount))*100);
 
 
 

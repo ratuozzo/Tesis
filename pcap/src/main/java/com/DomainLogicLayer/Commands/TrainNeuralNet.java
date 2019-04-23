@@ -28,9 +28,9 @@ import java.io.IOException;
 
 public class TrainNeuralNet extends Command {
 
-    private int _nEpochs = 1000; //100
-    private int _batchSize = 500; //86
-    private double _learningRate = 0.0005; //0.0006
+    private int _batchSize = 129; //Todo el dataset
+    private int _nEpochs = _batchSize * 100;
+    private double _learningRate = 0.0004;
     private MultiLayerNetwork _net;
     private org.deeplearning4j.nn.layers.variational.VariationalAutoencoder _vae;
     private DataSetIterator _trainIter;
@@ -59,19 +59,19 @@ public class TrainNeuralNet extends Command {
         MultiLayerConfiguration conf = new NeuralNetConfiguration.Builder()
                 .trainingWorkspaceMode(WorkspaceMode.ENABLED)
                 .inferenceWorkspaceMode(WorkspaceMode.ENABLED)
-                .updater(new Nesterovs(0.0007,0.00001))
+                .updater(new Nesterovs(_learningRate,0.00001))
                 .optimizationAlgo(OptimizationAlgorithm.STOCHASTIC_GRADIENT_DESCENT)
                 .weightInit(WeightInit.XAVIER)
                 .l2(1e-4)
                 .list()
                 .layer(0, new VariationalAutoencoder.Builder()
                         .activation(Activation.LEAKYRELU)
-                        .encoderLayerSizes(13, 10,8,4)
-                        .decoderLayerSizes(4, 8,10,13)
+                        .encoderLayerSizes(8,6,4,2)
+                        .decoderLayerSizes(2,4,6,8)
                         .pzxActivationFunction(Activation.IDENTITY)
                         .reconstructionDistribution(new BernoulliReconstructionDistribution(Activation.SIGMOID.getActivationFunction()))
                         .lossFunction(LossFunctions.LossFunction.MSE)
-                        .nIn(14)
+                        .nIn(10)
                         .nOut(2)
                         .build())
                 .pretrain(true).backprop(false).build();

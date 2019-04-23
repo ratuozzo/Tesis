@@ -1,5 +1,6 @@
 package com.Common.Entity.Connections;
 
+import com.Common.Entity.Socket;
 import org.pcap4j.packet.*;
 
 import java.util.ArrayList;
@@ -85,6 +86,29 @@ public class IcmpConnection extends Connection{
 
     public String getDst() {
         return _dst;
+    }
+
+    public ArrayList<Packet> getUniquePackets() {
+        ArrayList<Packet> output = new ArrayList<>();
+        output.add(getPackets().get(0));
+
+        for (int i = 1; i < getPackets().size() ; i++) {
+            boolean contains = false;
+            IpV4Packet ipv4Packets = getPackets().get(i).get(IpV4Packet.class);
+            for (int j = 0; j < output.size() ; j++) {
+                IpV4Packet ipv4Output = output.get(j).get(IpV4Packet.class);
+
+                if (ipv4Packets.getHeader().getSrcAddr().toString().equals(ipv4Output.getHeader().getSrcAddr().toString()) &&
+                        ipv4Packets.getHeader().getDstAddr().toString().equals(ipv4Output.getHeader().getDstAddr().toString())) {
+                        contains = true;
+                        break;
+                }
+            }
+            if (!contains) {
+                output.add(getPackets().get(i));
+            }
+        }
+        return output;
     }
 
 }

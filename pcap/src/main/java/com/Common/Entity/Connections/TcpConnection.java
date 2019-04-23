@@ -176,4 +176,23 @@ public abstract class TcpConnection extends Connection{
         return _modelTree;
     }
 
+    public ArrayList<Packet> getUniquePackets() {
+        ArrayList<Packet> output = new ArrayList<>();
+        output.add(getPackets().get(0));
+
+        for (int i = 1; i < getPackets().size() ; i++) {
+            boolean contains = false;
+            for (int j = 0; j < output.size() ; j++) {
+                if (Socket.packetToSockets(getPackets().get(i)).get(0).equals(Socket.packetToSockets(output.get(j)).get(0))) {
+                    contains = true;
+                    break;
+                }
+            }
+            if (!contains) {
+                output.add(getPackets().get(i));
+            }
+        }
+        return output;
+    }
+
 }

@@ -1,6 +1,7 @@
 package com.DomainLogicLayer.Commands;
 
 import com.Common.Entity.Connections.Connection;
+import com.Common.Entity.Socket;
 import com.Common.Registry;
 import com.opencsv.CSVWriter;
 import org.pcap4j.packet.IcmpV4CommonPacket;
@@ -44,8 +45,9 @@ public class WriteToCSV extends Command {
                     CSVWriter.DEFAULT_LINE_END);
 
             for (Connection connection: _connections) {
-                for (int i = 0; i < connection.getPackets().size(); i++) {
-                    csvWriter.writeNext(extractConnectionData(connection.getPackets().get(i)));
+                for (int i = 0; i < connection.getUniquePackets().size(); i++) {
+                    System.out.println(i + " out of " + _connections.size() + " Connections.");
+                    csvWriter.writeNext(extractConnectionData(connection.getUniquePackets().get(i)));
                 }
             }
 
@@ -83,10 +85,10 @@ public class WriteToCSV extends Command {
             aux.addAll(formatIp(ipV4Packet.getHeader().getDstAddr().toString()));
             aux.add(Integer.toString(input.get(TcpPacket.class).getHeader().getSrcPort().valueAsInt()));
             aux.add(Integer.toString(input.get(TcpPacket.class).getHeader().getDstPort().valueAsInt()));
-            aux.add(Byte.toString(ipV4Packet.getHeader().getTtl()));
+            /*aux.add(Byte.toString(ipV4Packet.getHeader().getTtl()));
             aux.add(Byte.toString(ipV4Packet.getHeader().getTos().value()));
             aux.add(Integer.toString(ipV4Packet.getPayload().length()));
-            aux.add(Integer.toString(input.get(TcpPacket.class).getHeader().getWindowAsInt()));
+            aux.add(Integer.toString(input.get(TcpPacket.class).getHeader().getWindowAsInt()));*/
 
 
             String[] output = new String[aux.size()];
@@ -107,10 +109,10 @@ public class WriteToCSV extends Command {
             aux.addAll(formatIp(ipV4Packet.getHeader().getDstAddr().toString()));
             aux.add("0");
             aux.add("0");
-            aux.add(Byte.toString(ipV4Packet.getHeader().getTtl()));
+            /*aux.add(Byte.toString(ipV4Packet.getHeader().getTtl()));
             aux.add(Byte.toString(ipV4Packet.getHeader().getTos().value()));
             aux.add(Integer.toString(ipV4Packet.getPayload().length()));
-            aux.add("0");
+            aux.add("0");*/
 
             String[] output = new String[aux.size()];
             aux.toArray(output);
