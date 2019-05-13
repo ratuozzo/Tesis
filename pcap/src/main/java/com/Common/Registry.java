@@ -6,7 +6,8 @@ public class Registry {
     public final static String PCAPFILEPATHL = "/home/andres/Documents/Developing/Projects/Universidad/Tesis/Tesis/pcap/pcaps/Generated/";
     public final static String CSVFILEPATHW = "D:\\Repos\\Tesis\\Tesis\\pcap\\src\\main\\resources\\NetData\\";
     public final static String CSVFILEPATHL = "/home/andres/Documents/Developing/Projects/Universidad/Tesis/Tesis/pcap/src/main/resources/NetData/";
-
+    public final static String RESOURCEFILEPATHW = "D:\\Repos\\Tesis\\Tesis\\pcap\\src\\main\\resources\\";
+    public final static String RESOURCEFILEPATHL = "/home/andres/Documents/Developing/Projects/Universidad/Tesis/Tesis/pcap/src/main/resources/";
 
     public final static int PACKAGECOUNT = 1000000;
 
@@ -23,5 +24,12 @@ public class Registry {
             return CSVFILEPATHW;
         }
         return CSVFILEPATHL;
+    }
+
+    public static String getRESOURCEFILEPATH() {
+        if (System.getProperty("os.name").startsWith("Windows")) {
+            return RESOURCEFILEPATHW;
+        }
+        return RESOURCEFILEPATHL;
     }
 }

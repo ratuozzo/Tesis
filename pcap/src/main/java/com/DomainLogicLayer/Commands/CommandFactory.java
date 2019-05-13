@@ -23,12 +23,12 @@ public class CommandFactory {
         return new WriteToCSV(connections,name);
     }
 
-    public static Object instantiateTrainNeuralNet() {
-        return new TrainNeuralNet();
+    public static Object instantiateTrainNeuralNet(String filePath, Double learningRate, int batchSize, int epochs) {
+        return new TrainNeuralNet(filePath,learningRate,batchSize,epochs);
     }
 
-    public static Object instantiateEvaluateData(org.deeplearning4j.nn.layers.variational.VariationalAutoencoder vae) {
-        return new EvaluateData(vae);
+    public static Object instantiateEvaluateData(String filePath, Double threshold) {
+        return new EvaluateData(filePath, threshold);
     }
 
 }
