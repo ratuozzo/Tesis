@@ -4,10 +4,7 @@ import com.Common.Entity.Connections.Connection;
 import com.Common.Entity.Socket;
 import com.Common.Registry;
 import com.opencsv.CSVWriter;
-import org.pcap4j.packet.IcmpV4CommonPacket;
-import org.pcap4j.packet.IpV4Packet;
-import org.pcap4j.packet.Packet;
-import org.pcap4j.packet.TcpPacket;
+import org.pcap4j.packet.*;
 
 import java.io.IOException;
 import java.io.Writer;
@@ -46,7 +43,6 @@ public class WriteToCSV extends Command {
 
             for (Connection connection: _connections) {
                 for (int i = 0; i < connection.getUniquePackets().size(); i++) {
-                    System.out.println(i + " out of " + _connections.size() + " Connections.");
                     csvWriter.writeNext(extractConnectionData(connection.getUniquePackets().get(i)));
                 }
             }
@@ -80,7 +76,6 @@ public class WriteToCSV extends Command {
             //System.out.println(connection.getPackets().get(0).get(Packet.class).get(PcapPacket.class).getTimestamp().toEpochMilli());
 
             //String hour = Integer.toString(((PcapPacket) connection.getPackets().get(0)).getTimestamp();
-
             ArrayList<String> aux = formatIp(ipV4Packet.getHeader().getSrcAddr().toString());
             aux.addAll(formatIp(ipV4Packet.getHeader().getDstAddr().toString()));
             aux.add(Integer.toString(input.get(TcpPacket.class).getHeader().getSrcPort().valueAsInt()));
@@ -90,10 +85,7 @@ public class WriteToCSV extends Command {
             aux.add(Integer.toString(ipV4Packet.getPayload().length()));
             aux.add(Integer.toString(input.get(TcpPacket.class).getHeader().getWindowAsInt()));*/
 
-
-            String[] output = new String[aux.size()];
-            aux.toArray(output);
-            return output;
+            return scaleData(aux);
 
             //Hora Inicio
             //Hora Fin
@@ -114,15 +106,22 @@ public class WriteToCSV extends Command {
             aux.add(Integer.toString(ipV4Packet.getPayload().length()));
             aux.add("0");*/
 
-            String[] output = new String[aux.size()];
-            aux.toArray(output);
-            return output;
+            return scaleData(aux);
             //Hora Inicio
             //Hora Fin
             //Duracion
             //Tiempo entre paquetes (promedio)
             //Tamano de paquetes (promedio)
         }
+    }
+
+    private String[] scaleData(ArrayList<String> aux) {
+        String[] output = new String[10];
+        for (int i = 0; i < aux.size(); i++) {
+            float number = Float.parseFloat(aux.get(i)) / 1000;
+            output[i] = String.valueOf(number);
+        }
+        return output;
     }
 
     private ArrayList<String> formatIp(String ip) {
@@ -134,4 +133,5 @@ public class WriteToCSV extends Command {
         }
         return output;
     }
+
 }

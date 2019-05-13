@@ -31,3 +31,9 @@ pcap/pcaps/Generated/bigFlows\.pcap
 pcap/csv/bigflows\.csv
 
 pcap/csv/telnet\.csv
+
+pcap/src/main/resources/NetData/evaluate\.csv
+
+pcap/src/main/resources/NetData/train\.csv
+
+pcap/target/

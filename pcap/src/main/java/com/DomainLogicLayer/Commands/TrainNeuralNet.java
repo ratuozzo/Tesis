@@ -28,9 +28,9 @@ import java.io.IOException;
 
 public class TrainNeuralNet extends Command {
 
-    private int _batchSize = 129; //Todo el dataset
-    private int _nEpochs = _batchSize * 100;
-    private double _learningRate = 0.0004;
+    private int _batchSize = 12605; //Todo el dataset
+    private int _nEpochs = 30000;
+    private double _learningRate = 0.00023;
     private MultiLayerNetwork _net;
     private org.deeplearning4j.nn.layers.variational.VariationalAutoencoder _vae;
     private DataSetIterator _trainIter;
@@ -39,7 +39,7 @@ public class TrainNeuralNet extends Command {
     public TrainNeuralNet() {
 
         try {
-            _trainIter = new AnomalyDataSetIterator(new ClassPathResource("NetData/train.csv").getFile().getPath(), _batchSize);
+            _trainIter = new AnomalyDataSetIterator(new ClassPathResource("NetData/evaluate.csv").getFile().getPath(), _batchSize);
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -66,8 +66,8 @@ public class TrainNeuralNet extends Command {
                 .list()
                 .layer(0, new VariationalAutoencoder.Builder()
                         .activation(Activation.LEAKYRELU)
-                        .encoderLayerSizes(8,6,4,2)
-                        .decoderLayerSizes(2,4,6,8)
+                        .encoderLayerSizes(6,2)
+                        .decoderLayerSizes(2,6)
                         .pzxActivationFunction(Activation.IDENTITY)
                         .reconstructionDistribution(new BernoulliReconstructionDistribution(Activation.SIGMOID.getActivationFunction()))
                         .lossFunction(LossFunctions.LossFunction.MSE)

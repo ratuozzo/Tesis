@@ -30,7 +30,7 @@ public class EvaluateData extends Command {
         _vae = vae;
 
         try {
-            _trainIter = new AnomalyDataSetIterator(new ClassPathResource("NetData/train.csv").getFile().getPath(), 1);
+            _trainIter = new AnomalyDataSetIterator(new ClassPathResource("NetData/evaluate.csv").getFile().getPath(), 1);
             _testIter = new AnomalyDataSetIterator(new ClassPathResource("NetData/train.csv").getFile().getPath(), 1);
         } catch (IOException e) {
             e.printStackTrace();
@@ -56,7 +56,6 @@ public class EvaluateData extends Command {
     }
 
     private void calculateArea() {
-
 
         while (_trainIter.hasNext()) {
             DataSet testdata = _trainIter.next();
@@ -84,6 +83,7 @@ public class EvaluateData extends Command {
     }
 
     private boolean belongsTo(double x, double y) {
+
         if ((minX < x && maxX > x) &&
                 (minY < y && maxY > y)) {
 

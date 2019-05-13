@@ -23,8 +23,8 @@ class EvaluateDataTest {
 
     @Test
     void TrainNeuralNet(){
-        Scanner sc = new Scanner(System.in);
-        sc.next();
+        //Scanner sc = new Scanner(System.in);
+        //sc.next();
         assertNotNull(_evaluateDataCommand);
 
     }
