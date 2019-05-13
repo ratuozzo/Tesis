@@ -13,8 +13,8 @@ class TrainNeuralNetTest {
     @BeforeAll
     static void setUp() {
         _trainNeuralNetCommand = (TrainNeuralNet) CommandFactory.instantiateTrainNeuralNet(
-                Registry.getRESOURCEFILEPATH()+"train.exe",
-                0.00023,
+                Registry.getRESOURCEFILEPATH()+"train.csv",
+                0.00035,
                 128,
                 6000
                 );
@@ -23,6 +23,7 @@ class TrainNeuralNetTest {
 
     @Test
     void TrainNeuralNet(){
+
 
         assertNotNull(_trainNeuralNetCommand);
 
