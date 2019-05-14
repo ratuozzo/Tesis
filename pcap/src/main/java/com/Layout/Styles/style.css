@@ -1,0 +1,15 @@
+.text-input
+{
+-fx-text-fill : #fff;
+}
+.radio-color
+{
+-fx-mark-highlight-color : #9643A9;
+-fx-mark-color : #CE201C;
+}
+.round-red {
+    -fx-background-color: linear-gradient(#ff5400, #be1d00);
+    -fx-background-radius: 30;
+    -fx-background-insets: 0;
+    -fx-text-fill: white;
+}

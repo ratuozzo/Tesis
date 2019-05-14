@@ -30,5 +30,8 @@ public class CommandFactory {
     public static Object instantiateEvaluateData(String filePath, Double threshold) {
         return new EvaluateData(filePath, threshold);
     }
+    public static Object instantiateCreateMasonryView(ArrayList<Connection> connections) {
+        return new CreateMasonryView(connections);
+    }
 
 }
