@@ -23,12 +23,8 @@ public class CommandFactory {
         return new WriteToCSV(connections,name);
     }
 
-    public static Object instantiateTrainNeuralNet(String filePath, Double learningRate, int batchSize, int epochs) {
-        return new TrainNeuralNet(filePath,learningRate,batchSize,epochs);
-    }
-
-    public static Object instantiateEvaluateData(String filePath, Double threshold) {
-        return new EvaluateData(filePath, threshold);
+    public static Object instantiateTrainAndEvaluateData(String filePathTrain, String filePathEvaluate, Double learningRate, int batchSize, int epochs) {
+        return new TrainAndEvaluateData(filePathTrain,filePathEvaluate,learningRate,batchSize,epochs);
     }
     public static Object instantiateCreateMasonryView(ArrayList<Connection> connections) {
         return new CreateMasonryView(connections);
