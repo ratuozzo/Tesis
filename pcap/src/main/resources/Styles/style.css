@@ -1,0 +1,61 @@
+.root {
+    -fx-base: white;
+    -fx-color: -fx-base;
+
+    -fx-font-family: "Montserrat";
+    -fx-accent: rgb(246, 246, 246);
+    -fx-default-button: -fx-accent;
+    -jfx-primary-color: -fx-accent;
+    -jfx-light-primary-color: -fx-accent;
+    -jfx-dark-primary-color: -fx-accent;
+    -fx-focus-color: rgb(222, 222, 222);
+    -jfx-secondary-color: -fx-focus-color;
+    -jfx-light-secondary-color: -fx-focus-color;
+    -jfx-dark-secondary-color: -fx-focus-color;
+}
+
+.custom-button {
+    -fx-background-color:
+            linear-gradient(#117736 0%, #138e40 25%, #138e40 75%, #117736 100%),
+            linear-gradient(#117736, #138e40),
+            linear-gradient(#117736 0%, #138e40 20%, #138e40 80%, #117736 100%);
+    -fx-background-radius: 40;
+    -fx-border-radius: 44;
+    -fx-text-fill: white;
+    -fx-font-family: "Open Sans";
+    -fx-font-size: 14;
+}
+
+.file-picker-pane {
+    -fx-background-color: #6f706f;
+}
+
+.file-picker-text {
+    -fx-background-color: white;
+}
+
+/*******************************************************************************
+ *                                                                             *
+ * JFX Tab Pane                                                                *
+ *                                                                             *
+ ******************************************************************************/
+
+.jfx-tab-pane .headers-region {
+    -fx-background-color: -fx-accent;
+}
+
+.jfx-tab-pane .tab-header-background {
+    -fx-background-color: -fx-accent;
+}
+
+.jfx-tab-pane .tab-selected-line {
+    -fx-stroke: -fx-accent;
+}
+
+.jfx-tab-pane .tab-header-area .jfx-rippler {
+    -jfx-rippler-fill: -fx-focus-color;
+}
+
+.tab-selected-line {
+    -fx-background-color: -fx-focus-color;
+}
