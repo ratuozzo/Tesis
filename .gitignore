@@ -38,4 +38,4 @@ pcap/src/main/resources/NetData/train\.csv
 
 pcap/target/
 
-pcap/src/main/resources/train\.exe
+pcap/src/main/resources/trainandevaluate\.exe
