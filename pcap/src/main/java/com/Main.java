@@ -1,5 +1,7 @@
 package com;
 
+import com.Layout.FilePickerController;
+import com.Layout.PacketEvaluationController;
 import javafx.application.Application;
 
 import javafx.fxml.FXMLLoader;
@@ -12,11 +14,22 @@ public class Main extends Application {
     @Override
     public void start(Stage stage) throws Exception {
 
-        Parent root = FXMLLoader.load(getClass().getResource("/Views/main.fxml"));
+        FXMLLoader filePickerLoader = new FXMLLoader(getClass().getResource("/Views/filePickerView.fxml"));
+        Parent filePicker = filePickerLoader.load();
+        Scene filePickerScene = new Scene(filePicker, 300, 275);
 
-        Scene scene = new Scene(root, 300, 275);
-        stage.setTitle("FXML Welcome");
-        stage.setScene(scene);
+        FXMLLoader packetEvaluationLoader = new FXMLLoader(getClass().getResource("/Views/packetEvaluationView.fxml"));
+        Parent packetEvaluation = packetEvaluationLoader.load();
+        Scene packetEvaluationScene = new Scene(packetEvaluation, 300, 275);
+
+        FilePickerController filePickerController = filePickerLoader.getController();
+        filePickerController.setNextScene(packetEvaluationScene);
+
+        PacketEvaluationController packetEvaluationController = packetEvaluationLoader.getController();
+        packetEvaluationController.setPreviousScene(filePickerScene);
+
+        stage.setTitle("Seleccionar Archivos");
+        stage.setScene(filePickerScene);
         stage.setMaximized(true);
         stage.show();
 

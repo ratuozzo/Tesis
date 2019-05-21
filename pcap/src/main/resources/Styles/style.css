@@ -14,20 +14,32 @@
     -jfx-dark-secondary-color: -fx-focus-color;
 }
 
-.custom-button {
+.custom-button-left-menu {
+    -fx-background-color:
+            linear-gradient(#117736 0%, #138e40 25%, #138e40 75%, #117736 100%),
+            linear-gradient(#117736, #138e40),
+            linear-gradient(#117736 0%, #138e40 20%, #138e40 80%, #117736 100%);
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
+    -fx-text-fill: white;
+    -fx-font-family: "Open Sans";
+    -fx-font-size: 14;
+}
+
+.custom-button-inside {
     -fx-background-color:
             linear-gradient(#117736 0%, #138e40 25%, #138e40 75%, #117736 100%),
             linear-gradient(#117736, #138e40),
             linear-gradient(#117736 0%, #138e40 20%, #138e40 80%, #117736 100%);
     -fx-background-radius: 40;
-    -fx-border-radius: 44;
+    -fx-border-radius: 40;
     -fx-text-fill: white;
     -fx-font-family: "Open Sans";
     -fx-font-size: 14;
 }
 
 .file-picker-pane {
-    -fx-background-color: #6f706f;
+    -fx-background-color: #fefffe;
 }
 
 .file-picker-text {

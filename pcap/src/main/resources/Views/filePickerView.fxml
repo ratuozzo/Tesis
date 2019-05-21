@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="430.0" prefWidth="700.0" stylesheets="@../Styles/style.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.Layout.FilePickerController">
+   <children>
+      <AnchorPane layoutX="198.0" prefHeight="430.0" prefWidth="502.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="188.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <Pane fx:id="paneGreen" prefHeight="430.0" prefWidth="512.0" style="-fx-background-color: green;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+            <Pane fx:id="paneRed" prefHeight="430.0" prefWidth="512.0" style="-fx-background-color: red;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+            <Pane fx:id="paneYellow" prefHeight="430.0" prefWidth="512.0" style="-fx-background-color: yellow;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+            <AnchorPane fx:id="paneFilePicker" prefHeight="430.0" prefWidth="512.0" styleClass="file-picker-pane" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <children>
+                  <Label layoutX="192.0" layoutY="31.0" prefHeight="48.0" prefWidth="128.0" styleClass="file-picker-title" text="Selección de archivos" />
+                  <GridPane fx:id="fileListPane" layoutX="14.0" layoutY="100.0" prefHeight="260.0" prefWidth="417.0" AnchorPane.bottomAnchor="70.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="198.0" AnchorPane.topAnchor="100.0">
+                    <columnConstraints>
+                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="300.0" minWidth="300.0" prefWidth="300.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints maxHeight="156.8000030517578" minHeight="10.0" prefHeight="33.79999389648438" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="156.8000030517578" minHeight="10.0" prefHeight="31.599987792968747" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="171.0000030517578" minHeight="10.0" prefHeight="28.80001220703126" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="156.8000030517578" minHeight="10.0" prefHeight="29.20001220703125" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="156.8000030517578" minHeight="0.0" prefHeight="26.5999755859375" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="179.19999084472653" minHeight="0.0" prefHeight="28.800003051757812" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="173.1999542236328" minHeight="0.0" prefHeight="29.800033569335938" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="217.20000915527345" minHeight="0.0" prefHeight="28.200021362304682" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="235.39998779296874" minHeight="0.0" prefHeight="29.80002136230462" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="188.0" minHeight="10.0" prefHeight="25.79997558593749" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="188.0" minHeight="10.0" prefHeight="38.599999999999966" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                  </GridPane>
+                  <VBox fx:id="filePickerVbox" layoutX="408.0" prefHeight="430.0" prefWidth="104.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="28.0" AnchorPane.topAnchor="0.0">
+                     <children>
+                        <JFXButton fx:id="filePickerButton" contentDisplay="CENTER" onAction="#handleButtonAction" prefHeight="25.0" prefWidth="104.0" styleClass="custom-button-inside" text="Seleccionar" textAlignment="CENTER" wrapText="true">
+                           <font>
+                              <Font name="Courier New" size="12.0" />
+                           </font>
+                        </JFXButton>
+                     </children>
+                  </VBox>
+                  <JFXButton fx:id="continueButton" layoutX="380.0" layoutY="378.0" onAction="#handleButtonAction" prefHeight="25.0" prefWidth="104.0" styleClass="custom-button-inside" text="Continuar" wrapText="true" AnchorPane.bottomAnchor="28.0" AnchorPane.rightAnchor="28.0">
+                     <font>
+                        <Font name="Courier New" size="12.0" />
+                     </font>
+                  </JFXButton>
+               </children>
+            </AnchorPane>
+         </children>
+      </AnchorPane>
+      <AnchorPane prefHeight="430.0" prefWidth="198.0" style="-fx-background-color: #000000;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <JFXButton fx:id="menuFilePicker" layoutX="3.0" layoutY="26.0" onAction="#handleButtonAction" prefHeight="48.0" prefWidth="191.0" styleClass="custom-button-left-menu" text="Seleccionar Archivos" wrapText="true">
+               <font>
+                  <Font name="Courier New" size="12.0" />
+               </font></JFXButton>
+            <JFXButton fx:id="buttonGreen" layoutX="3.0" layoutY="89.0" onAction="#handleButtonAction" prefHeight="48.0" prefWidth="191.0" styleClass="custom-button-left-menu" text="Evaluar Paquetes" />
+            <JFXButton fx:id="buttonRed" layoutX="3.0" layoutY="151.0" onAction="#handleButtonAction" prefHeight="48.0" prefWidth="191.0" styleClass="custom-button-left-menu" text="Rojo" />
+            <JFXButton fx:id="buttonYellow" layoutX="3.0" layoutY="215.0" onAction="#handleButtonAction" prefHeight="48.0" prefWidth="191.0" styleClass="custom-button-left-menu" text="Amarillo" />
+         </children>
+         <effect>
+            <DropShadow />
+         </effect>
+      </AnchorPane>
+   </children>
+</AnchorPane>
