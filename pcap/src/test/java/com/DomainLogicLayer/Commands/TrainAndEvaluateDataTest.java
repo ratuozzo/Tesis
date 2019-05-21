@@ -14,8 +14,8 @@ class TrainAndEvaluateDataTest {
     static void setUp() {
 
         _trainAndEvaluateDataCommand = (TrainAndEvaluateData) CommandFactory.instantiateTrainAndEvaluateData(
-                "train.csv",
-                "evaluate,csv",
+                Registry.getRESOURCEFILEPATH()+"train.csv",
+                Registry.getRESOURCEFILEPATH()+"train.csv",
                 0.00023,
                 128,
                 6000
