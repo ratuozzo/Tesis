@@ -49,19 +49,20 @@ public class TrainAndEvaluateData extends Command {
             InputStreamReader iStream = new  InputStreamReader(process.getInputStream());
             BufferedReader br = new BufferedReader(iStream);
 
-            Boolean found = false;
             String line;
             while ((line = br.readLine()) != null){
                 System.out.println(line);
                 if (line.startsWith("[")) {
                     line=line.replace("[","");
-                    line=line.replace("]","");
+                    line=line.split("]")[0];
                     line=line.replace(" ",",");
                     _output.add(line);
                 }
             }
             process.waitFor();
-            System.out.println(_output);
+            /*for (int i = 0; i < _output.size() ; i++) {
+                System.out.println(_output.get(i));
+            }*/
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         }
