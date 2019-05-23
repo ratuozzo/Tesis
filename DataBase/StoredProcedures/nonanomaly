@@ -1,0 +1,81 @@
+-- Begin Create
+
+DELIMITER $$
+DROP PROCEDURE IF EXISTS Createnonanomaly $$
+CREATE PROCEDURE Createnonanomaly(
+     IN IpSource varchar(45),
+     IN IpDestination varchar(45),
+     IN PortSource int,
+     IN PortDestination int
+) BEGIN
+
+INSERT INTO NONANOMALY (IpSource,IpDestination,PortSource,PortDestination)
+VALUES (IpSource,IpDestination,PortSource,PortDestination);
+
+END $$
+DELIMITER ;
+
+-- CALL Createnonanomaly('string''string'5353);
+-- End Create
+-- Begin Get all
+
+DELIMITER $$
+DROP PROCEDURE IF EXISTS GetAllnonanomaly$$
+CREATE PROCEDURE GetAllnonanomaly(
+) BEGIN
+
+SELECT * FROM NONANOMALY;
+END $$
+DELIMITER ;
+
+-- CALL GetAllnonanomaly();
+-- End Get All
+-- Begin Get
+
+DELIMITER $$
+DROP PROCEDURE IF EXISTS Getnonanomaly $$
+CREATE PROCEDURE Getnonanomaly(
+IN ID int
+) BEGIN
+
+SELECT * FROM NONANOMALY WHERE NONANOMALY.id = ID;
+END $$
+DELIMITER ;
+
+-- CALL Getnonanomaly(1);
+-- End Get
+-- Begin Update
+
+DELIMITER $$
+DROP PROCEDURE IF EXISTS Updatenonanomaly $$
+CREATE PROCEDURE Updatenonanomaly(
+     IN IpSource varchar(45),
+     IN IpDestination varchar(45),
+     IN PortSource int,
+     IN PortDestination int,
+     IN ID int
+) BEGIN
+
+UPDATE NONANOMALY SET IpSource = IpSource,IpDestination = IpDestination,PortSource = PortSource,PortDestination = PortDestination
+WHERE NONANOMALY.ID=ID;
+END $$
+DELIMITER ;
+
+-- CALL Updatenonanomaly(1,'string''string'5353);
+-- End Create
+
+
+-- Begin Delete
+
+DELIMITER $$
+DROP PROCEDURE IF EXISTS Deletenonanomaly $$
+CREATE PROCEDURE Deletenonanomaly(
+IN ID int
+) BEGIN
+
+DELETE FROM NONANOMALY WHERE NONANOMALY.id = ID;
+END $$
+DELIMITER ;
+
+-- CALL Deletenonanomaly(1);
+-- End Delete

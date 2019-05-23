@@ -11,8 +11,9 @@ public class Registry {
     public final static String RESOURCEFILEPATHW = _basePath +"\\Tesis\\Tesis\\pcap\\src\\main\\resources\\";
     public final static String RESOURCEFILEPATHL = "/home/andres/Documents/Developing/Projects/Universidad/Tesis/Tesis/pcap/src/main/resources/";
 
-    public final static int PACKAGECOUNT = 1000000;
-
+    public static String BD_USER = "bezikee";
+    public static String BD_PASSWORD = "11111111";
+    public static String BD_URL = "jdbc:mysql://localhost:3306/pas";
 
     public static String getPCAPFILEPATH() {
         if (System.getProperty("os.name").startsWith("Windows")) {
