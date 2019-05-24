@@ -1,0 +1,2 @@
+alert tcp !174.168.102.222 0 -> 198.167.175.111 0 (msg:" Anomalia Detectada!")
+alert tcp !198.167.175.111 80 -> 174.168.102.222 5432 (msg:" Anomalia Detectada!")

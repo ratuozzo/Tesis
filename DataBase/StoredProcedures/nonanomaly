@@ -1,8 +1,8 @@
 -- Begin Create
 
 DELIMITER $$
-DROP PROCEDURE IF EXISTS Createnonanomaly $$
-CREATE PROCEDURE Createnonanomaly(
+DROP PROCEDURE IF EXISTS CreateNonanomaly $$
+CREATE PROCEDURE CreateNonanomaly(
      IN IpSource varchar(45),
      IN IpDestination varchar(45),
      IN PortSource int,
@@ -15,26 +15,26 @@ VALUES (IpSource,IpDestination,PortSource,PortDestination);
 END $$
 DELIMITER ;
 
--- CALL Createnonanomaly('string''string'5353);
+-- CALL CreateNonanomaly('string''string'5353);
 -- End Create
 -- Begin Get all
 
 DELIMITER $$
-DROP PROCEDURE IF EXISTS GetAllnonanomaly$$
-CREATE PROCEDURE GetAllnonanomaly(
+DROP PROCEDURE IF EXISTS GetAllNonanomaly $$
+CREATE PROCEDURE GetAllNonanomaly(
 ) BEGIN
 
 SELECT * FROM NONANOMALY;
 END $$
 DELIMITER ;
 
--- CALL GetAllnonanomaly();
+-- CALL GetAllNonanomaly();
 -- End Get All
 -- Begin Get
 
 DELIMITER $$
-DROP PROCEDURE IF EXISTS Getnonanomaly $$
-CREATE PROCEDURE Getnonanomaly(
+DROP PROCEDURE IF EXISTS GetNonanomaly $$
+CREATE PROCEDURE GetNonanomaly(
 IN ID int
 ) BEGIN
 
@@ -42,13 +42,13 @@ SELECT * FROM NONANOMALY WHERE NONANOMALY.id = ID;
 END $$
 DELIMITER ;
 
--- CALL Getnonanomaly(1);
+-- CALL GetNonanomaly(1);
 -- End Get
 -- Begin Update
 
 DELIMITER $$
-DROP PROCEDURE IF EXISTS Updatenonanomaly $$
-CREATE PROCEDURE Updatenonanomaly(
+DROP PROCEDURE IF EXISTS UpdateNonanomaly $$
+CREATE PROCEDURE UpdateNonanomaly(
      IN IpSource varchar(45),
      IN IpDestination varchar(45),
      IN PortSource int,
@@ -61,15 +61,15 @@ WHERE NONANOMALY.ID=ID;
 END $$
 DELIMITER ;
 
--- CALL Updatenonanomaly(1,'string''string'5353);
+-- CALL UpdateNonanomaly(1,'string''string'5353);
 -- End Create
 
 
 -- Begin Delete
 
 DELIMITER $$
-DROP PROCEDURE IF EXISTS Deletenonanomaly $$
-CREATE PROCEDURE Deletenonanomaly(
+DROP PROCEDURE IF EXISTS DeleteNonanomaly $$
+CREATE PROCEDURE DeleteNonanomaly(
 IN ID int
 ) BEGIN
 
@@ -77,5 +77,5 @@ DELETE FROM NONANOMALY WHERE NONANOMALY.id = ID;
 END $$
 DELIMITER ;
 
--- CALL Deletenonanomaly(1);
+-- CALL DeleteNonanomaly(1);
 -- End Delete

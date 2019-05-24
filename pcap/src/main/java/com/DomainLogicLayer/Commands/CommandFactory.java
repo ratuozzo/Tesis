@@ -31,4 +31,7 @@ public class CommandFactory {
         return new CreateMasonryView(connections);
     }
 
+    public static Object instantiateTraslate(String resourcefilepath) {
+        return new Translate(resourcefilepath);
+    }
 }

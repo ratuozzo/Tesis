@@ -20,7 +20,7 @@ public class NonAnomalyDao {
         CallableStatement Sentence;
         boolean output = false;
         try {
-            Sentence = dao.getCallableSentence("{Call NonAnomalyCreate (?,?,?)}");
+            Sentence = dao.getCallableSentence("{Call CreateNonAnomaly(?,?,?,?)}");
             Sentence.setString(1, input.getIpSource());
             Sentence.setString(2, input.getIpDestination());
             Sentence.setInt(3, input.getPortSource());
@@ -74,7 +74,7 @@ public class NonAnomalyDao {
         CallableStatement Sentence = dao.getCallableSentence("{Call GetAllNonAnomaly ()} ");
 
 
-        rs =dao.executeQuery(Sentence);
+        rs = dao.executeQuery(Sentence);
 
         if(rs!=null)
             output = getResponseArrayListBD(rs);
@@ -92,7 +92,7 @@ public class NonAnomalyDao {
         CallableStatement Sentence;
         boolean output = false;
         try {
-            Sentence = dao.getCallableSentence("{Call NonAnomalyUpdate (?,?,?,?)}");
+            Sentence = dao.getCallableSentence("{Call NonAnomalyUpdate (?,?,?,?,?)}");
             Sentence.setString(1, input.getIpSource());
             Sentence.setString(2, input.getIpDestination());
             Sentence.setInt(3, input.getPortSource());
@@ -114,7 +114,7 @@ public class NonAnomalyDao {
 
         Dao dao = new Dao();
         boolean output;
-        CallableStatement Sentence = dao.getCallableSentence("{Call DeleteUser (?)}");
+        CallableStatement Sentence = dao.getCallableSentence("{Call DeleteNonAnomaly (?)}");
 
 
         try {
