@@ -2,8 +2,8 @@ package com.Common;
 
 public class Registry {
 
-    private final static String _basePath = "C:\\Users\\andres\\Documents\\Developing\\Projects\\Universidad";
-    //private final static String _basePath = "D:\\Repos";
+    //private final static String _basePath = "C:\\Users\\andres\\Documents\\Developing\\Projects\\Universidad";
+    private final static String _basePath = "D:\\Repos";
     public final static String PCAPFILEPATHW = _basePath +"\\Tesis\\Tesis\\pcap\\pcaps\\generated\\";
     public final static String PCAPFILEPATHL = "/home/andres/Documents/Developing/Projects/Universidad/Tesis/Tesis/pcap/pcaps/Generated/";
     public final static String CSVFILEPATHW = _basePath +"\\Tesis\\Tesis\\pcap\\src\\main\\resources\\NetData\\";

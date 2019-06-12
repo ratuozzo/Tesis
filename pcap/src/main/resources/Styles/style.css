@@ -46,6 +46,10 @@
     -fx-background-color: white;
 }
 
+.massonry-pane {
+    -fx-background-color: white;
+}
+
 /*******************************************************************************
  *                                                                             *
  * JFX Tab Pane                                                                *

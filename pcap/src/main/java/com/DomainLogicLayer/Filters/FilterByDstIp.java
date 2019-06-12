@@ -4,14 +4,14 @@ import com.Common.Entity.Connections.Connection;
 
 import java.util.ArrayList;
 
-public class FilterBySrcIp extends Filter {
+public class FilterByDstIp extends Filter {
 
-    public FilterBySrcIp(ArrayList<Connection> input) {
+    public FilterByDstIp(ArrayList<Connection> input) {
         super(input);
     }
 
     protected boolean matches(Connection connection, ArrayList<Connection> connections) {
-        return connections.get(0).getSrcIp().equals(connection.getSrcIp());
+        return connections.get(0).getDstIp().equals(connection.getDstIp());
     }
 
 }

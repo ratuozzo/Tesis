@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
-<?import javafx.scene.control.Label?>
+<?import com.jfoenix.controls.JFXMasonryPane?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
@@ -10,17 +11,21 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="430.0" prefWidth="700.0" stylesheets="@../Styles/style.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.Layout.FilePickerController">
+<AnchorPane prefHeight="430.0" prefWidth="700.0" stylesheets="@../Styles/style.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.Layout.MainViewController">
    <children>
-      <AnchorPane layoutX="198.0" prefHeight="430.0" prefWidth="502.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="188.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <AnchorPane fx:id="basePane" layoutX="198.0" prefHeight="430.0" prefWidth="502.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="188.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <Pane fx:id="paneGreen" prefHeight="430.0" prefWidth="512.0" style="-fx-background-color: green;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+            <ScrollPane fx:id="masonryScrollPane" layoutX="10.0" prefHeight="430.0" prefWidth="502.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <content>
+                  <JFXMasonryPane fx:id="packetEvaluationPane" prefHeight="429.0" prefWidth="501.0" styleClass="massonry-pane" />
+               </content>
+            </ScrollPane>
             <Pane fx:id="paneRed" prefHeight="430.0" prefWidth="512.0" style="-fx-background-color: red;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
             <Pane fx:id="paneYellow" prefHeight="430.0" prefWidth="512.0" style="-fx-background-color: yellow;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
             <AnchorPane fx:id="paneFilePicker" prefHeight="430.0" prefWidth="512.0" styleClass="file-picker-pane" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
-                  <Label layoutX="192.0" layoutY="31.0" prefHeight="48.0" prefWidth="128.0" styleClass="file-picker-title" text="Selección de archivos" />
                   <GridPane fx:id="fileListPane" layoutX="14.0" layoutY="100.0" prefHeight="260.0" prefWidth="417.0" AnchorPane.bottomAnchor="70.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="198.0" AnchorPane.topAnchor="100.0">
                     <columnConstraints>
                       <ColumnConstraints hgrow="SOMETIMES" maxWidth="300.0" minWidth="300.0" prefWidth="300.0" />
@@ -41,18 +46,14 @@
                   </GridPane>
                   <VBox fx:id="filePickerVbox" layoutX="408.0" prefHeight="430.0" prefWidth="104.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="28.0" AnchorPane.topAnchor="0.0">
                      <children>
-                        <JFXButton fx:id="filePickerButton" contentDisplay="CENTER" onAction="#handleButtonAction" prefHeight="25.0" prefWidth="104.0" styleClass="custom-button-inside" text="Seleccionar" textAlignment="CENTER" wrapText="true">
+                        <JFXButton fx:id="filePickerButton" contentDisplay="CENTER" onAction="#handlePickFilesAction" prefHeight="25.0" prefWidth="104.0" styleClass="custom-button-inside" text="Seleccionar" textAlignment="CENTER" wrapText="true">
                            <font>
                               <Font name="Courier New" size="12.0" />
                            </font>
                         </JFXButton>
                      </children>
                   </VBox>
-                  <JFXButton fx:id="continueButton" layoutX="380.0" layoutY="378.0" onAction="#handleButtonAction" prefHeight="25.0" prefWidth="104.0" styleClass="custom-button-inside" text="Continuar" wrapText="true" AnchorPane.bottomAnchor="28.0" AnchorPane.rightAnchor="28.0">
-                     <font>
-                        <Font name="Courier New" size="12.0" />
-                     </font>
-                  </JFXButton>
+                  <Text layoutX="202.0" layoutY="56.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Seleccionar Archivos" />
                </children>
             </AnchorPane>
          </children>
@@ -66,6 +67,8 @@
             <JFXButton fx:id="buttonGreen" layoutX="3.0" layoutY="89.0" onAction="#handleButtonAction" prefHeight="48.0" prefWidth="191.0" styleClass="custom-button-left-menu" text="Evaluar Paquetes" />
             <JFXButton fx:id="buttonRed" layoutX="3.0" layoutY="151.0" onAction="#handleButtonAction" prefHeight="48.0" prefWidth="191.0" styleClass="custom-button-left-menu" text="Rojo" />
             <JFXButton fx:id="buttonYellow" layoutX="3.0" layoutY="215.0" onAction="#handleButtonAction" prefHeight="48.0" prefWidth="191.0" styleClass="custom-button-left-menu" text="Amarillo" />
+            <JFXButton fx:id="backButton" layoutX="14.0" layoutY="386.0" onAction="#backButtonAction" prefHeight="30.0" prefWidth="81.0" styleClass="custom-button-left-menu" text="Volver" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="13.0" AnchorPane.rightAnchor="103.0" />
+            <JFXButton fx:id="continueButton" layoutX="103.0" layoutY="386.0" onAction="#continueButtonAction" prefHeight="30.0" prefWidth="81.0" styleClass="custom-button-left-menu" text="Continuar" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="103.0" AnchorPane.rightAnchor="13.0" />
          </children>
          <effect>
             <DropShadow />
