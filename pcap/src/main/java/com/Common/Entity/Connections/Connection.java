@@ -11,7 +11,7 @@ public abstract class Connection {
     protected ArrayList<Packet> _packets;
     protected String _openedStatus;
     protected String _closedStatus;
-    protected boolean _included = true;
+    protected boolean _included;
 
 
     public static final String NOT_OPENED = "Not Opened";

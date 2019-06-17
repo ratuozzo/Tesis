@@ -3,6 +3,7 @@
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXMasonryPane?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
@@ -17,16 +18,51 @@
    <children>
       <AnchorPane fx:id="basePane" layoutX="198.0" prefHeight="430.0" prefWidth="502.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="188.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <ScrollPane fx:id="masonryScrollPane" layoutX="10.0" prefHeight="430.0" prefWidth="502.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <ScrollPane fx:id="masonryScrollPane" layoutX="10.0" prefHeight="430.0" prefWidth="502.0" styleClass="basePane" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <content>
                   <JFXMasonryPane fx:id="packetEvaluationPane" prefHeight="429.0" prefWidth="501.0" styleClass="massonry-pane" />
                </content>
             </ScrollPane>
-            <Pane fx:id="paneRed" prefHeight="430.0" prefWidth="512.0" style="-fx-background-color: red;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
             <Pane fx:id="paneYellow" prefHeight="430.0" prefWidth="512.0" style="-fx-background-color: yellow;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-            <AnchorPane fx:id="paneFilePicker" prefHeight="430.0" prefWidth="512.0" styleClass="file-picker-pane" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <AnchorPane fx:id="trainAndEvaluationPane" layoutX="10.0" prefHeight="430.0" prefWidth="502.0" styleClass="basePane" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
-                  <GridPane fx:id="fileListPane" layoutX="14.0" layoutY="100.0" prefHeight="260.0" prefWidth="417.0" AnchorPane.bottomAnchor="70.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="198.0" AnchorPane.topAnchor="100.0">
+                  <VBox fx:id="evaluationFilePickerVbox" layoutX="375.0" prefHeight="430.0" prefWidth="104.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="23.0" AnchorPane.topAnchor="0.0">
+                     <children>
+                        <JFXButton fx:id="evaluationFilePickerButton" contentDisplay="CENTER" onAction="#handlePickEvaluationFilesAction" prefHeight="25.0" prefWidth="104.0" styleClass="custom-button-inside" text="Seleccionar" textAlignment="CENTER" wrapText="true">
+                           <font>
+                              <Font name="Courier New" size="12.0" />
+                           </font>
+                        </JFXButton>
+                     </children>
+                  </VBox>
+                  <Text layoutX="155.0" layoutY="54.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Seleccionar archivos para evaluación" />
+                  <GridPane fx:id="evaluationFileListPane" layoutX="5.0" layoutY="106.0" prefHeight="260.0" prefWidth="249.0" AnchorPane.bottomAnchor="64.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="207.0" AnchorPane.topAnchor="106.0">
+                     <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="300.0" minWidth="300.0" prefWidth="300.0" />
+                     </columnConstraints>
+                     <rowConstraints>
+                        <RowConstraints maxHeight="156.8000030517578" minHeight="10.0" prefHeight="33.79999389648438" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="156.8000030517578" minHeight="10.0" prefHeight="31.599987792968747" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="171.0000030517578" minHeight="10.0" prefHeight="28.80001220703126" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="156.8000030517578" minHeight="10.0" prefHeight="29.20001220703125" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="156.8000030517578" minHeight="0.0" prefHeight="26.5999755859375" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="179.19999084472653" minHeight="0.0" prefHeight="28.800003051757812" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="173.1999542236328" minHeight="0.0" prefHeight="29.800033569335938" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="217.20000915527345" minHeight="0.0" prefHeight="28.200021362304682" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="235.39998779296874" minHeight="0.0" prefHeight="29.80002136230462" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="188.0" minHeight="10.0" prefHeight="25.79997558593749" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="188.0" minHeight="10.0" prefHeight="38.599999999999966" vgrow="SOMETIMES" />
+                     </rowConstraints>
+                  </GridPane>
+                  <TextField fx:id="learningRate" layoutX="274.0" layoutY="152.0" AnchorPane.bottomAnchor="420.0" AnchorPane.rightAnchor="250.0" />
+                  <TextField fx:id="epochNumber" layoutX="274.0" layoutY="203.0" AnchorPane.bottomAnchor="370.0" AnchorPane.rightAnchor="250.0" />
+                  <Text layoutX="355.0" layoutY="119.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Learning Rate" AnchorPane.bottomAnchor="450.0" AnchorPane.rightAnchor="325.0" />
+                  <Text layoutX="305.0" layoutY="111.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Epocas" AnchorPane.bottomAnchor="400.0" AnchorPane.rightAnchor="360.0" />
+               </children>
+            </AnchorPane>
+            <AnchorPane fx:id="paneFilePicker" prefHeight="430.0" prefWidth="512.0" styleClass="basePane" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <children>
+                  <GridPane fx:id="trainFileListPane" layoutX="14.0" layoutY="100.0" prefHeight="260.0" prefWidth="417.0" AnchorPane.bottomAnchor="70.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="198.0" AnchorPane.topAnchor="100.0">
                     <columnConstraints>
                       <ColumnConstraints hgrow="SOMETIMES" maxWidth="300.0" minWidth="300.0" prefWidth="300.0" />
                     </columnConstraints>
@@ -44,16 +80,16 @@
                         <RowConstraints maxHeight="188.0" minHeight="10.0" prefHeight="38.599999999999966" vgrow="SOMETIMES" />
                     </rowConstraints>
                   </GridPane>
-                  <VBox fx:id="filePickerVbox" layoutX="408.0" prefHeight="430.0" prefWidth="104.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="28.0" AnchorPane.topAnchor="0.0">
+                  <VBox fx:id="trainFilePickerVbox" layoutX="408.0" prefHeight="430.0" prefWidth="104.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="28.0" AnchorPane.topAnchor="0.0">
                      <children>
-                        <JFXButton fx:id="filePickerButton" contentDisplay="CENTER" onAction="#handlePickFilesAction" prefHeight="25.0" prefWidth="104.0" styleClass="custom-button-inside" text="Seleccionar" textAlignment="CENTER" wrapText="true">
+                        <JFXButton fx:id="trainFilePickerButton" contentDisplay="CENTER" onAction="#handlePickTrainFilesAction" prefHeight="25.0" prefWidth="104.0" styleClass="custom-button-inside" text="Seleccionar" textAlignment="CENTER" wrapText="true">
                            <font>
                               <Font name="Courier New" size="12.0" />
                            </font>
                         </JFXButton>
                      </children>
                   </VBox>
-                  <Text layoutX="202.0" layoutY="56.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Seleccionar Archivos" />
+                  <Text layoutX="149.0" layoutY="55.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Seleccionar archivos para entrenamiento" />
                </children>
             </AnchorPane>
          </children>

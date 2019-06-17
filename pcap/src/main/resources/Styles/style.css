@@ -38,6 +38,10 @@
     -fx-font-size: 14;
 }
 
+.basePane {
+    -fx-background-color: white;
+}
+
 .file-picker-pane {
     -fx-background-color: #fefffe;
 }

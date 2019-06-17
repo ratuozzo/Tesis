@@ -1,9 +1,8 @@
 package com.Layout;
 
 import com.Common.Entity.Connections.Connection;
-import com.DomainLogicLayer.Commands.CommandFactory;
-import com.DomainLogicLayer.Commands.Orchestrate;
-import com.DomainLogicLayer.Commands.ReadMultiplePcaps;
+import com.Common.Registry;
+import com.DomainLogicLayer.Commands.*;
 import com.DomainLogicLayer.Filters.*;
 import com.jfoenix.controls.JFXMasonryPane;
 import javafx.fxml.FXML;
@@ -13,8 +12,7 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.input.MouseButton;
-import javafx.scene.input.MouseEvent;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
@@ -23,15 +21,17 @@ import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import org.pcap4j.packet.Packet;
 
-import java.io.File;
+import java.io.*;
 import java.net.URL;
 import java.util.*;
 
 public class MainViewController implements Initializable {
 
     private FileChooser fileChooser = new FileChooser();
-    private ArrayList<Packet> _rawPackets;
-    private ArrayList<Connection> _closedConnections;
+    private ArrayList<Packet> _rawPacketsTrain;
+    private ArrayList<Packet> _rawPacketsEvaluate;
+    private ArrayList<Connection> _closedConnectionsTrain;
+    private ArrayList<Connection> _closedConnectionsEvaluate;
     private ArrayList<ArrayList<Connection>> _currentConnections;
 
 
@@ -43,12 +43,13 @@ public class MainViewController implements Initializable {
     private final String DESTINATIONIP = "DstIp";
     private final String SOURCEPORT = "SrcPort";
     private final String DESTINATIONPORT = "DstPort";
+    private final String FINALFILTER = "FinalFilter";
 
     @FXML
     private ScrollPane masonryScrollPane;
 
     @FXML
-    private Pane paneRed, paneYellow;
+    private Pane trainAndEvaluationPane, paneYellow;
 
     @FXML
     private JFXMasonryPane packetEvaluationPane;
@@ -57,21 +58,24 @@ public class MainViewController implements Initializable {
     private AnchorPane paneFilePicker;
 
     @FXML
-    private GridPane fileListPane;
+    private GridPane trainFileListPane, evaluationFileListPane;
 
     @FXML
     private Button menuFilePicker, continueButton, buttonRed, buttonYellow, backButton;
 
     @FXML
-    private VBox filePickerVbox;
+    private VBox trainFilePickerVbox, evaluationFilePickerVbox;
+
+    @FXML
+    private TextField learningRate, epochNumber;
 
     public void continueButtonAction() {
 
         if (_currentPane == 0) {
 
-            getConnections();
+            getConnections(_rawPacketsTrain, true);
 
-            FilterBySrcIp filterBySrcIp = new FilterBySrcIp(_closedConnections);
+            FilterBySrcIp filterBySrcIp = new FilterBySrcIp(_closedConnectionsTrain);
             filterBySrcIp.execute();
             _currentConnections = filterBySrcIp.getOutput();
 
@@ -107,7 +111,12 @@ public class MainViewController implements Initializable {
             backButton.setDisable(false);
 
         } else if (_currentPane == 1) {
-            paneRed.toFront();
+            trainAndEvaluationPane.toFront();
+            continueButton.setDisable(true);
+            _currentPane = 2;
+        } else if (_currentPane == 2) {
+            trainAndEvaluate();
+            _currentPane = 3;
         }
 
     }
@@ -120,42 +129,116 @@ public class MainViewController implements Initializable {
             packetEvaluationPane.getChildren().clear();
             _currentPane = 0;
         }
-
     }
 
     public void handleButtonAction(ActionEvent event) {
 
         if (event.getSource() == menuFilePicker) {
             paneFilePicker.toFront();
-
         } else if (event.getSource() == buttonRed) {
-            paneRed.toFront();
+            trainAndEvaluationPane.toFront();
         } else if (event.getSource() == buttonYellow) {
             paneYellow.toFront();
         }
     }
 
-    private void getConnections() {
-        Orchestrate orchestrate = (Orchestrate) CommandFactory.instantiateOrchestrate(_rawPackets);
+    private void getConnections(ArrayList<Packet> input, Boolean train) {
+        Orchestrate orchestrate = (Orchestrate) CommandFactory.instantiateOrchestrate(input);
         orchestrate.execute();
-        _closedConnections = orchestrate.getClosedConnections();
+        if (train) {
+            _closedConnectionsTrain = orchestrate.getClosedConnections();
+        } else {
+            _closedConnectionsEvaluate = orchestrate.getClosedConnections();
+        }
     }
 
-    public void handlePickFilesAction(ActionEvent event) {
+    public void handlePickTrainFilesAction(ActionEvent event) {
         ArrayList<String> fileList = new ArrayList<>();
         List<File> list = fileChooser.showOpenMultipleDialog(paneFilePicker.getScene().getWindow());
         for (int i = 0; i < list.size(); i++) {
             fileList.add(list.get(i).getPath());
             Label fileLabel = new Label(list.get(i).getPath());
-            fileListPane.add(fileLabel,0,i);
+            trainFileListPane.add(fileLabel,0,i);
         }
         ReadMultiplePcaps readMultiplePcaps = (ReadMultiplePcaps) CommandFactory.instantiateReadMultiplePcaps(fileList);
         readMultiplePcaps.execute();
-        _rawPackets = readMultiplePcaps.getPackets();
-        if (_rawPackets.size() > 1) {
+        _rawPacketsTrain = readMultiplePcaps.getPackets();
+        if (_rawPacketsTrain.size() > 1) {
             continueButton.setDisable(false);
         }
         System.out.println(readMultiplePcaps.getPackets().size());
+    }
+
+    public void handlePickEvaluationFilesAction(ActionEvent event) {
+        ArrayList<String> fileList = new ArrayList<>();
+        List<File> list = fileChooser.showOpenMultipleDialog(trainAndEvaluationPane.getScene().getWindow());
+        for (int i = 0; i < list.size(); i++) {
+            fileList.add(list.get(i).getPath());
+            Label fileLabel = new Label(list.get(i).getPath());
+            evaluationFileListPane.add(fileLabel,0,i);
+        }
+        ReadMultiplePcaps readMultiplePcaps = (ReadMultiplePcaps) CommandFactory.instantiateReadMultiplePcaps(fileList);
+        readMultiplePcaps.execute();
+        _rawPacketsEvaluate = readMultiplePcaps.getPackets();
+        if (_rawPacketsEvaluate.size() > 1) {
+            continueButton.setDisable(false);
+        }
+        System.out.println(readMultiplePcaps.getPackets().size());
+    }
+
+    private void trainAndEvaluate() {
+        removeExcludedConnections();
+        WriteToCSV writeToCSVTrain = (WriteToCSV) CommandFactory.instantiateWriteToCSV(_closedConnectionsTrain, "train.csv");
+        writeToCSVTrain.execute();
+        getConnections(_rawPacketsEvaluate, false);
+        WriteToCSV writeToCSVEvaluate = (WriteToCSV) CommandFactory.instantiateWriteToCSV(_closedConnectionsEvaluate, "evaluate.csv");
+        writeToCSVEvaluate.execute();
+        TrainAndEvaluateData trainAndEvaluateData = null;
+        System.out.println(learningRate.getText());
+        System.out.println(epochNumber.getText());
+        try {
+            int batchSize = countFileLines(Registry.getCSVFILEPATH()+"train.csv");
+            trainAndEvaluateData = (TrainAndEvaluateData) CommandFactory.instantiateTrainAndEvaluateData(
+                    Registry.getCSVFILEPATH()+"train.csv",
+                    Registry.getCSVFILEPATH()+"evaluate.csv",
+                    Double.valueOf(learningRate.getText()),
+                    batchSize,
+                    Integer.valueOf(epochNumber.getText())
+            );
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        trainAndEvaluateData.execute();
+        System.out.println("Listo");
+    }
+
+    private int countFileLines(String filename) throws IOException {
+        InputStream is = new BufferedInputStream(new FileInputStream(filename));
+        try {
+            byte[] c = new byte[1024];
+            int count = 0;
+            int readChars = 0;
+            boolean empty = true;
+            while ((readChars = is.read(c)) != -1) {
+                empty = false;
+                for (int i = 0; i < readChars; ++i) {
+                    if (c[i] == '\n') {
+                        ++count;
+                    }
+                }
+            }
+            return (count == 0 && !empty) ? 1 : count;
+        } finally {
+            is.close();
+        }
+    }
+
+    private void removeExcludedConnections() {
+        for (int i = 0; i < _closedConnectionsTrain.size(); i++) {
+            if (!_closedConnectionsTrain.get(i).getIncluded()) {
+                _closedConnectionsTrain.remove(_closedConnectionsTrain.get(i));
+            }
+        }
     }
 
     private void newMasonry(Node node) {
@@ -177,7 +260,7 @@ public class MainViewController implements Initializable {
 
                 AnchorPane anchorPane = createMasonryPane(
                         _currentConnections.get(i).get(0).getSrcIp(),
-                        DESTINATIONIP,
+                        SOURCEPORT,
                         packetsNumber,
                         _currentConnections.get(i).size(),
                         maximumDimensions(_currentConnections),
@@ -273,7 +356,7 @@ public class MainViewController implements Initializable {
                                 _currentConnections.get(i).get(0).getSrcPort() + "->" +
                                 _currentConnections.get(i).get(0).getDstIp() + "->" +
                                 _currentConnections.get(i).get(0).getDstPort(),
-                        DESTINATIONPORT,
+                        FINALFILTER,
                         packetsNumber,
                         _currentConnections.get(i).size(),
                         maximumDimensions(_currentConnections),
@@ -293,13 +376,13 @@ public class MainViewController implements Initializable {
         Label label = new Label();
         label.setText(previousButton.getId().split(",")[0]);
 
-        if (previousButton.getId().split(",")[1].equals(SOURCEPORT)) {
+        if (previousButton.getId().split(",")[1].equals(DESTINATIONIP)) {
             label.setId(SOURCEIP);
             newMasonry(label);
-        } else if (previousButton.getId().split(",")[1].equals(DESTINATIONIP)) {
+        } else if (previousButton.getId().split(",")[1].equals(DESTINATIONPORT)) {
             label.setId(SOURCEPORT);
             newMasonry(label);
-        } else if (previousButton.getId().split(",")[1].equals(DESTINATIONPORT)) {
+        } else if (previousButton.getId().split(",")[1].equals(FINALFILTER)) {
             label.setId(DESTINATIONIP);
             newMasonry(label);
         }
@@ -324,7 +407,7 @@ public class MainViewController implements Initializable {
         excludeButton.setPrefSize(50,50);
 
         Button previousPaneButton = new Button();
-        previousPaneButton.setText("Vovler");
+        previousPaneButton.setText("Volver");
         previousPaneButton.setId(text+","+id);
         previousPaneButton.setPrefSize(50,50);
         if (id.equals(SOURCEPORT)) {
@@ -341,10 +424,10 @@ public class MainViewController implements Initializable {
 
 
         output.setBottomAnchor(excludeButton,5.0);
-        output.setRightAnchor(excludeButton, 5.0);
+        output.setLeftAnchor(excludeButton, 60.0);
 
         output.setBottomAnchor(previousPaneButton, 5.0);
-        output.setLeftAnchor(previousPaneButton, 60.0);
+        output.setRightAnchor(previousPaneButton, 5.0);
 
         output.setBottomAnchor(includeButton,5.0);
         output.setLeftAnchor(includeButton,5.0);
@@ -353,6 +436,8 @@ public class MainViewController implements Initializable {
             output.setStyle("-fx-background-color:rgb(" + random.nextInt(255) + "," + random.nextInt(255) + "," + random.nextInt(255) + ")");
         } else {
             output.setStyle("-fx-background-color: grey");
+            excludeButton.setDisable(true);
+            includeButton.setDisable(false);
         }
         output.setPrefSize(( (currentHeight * 200) / dimensions[0]) + 150, ((packetsNumber * 100) / dimensions[1]) + 100);
 
@@ -388,7 +473,7 @@ public class MainViewController implements Initializable {
 
         if (typeOfFilter.equals(SOURCEPORT)) {
             for (int i = 0; i < input.size(); i++) {
-                if (input.get(i).get(0).getSrcIp().replace("/", "").equals(text)) {
+                if (input.get(i).get(0).getSrcIp().replace("/", "").equals(auxText[0])) {
                     for (int j = 0; j < input.get(i).size(); j++) {
                         output.add(input.get(i).get(j));
                     }
@@ -463,11 +548,10 @@ public class MainViewController implements Initializable {
                     }
                 }
             }
-            System.out.println("Parada");
         } else if (button.getId().equals(DESTINATIONIP)) {
             ArrayList<ArrayList<Connection>> connections = _filteredConnections.get(1).getOutput();
             for (int i = 0; i < connections.size(); i++) {
-                if (auxText[1].equals(connections.get(i).get(0).getSrcPort())) {
+                if (auxText[1].equals(Integer.toString(connections.get(i).get(0).getSrcPort()))) {
                     for (int j = 0; j < connections.get(i).size(); j++) {
                         connections.get(i).get(j).setIncluded(status);
                     }
@@ -488,7 +572,8 @@ public class MainViewController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rv) {
-        filePickerVbox.setAlignment(Pos.CENTER);
+        trainFilePickerVbox.setAlignment(Pos.CENTER);
+        evaluationFilePickerVbox.setAlignment(Pos.CENTER);
         continueButton.setDisable(true);
         backButton.setDisable(true);
     }

@@ -24,6 +24,7 @@ public abstract class TcpConnection extends Connection{
         _modelTree = new ConnectionTree();
         _src = src;
         _dst = dst;
+        _included = true;
         instantiateTree();
     }
 
@@ -37,6 +38,7 @@ public abstract class TcpConnection extends Connection{
         _modelTree = new ConnectionTree();
         _src = sockets.get(0);
         _dst = sockets.get(1);
+        _included = true;
         instantiateTree();
     }
 

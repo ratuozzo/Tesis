@@ -41,3 +41,11 @@ pcap/target/
 pcap/src/main/resources/trainandevaluate\.exe
 
 pcap/src/main/resources/plots/
+
+pcap/pcaps/Generated/all/
+
+pcap/src/main/resources/evaluate\.csv
+
+pcap/src/main/resources/train\.csv
+
+pcap/src/main/resources/NetData/
