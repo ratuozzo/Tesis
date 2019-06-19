@@ -24,6 +24,7 @@ public class IcmpConnection extends Connection{
         _packets = new ArrayList<>();
         _openedStatus = OPENED_CLEANLY;
         _closedStatus = NOT_CLOSED;
+        _included = true;
     }
 
     public IcmpConnection(Packet packet) {
@@ -32,6 +33,7 @@ public class IcmpConnection extends Connection{
         _packets = new ArrayList<>();
         _openedStatus = OPENED_CLEANLY;
         _closedStatus = NOT_CLOSED;
+        _included = true;
     }
 
     public void addPacket(Packet packet) {

@@ -1,6 +1,7 @@
 package com.Layout;
 
 import com.Common.Entity.Connections.Connection;
+import com.Common.Entity.Rule;
 import com.Common.Registry;
 import com.DomainLogicLayer.Commands.*;
 import com.DomainLogicLayer.Filters.*;
@@ -9,10 +10,10 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
@@ -22,6 +23,7 @@ import javafx.stage.FileChooser;
 import org.pcap4j.packet.Packet;
 
 import java.io.*;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.*;
 
@@ -33,6 +35,7 @@ public class MainViewController implements Initializable {
     private ArrayList<Connection> _closedConnectionsTrain;
     private ArrayList<Connection> _closedConnectionsEvaluate;
     private ArrayList<ArrayList<Connection>> _currentConnections;
+    private ArrayList<String> _evaluatedConnections;
 
 
     private int _currentPane = 0;
@@ -49,25 +52,28 @@ public class MainViewController implements Initializable {
     private ScrollPane masonryScrollPane;
 
     @FXML
-    private Pane trainAndEvaluationPane, paneYellow;
+    private Pane trainAndEvaluationPane;
 
     @FXML
     private JFXMasonryPane packetEvaluationPane;
 
     @FXML
-    private AnchorPane paneFilePicker;
+    private AnchorPane paneFilePicker, visualizationPane, rulesPane;
 
     @FXML
     private GridPane trainFileListPane, evaluationFileListPane;
 
     @FXML
-    private Button menuFilePicker, continueButton, buttonRed, buttonYellow, backButton;
+    private Button continueButton, backButton;
 
     @FXML
     private VBox trainFilePickerVbox, evaluationFilePickerVbox;
 
     @FXML
     private TextField learningRate, epochNumber;
+
+    @FXML
+    private TableView rulesTable;
 
     public void continueButtonAction() {
 
@@ -116,9 +122,103 @@ public class MainViewController implements Initializable {
             _currentPane = 2;
         } else if (_currentPane == 2) {
             trainAndEvaluate();
+            visualizationPane.toFront();
+            loadImages();
             _currentPane = 3;
+        } else if (_currentPane == 3) {
+            rulesPane.toFront();
+            addRulesToTable();
+            _currentPane = 4;
         }
 
+    }
+
+    private void addRulesToTable() {
+        for (int i = 0; i < _evaluatedConnections.size(); i++) {
+            String[] rawRuleString = _evaluatedConnections.get(i).split(",");
+            int[] rawRuleInteger = new int[rawRuleString.length];
+            for (int j = 0; j < rawRuleString.length; j++) {
+                Double number = Double.valueOf(rawRuleString[j]) * 1000;
+                rawRuleInteger[j] = number.intValue();
+            }
+            String srcIp = rawRuleInteger[0]+"."+rawRuleInteger[1]+"."+rawRuleInteger[2]+"."+rawRuleInteger[3];
+            String dstIp = rawRuleInteger[4]+"."+rawRuleInteger[5]+"."+rawRuleInteger[6]+"."+rawRuleInteger[7];
+            Rule rule = new Rule(
+                    srcIp,
+                    rawRuleInteger[8],
+                    dstIp,
+                    rawRuleInteger[9]
+            );
+            rulesTable.getItems().add(rule);
+        }
+    }
+
+    private void loadImages() {
+
+        createImageViews();
+
+        File lossFile = new File(Registry.getPLOTFILEPATH() + "lossvsiteration.png");
+        File trainFile = new File(Registry.getPLOTFILEPATH() + "train.png");
+        File evaluationFile = new File(Registry.getPLOTFILEPATH() + "evaluate.png");
+        try {
+            Image lossImage = new Image(lossFile.toURI().toURL().toString());
+            Image trainImage = new Image(trainFile.toURI().toURL().toString());
+            Image evaluationImage = new Image(evaluationFile.toURI().toURL().toString());
+
+            ImageView lossImageView = (ImageView) visualizationPane.getScene().lookup("#lossImageView");
+            lossImageView.setImage(lossImage);
+
+            ImageView trainImageView = (ImageView) visualizationPane.getScene().lookup("#trainImageView");
+            trainImageView.setImage(trainImage);
+
+            ImageView evaluationImageView = (ImageView) visualizationPane.getScene().lookup("#evaluationImageView");
+            evaluationImageView.setImage(evaluationImage);
+
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void createImageViews() {
+        ImageView lossImageView = new ImageView();
+        lossImageView.setId("lossImageView");
+        ImageView trainImageView = new ImageView();
+        trainImageView.setId("trainImageView");
+        ImageView evaluationImageView = new ImageView();
+        evaluationImageView.setId("evaluationImageView");
+
+        Label lossLabel = new Label("Perdida vs Iteraciones");
+        Label trainLabel = new Label("Puntuación Entrenamiento");
+        Label evaluationLabel = new Label("Puntuación Evaluación");
+
+        visualizationPane.setLeftAnchor(lossLabel, 350.0);
+        visualizationPane.setTopAnchor(lossLabel, 10.0);
+        visualizationPane.setLeftAnchor(lossImageView, 350.0);
+        visualizationPane.setTopAnchor(lossImageView, 30.0);
+        lossImageView.setFitWidth(600);
+        lossImageView.setFitHeight(350);
+
+        visualizationPane.setLeftAnchor(trainLabel, 120.0);
+        visualizationPane.setBottomAnchor(trainLabel, 370.0);
+        visualizationPane.setLeftAnchor(trainImageView, 100.0);
+        visualizationPane.setBottomAnchor(trainImageView, 15.0);
+        trainImageView.setFitWidth(600);
+        trainImageView.setFitHeight(350);
+
+        visualizationPane.setLeftAnchor(evaluationLabel, 720.0);
+        visualizationPane.setBottomAnchor(evaluationLabel, 370.0);
+        visualizationPane.setLeftAnchor(evaluationImageView, 700.0);
+        visualizationPane.setBottomAnchor(evaluationImageView, 15.0);
+        evaluationImageView.setFitWidth(600);
+        evaluationImageView.setFitHeight(350);
+
+        visualizationPane.getChildren().add(lossLabel);
+        visualizationPane.getChildren().add(trainLabel);
+        visualizationPane.getChildren().add(evaluationLabel);
+
+        visualizationPane.getChildren().add(lossImageView);
+        visualizationPane.getChildren().add(trainImageView);
+        visualizationPane.getChildren().add(evaluationImageView);
     }
 
     public void backButtonAction(ActionEvent event) {
@@ -133,13 +233,6 @@ public class MainViewController implements Initializable {
 
     public void handleButtonAction(ActionEvent event) {
 
-        if (event.getSource() == menuFilePicker) {
-            paneFilePicker.toFront();
-        } else if (event.getSource() == buttonRed) {
-            trainAndEvaluationPane.toFront();
-        } else if (event.getSource() == buttonYellow) {
-            paneYellow.toFront();
-        }
     }
 
     private void getConnections(ArrayList<Packet> input, Boolean train) {
@@ -209,6 +302,7 @@ public class MainViewController implements Initializable {
             e.printStackTrace();
         }
         trainAndEvaluateData.execute();
+        _evaluatedConnections = trainAndEvaluateData._output;
         System.out.println("Listo");
     }
 
@@ -576,6 +670,23 @@ public class MainViewController implements Initializable {
         evaluationFilePickerVbox.setAlignment(Pos.CENTER);
         continueButton.setDisable(true);
         backButton.setDisable(true);
+        TableView rulesTable = new TableView();
+        rulesTable.setEditable(true);
+        TableColumn srcIp = new TableColumn("Ip Origen");
+        srcIp.setCellValueFactory(new PropertyValueFactory<>("_srcIp"));
+        TableColumn srcPort = new TableColumn("Puerto Origen");
+        srcPort.setCellValueFactory(new PropertyValueFactory<>("_srcPort"));
+        TableColumn dstIp = new TableColumn("Ip Destino");
+        dstIp.setCellValueFactory(new PropertyValueFactory<>("_dstIp"));
+        TableColumn dstPort = new TableColumn("Puerto Destino");
+        dstPort.setCellValueFactory(new PropertyValueFactory<>("_dstPort"));
+
+        rulesTable.getColumns().addAll(srcIp, srcPort, dstIp, dstPort);
+        rulesPane.setBottomAnchor(rulesTable, 15.0);
+        rulesPane.setLeftAnchor(rulesTable, 15.0);
+        rulesPane.setRightAnchor(rulesTable, 15.0);
+
+        rulesPane.getChildren().add(rulesTable);
     }
 
 }

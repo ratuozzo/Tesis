@@ -8,6 +8,8 @@ public class Registry {
     public final static String PCAPFILEPATHL = "/home/andres/Documents/Developing/Projects/Universidad/Tesis/Tesis/pcap/pcaps/Generated/";
     public final static String CSVFILEPATHW = _basePath +"\\Tesis\\Tesis\\pcap\\src\\main\\resources\\NetData\\";
     public final static String CSVFILEPATHL = "/home/andres/Documents/Developing/Projects/Universidad/Tesis/Tesis/pcap/src/main/resources/NetData/";
+    public final static String PLOTFILEPATHW = _basePath + "\\Tesis\\Tesis\\pcap\\src\\main\\resources\\plots\\";
+    public final static String PLOTFILEPATHL = "/home/andres/Documents/Developing/Projects/Universidad/Tesis/Tesis/pcap/src/main/resources/plots/";
     public final static String RESOURCEFILEPATHW = _basePath +"\\Tesis\\Tesis\\pcap\\src\\main\\resources\\";
     public final static String RESOURCEFILEPATHL = "/home/andres/Documents/Developing/Projects/Universidad/Tesis/Tesis/pcap/src/main/resources/";
 
@@ -35,5 +37,12 @@ public class Registry {
             return RESOURCEFILEPATHW;
         }
         return RESOURCEFILEPATHL;
+    }
+
+    public static String getPLOTFILEPATH() {
+        if (System.getProperty("os.name").startsWith("Windows")) {
+            return PLOTFILEPATHW;
+        }
+        return PLOTFILEPATHL;
     }
 }
