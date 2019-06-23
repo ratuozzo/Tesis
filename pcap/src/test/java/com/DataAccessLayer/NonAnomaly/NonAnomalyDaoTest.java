@@ -1,7 +1,6 @@
 package com.DataAccessLayer.NonAnomaly;
 
 import com.DataAccessLayer.DaoFactory;
-import com.DomainLogicLayer.Commands.Orchestrate;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.core.annotation.Order;
@@ -25,7 +24,7 @@ class NonAnomalyDaoTest {
 
     @Test
     @Order(1)
-    void TestingAll(){
+    void TestingAll() {
 
         NonAnomalyBean beanToCreate = new NonAnomalyBean("198.167.175.111",
                 "174.168.102.222",80,5432);
@@ -52,7 +51,6 @@ class NonAnomalyDaoTest {
 
         all = dao.readAll();
         assertEquals(all.size(),0);
-
 
     }
 

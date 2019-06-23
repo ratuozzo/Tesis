@@ -27,9 +27,6 @@ public class CommandFactory {
                                                          Double learningRate, int batchSize, int epochs) {
         return new TrainAndEvaluateData(filePathTrain,filePathEvaluate,learningRate,batchSize,epochs);
     }
-    public static Object instantiateCreateMasonryView(ArrayList<Connection> connections) {
-        return new CreateMasonryView(connections);
-    }
 
     public static Object instantiateTraslate(String resourcefilepath) {
         return new Translate(resourcefilepath);

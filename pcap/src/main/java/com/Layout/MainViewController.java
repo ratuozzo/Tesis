@@ -3,6 +3,9 @@ package com.Layout;
 import com.Common.Entity.Connections.Connection;
 import com.Common.Entity.Rule;
 import com.Common.Registry;
+import com.DataAccessLayer.DaoFactory;
+import com.DataAccessLayer.NonAnomaly.NonAnomalyBean;
+import com.DataAccessLayer.NonAnomaly.NonAnomalyDao;
 import com.DomainLogicLayer.Commands.*;
 import com.DomainLogicLayer.Filters.*;
 import com.jfoenix.controls.JFXMasonryPane;
@@ -24,7 +27,6 @@ import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import org.pcap4j.packet.Packet;
 
-import javax.xml.soap.Text;
 import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -41,6 +43,7 @@ public class MainViewController implements Initializable {
     private ArrayList<String> _evaluatedConnections;
     private ObservableList<Rule> _data = FXCollections.observableArrayList();
 
+    private NonAnomalyDao _dao = DaoFactory.instantiateNonAnomalyDao();
 
     private int _currentPane = 0;
 
@@ -132,8 +135,26 @@ public class MainViewController implements Initializable {
             rulesPane.toFront();
             addRulesToTable();
             _currentPane = 4;
+        } else if (_currentPane == 4) {
+            saveRulesToBd();
+            translateRules();
         }
+    }
 
+    private void translateRules() {
+        Translate translateCommand = (Translate) CommandFactory.instantiateTraslate(Registry.getRESOURCEFILEPATH());
+        translateCommand.execute();
+    }
+
+    private void saveRulesToBd() {
+        for (int i = 0; i < _data.size(); i++) {
+            NonAnomalyBean beanToCreate = new NonAnomalyBean(
+                    _data.get(i).get_srcIp(),
+                    _data.get(i).get_dstIp(),
+                    Integer.parseInt(_data.get(i).get_srcPort()),
+                    Integer.parseInt(_data.get(i).get_dstPort()));
+            _dao.create(beanToCreate);
+        }
     }
 
     private void createNewRuleView() {
