@@ -6,6 +6,8 @@ import com.Common.Registry;
 import com.DomainLogicLayer.Commands.*;
 import com.DomainLogicLayer.Filters.*;
 import com.jfoenix.controls.JFXMasonryPane;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
@@ -22,6 +24,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import org.pcap4j.packet.Packet;
 
+import javax.xml.soap.Text;
 import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -36,6 +39,7 @@ public class MainViewController implements Initializable {
     private ArrayList<Connection> _closedConnectionsEvaluate;
     private ArrayList<ArrayList<Connection>> _currentConnections;
     private ArrayList<String> _evaluatedConnections;
+    private ObservableList<Rule> _data = FXCollections.observableArrayList();
 
 
     private int _currentPane = 0;
@@ -71,9 +75,6 @@ public class MainViewController implements Initializable {
 
     @FXML
     private TextField learningRate, epochNumber;
-
-    @FXML
-    private TableView rulesTable;
 
     public void continueButtonAction() {
 
@@ -126,6 +127,8 @@ public class MainViewController implements Initializable {
             loadImages();
             _currentPane = 3;
         } else if (_currentPane == 3) {
+            createRulesTable();
+            createNewRuleView();
             rulesPane.toFront();
             addRulesToTable();
             _currentPane = 4;
@@ -133,7 +136,110 @@ public class MainViewController implements Initializable {
 
     }
 
+    private void createNewRuleView() {
+        TextField srcIp = new TextField();
+        srcIp.setPrefWidth(100);
+        srcIp.promptTextProperty().setValue("Ip Origen");
+
+        TextField dstIp = new TextField();
+        dstIp.setPrefWidth(100);
+        dstIp.promptTextProperty().set("Ip Destino");
+
+        TextField srcPort = new TextField();
+        srcPort.setPrefWidth(100);
+        srcPort.promptTextProperty().set("Puerto Origen");
+
+        TextField dstPort = new TextField();
+        dstPort.setPrefWidth(100);
+        dstPort.promptTextProperty().set("Puerto Destino");
+
+        Button submitRule = new Button();
+        submitRule.getStyleClass().add("custom-button-left-menu");
+        submitRule.setText("Agregar");
+        submitRule.setOnMouseClicked(e -> addRule(srcIp, dstIp, srcPort, dstPort));
+        submitRule.setPrefHeight(50);
+        submitRule.setPrefWidth(100);
+        submitRule.getStyleClass().clear();
+
+        Button deleteRule = new Button();
+        deleteRule.getStyleClass().add("custom-button-left-menu");
+        deleteRule.setText("Eliminar");
+        deleteRule.setOnMouseClicked(e -> deleteRow());
+        deleteRule.setPrefHeight(50);
+        deleteRule.setPrefWidth(100);
+        deleteRule.getStyleClass().clear();
+
+        rulesPane.setBottomAnchor(srcIp, 30.0);
+        rulesPane.setLeftAnchor(srcIp, 20.0);
+
+
+        rulesPane.setBottomAnchor(dstIp, 30.0);
+        rulesPane.setLeftAnchor(dstIp, 140.0);
+
+        rulesPane.setBottomAnchor(srcPort, 30.0);
+        rulesPane.setLeftAnchor(srcPort, 260.0);
+
+        rulesPane.setBottomAnchor(dstPort, 30.0);
+        rulesPane.setLeftAnchor(dstPort, 380.0);
+
+        rulesPane.setBottomAnchor(submitRule, 30.0);
+        rulesPane.setLeftAnchor(submitRule, 500.0);
+
+        rulesPane.setBottomAnchor(deleteRule, 30.0);
+        rulesPane.setLeftAnchor(deleteRule, 620.0);
+
+        rulesPane.getChildren().add(srcIp);
+        rulesPane.getChildren().add(dstIp);
+        rulesPane.getChildren().add(srcPort);
+        rulesPane.getChildren().add(dstPort);
+        rulesPane.getChildren().add(submitRule);
+        rulesPane.getChildren().add(deleteRule);
+    }
+
+    private void addRule(TextField srcIp, TextField dstIp, TextField srcPort, TextField dstPort) {
+        Rule rule = new Rule(
+                srcIp.getText(),
+                srcPort.getText(),
+                dstIp.getText(),
+                dstPort.getText()
+        );
+        _data.add(rule);
+    }
+
+    private void deleteRow() {
+        TableView tableView = (TableView) rulesPane.getScene().lookup("#rulesTable");
+        _data.remove(tableView.getSelectionModel().getSelectedItem());
+    }
+
+    private void createRulesTable() {
+        TableView rulesTable = new TableView();
+        rulesTable.setId("rulesTable");
+        rulesTable.setEditable(true);
+        TableColumn srcIp = new TableColumn("Ip Origen");
+        srcIp.setPrefWidth(150);
+        srcIp.setCellValueFactory(new PropertyValueFactory<Rule, String>("_srcIp"));
+        TableColumn srcPort = new TableColumn("Puerto Origen");
+        srcPort.setPrefWidth(150);
+        srcPort.setCellValueFactory(new PropertyValueFactory<Rule, String>("_srcPort"));
+        TableColumn dstIp = new TableColumn("Ip Destino");
+        dstIp.setPrefWidth(150);
+        dstIp.setCellValueFactory(new PropertyValueFactory<Rule, String>("_dstIp"));
+        TableColumn dstPort = new TableColumn("Puerto Destino");
+        dstPort.setPrefWidth(150);
+        dstPort.setCellValueFactory(new PropertyValueFactory<Rule, String>("_dstPort"));
+
+        rulesTable.getColumns().addAll(srcIp, srcPort, dstIp, dstPort);
+        rulesPane.setBottomAnchor(rulesTable, 100.0);
+        rulesPane.setTopAnchor(rulesTable, 15.0);
+        rulesPane.setLeftAnchor(rulesTable, 15.0);
+        rulesPane.setRightAnchor(rulesTable, 15.0);
+
+        rulesPane.getChildren().add(rulesTable);
+    }
+
     private void addRulesToTable() {
+        TableView tableView = (TableView) rulesPane.getScene().lookup("#rulesTable");
+        tableView.setEditable(true);
         for (int i = 0; i < _evaluatedConnections.size(); i++) {
             String[] rawRuleString = _evaluatedConnections.get(i).split(",");
             int[] rawRuleInteger = new int[rawRuleString.length];
@@ -143,14 +249,17 @@ public class MainViewController implements Initializable {
             }
             String srcIp = rawRuleInteger[0]+"."+rawRuleInteger[1]+"."+rawRuleInteger[2]+"."+rawRuleInteger[3];
             String dstIp = rawRuleInteger[4]+"."+rawRuleInteger[5]+"."+rawRuleInteger[6]+"."+rawRuleInteger[7];
+
             Rule rule = new Rule(
                     srcIp,
-                    rawRuleInteger[8],
+                    Integer.toString(rawRuleInteger[8]),
                     dstIp,
-                    rawRuleInteger[9]
+                    Integer.toString(rawRuleInteger[9])
             );
-            rulesTable.getItems().add(rule);
+            _data.add(rule);
         }
+        tableView.setItems(_data);
+        System.out.println("listo");
     }
 
     private void loadImages() {
@@ -670,23 +779,6 @@ public class MainViewController implements Initializable {
         evaluationFilePickerVbox.setAlignment(Pos.CENTER);
         continueButton.setDisable(true);
         backButton.setDisable(true);
-        TableView rulesTable = new TableView();
-        rulesTable.setEditable(true);
-        TableColumn srcIp = new TableColumn("Ip Origen");
-        srcIp.setCellValueFactory(new PropertyValueFactory<>("_srcIp"));
-        TableColumn srcPort = new TableColumn("Puerto Origen");
-        srcPort.setCellValueFactory(new PropertyValueFactory<>("_srcPort"));
-        TableColumn dstIp = new TableColumn("Ip Destino");
-        dstIp.setCellValueFactory(new PropertyValueFactory<>("_dstIp"));
-        TableColumn dstPort = new TableColumn("Puerto Destino");
-        dstPort.setCellValueFactory(new PropertyValueFactory<>("_dstPort"));
-
-        rulesTable.getColumns().addAll(srcIp, srcPort, dstIp, dstPort);
-        rulesPane.setBottomAnchor(rulesTable, 15.0);
-        rulesPane.setLeftAnchor(rulesTable, 15.0);
-        rulesPane.setRightAnchor(rulesTable, 15.0);
-
-        rulesPane.getChildren().add(rulesTable);
     }
 
 }
