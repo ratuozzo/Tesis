@@ -10,7 +10,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-public class NonAnomalyDao {
+public class NonAnomalyDao implements INonAnomalyDao {
     private final static Logger logger = LoggerFactory.getLogger(NonAnomalyDao.class);
 
     public boolean create(NonAnomalyBean input) {
