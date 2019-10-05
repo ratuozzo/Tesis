@@ -19,11 +19,8 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.*;
 import javafx.event.ActionEvent;
-import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import org.pcap4j.packet.Packet;
 
@@ -125,7 +122,7 @@ public class MainViewController implements Initializable {
             continueButton.setDisable(true);
             _currentPane = 2;
         } else if (_currentPane == 2) {
-            trainAndEvaluate();
+                trainAndEvaluate();
             visualizationPane.toFront();
             loadImages();
             _currentPane = 3;
@@ -160,22 +157,26 @@ public class MainViewController implements Initializable {
     private void createNewRuleView() {
         TextField srcIp = new TextField();
         srcIp.setPrefWidth(100);
+        srcIp.setId("srcIpText");
         srcIp.promptTextProperty().setValue("Ip Origen");
 
         TextField dstIp = new TextField();
         dstIp.setPrefWidth(100);
+        dstIp.setId("dstIpText");
         dstIp.promptTextProperty().set("Ip Destino");
 
         TextField srcPort = new TextField();
         srcPort.setPrefWidth(100);
+        srcPort.setId("srcPortText");
         srcPort.promptTextProperty().set("Puerto Origen");
 
         TextField dstPort = new TextField();
         dstPort.setPrefWidth(100);
+        dstPort.setId("dstPortText");
         dstPort.promptTextProperty().set("Puerto Destino");
 
         Button submitRule = new Button();
-        submitRule.getStyleClass().add("custom-button-left-menu");
+        submitRule.getStyleClass().add("custom-button-inside");
         submitRule.setText("Agregar");
         submitRule.setOnMouseClicked(e -> addRule(srcIp, dstIp, srcPort, dstPort));
         submitRule.setPrefHeight(50);
@@ -183,22 +184,30 @@ public class MainViewController implements Initializable {
         submitRule.getStyleClass().clear();
 
         Button deleteRule = new Button();
-        deleteRule.getStyleClass().add("custom-button-left-menu");
+        deleteRule.getStyleClass().add("custom-button-inside");
         deleteRule.setText("Eliminar");
         deleteRule.setOnMouseClicked(e -> deleteRow());
         deleteRule.setPrefHeight(50);
         deleteRule.setPrefWidth(100);
         deleteRule.getStyleClass().clear();
 
+        Button updateRule = new Button();
+        updateRule.getStyleClass().add("custom-button-inside");
+        updateRule.setText("Modificar");
+        updateRule.setOnMouseClicked(e -> updateRow(srcIp, dstIp, srcPort, dstPort));
+        updateRule.setPrefHeight(50);
+        updateRule.setPrefWidth(100);
+        updateRule.getStyleClass().clear();
+
         rulesPane.setBottomAnchor(srcIp, 30.0);
         rulesPane.setLeftAnchor(srcIp, 20.0);
 
 
-        rulesPane.setBottomAnchor(dstIp, 30.0);
-        rulesPane.setLeftAnchor(dstIp, 140.0);
-
         rulesPane.setBottomAnchor(srcPort, 30.0);
-        rulesPane.setLeftAnchor(srcPort, 260.0);
+        rulesPane.setLeftAnchor(srcPort, 140.0);
+
+        rulesPane.setBottomAnchor(dstIp, 30.0);
+        rulesPane.setLeftAnchor(dstIp, 260.0);
 
         rulesPane.setBottomAnchor(dstPort, 30.0);
         rulesPane.setLeftAnchor(dstPort, 380.0);
@@ -209,12 +218,38 @@ public class MainViewController implements Initializable {
         rulesPane.setBottomAnchor(deleteRule, 30.0);
         rulesPane.setLeftAnchor(deleteRule, 620.0);
 
+        rulesPane.setBottomAnchor(updateRule, 30.0);
+        rulesPane.setLeftAnchor(updateRule, 740.0);
+
         rulesPane.getChildren().add(srcIp);
         rulesPane.getChildren().add(dstIp);
         rulesPane.getChildren().add(srcPort);
         rulesPane.getChildren().add(dstPort);
         rulesPane.getChildren().add(submitRule);
         rulesPane.getChildren().add(deleteRule);
+        rulesPane.getChildren().add(updateRule);
+    }
+
+    private void updateRow(TextField srcIp, TextField dstIp, TextField srcPort, TextField dstPort) {
+        TableView tableView = (TableView) rulesPane.getScene().lookup("#rulesTable");
+        Rule rule = (Rule) tableView.getSelectionModel().getSelectedItem();
+        rule.set_srcIp(srcIp.getText());
+        rule.set_srcPort(srcPort.getText());
+        rule.set_dstIp(dstIp.getText());
+        rule.set_dstPort(dstPort.getText());
+        TableColumn firstColumn = (TableColumn) tableView.getColumns().get(0);
+        firstColumn.setVisible(false);
+        TableColumn secondColumn = (TableColumn) tableView.getColumns().get(0);
+        secondColumn.setVisible(false);
+        TableColumn thirdColumn = (TableColumn) tableView.getColumns().get(0);
+        thirdColumn.setVisible(false);
+        TableColumn fourthColumn = (TableColumn) tableView.getColumns().get(0);
+        fourthColumn.setVisible(false);
+
+        firstColumn.setVisible(true);
+        secondColumn.setVisible(true);
+        thirdColumn.setVisible(true);
+        fourthColumn.setVisible(true);
     }
 
     private void addRule(TextField srcIp, TextField dstIp, TextField srcPort, TextField dstPort) {
@@ -236,15 +271,21 @@ public class MainViewController implements Initializable {
         TableView rulesTable = new TableView();
         rulesTable.setId("rulesTable");
         rulesTable.setEditable(true);
+
+        rulesTable.getSelectionModel().selectedItemProperty().addListener((obs, ov, nv) -> updateTextFields(obs, ov, nv));
+
         TableColumn srcIp = new TableColumn("Ip Origen");
         srcIp.setPrefWidth(150);
         srcIp.setCellValueFactory(new PropertyValueFactory<Rule, String>("_srcIp"));
+
         TableColumn srcPort = new TableColumn("Puerto Origen");
         srcPort.setPrefWidth(150);
         srcPort.setCellValueFactory(new PropertyValueFactory<Rule, String>("_srcPort"));
+
         TableColumn dstIp = new TableColumn("Ip Destino");
         dstIp.setPrefWidth(150);
         dstIp.setCellValueFactory(new PropertyValueFactory<Rule, String>("_dstIp"));
+
         TableColumn dstPort = new TableColumn("Puerto Destino");
         dstPort.setPrefWidth(150);
         dstPort.setCellValueFactory(new PropertyValueFactory<Rule, String>("_dstPort"));
@@ -256,6 +297,22 @@ public class MainViewController implements Initializable {
         rulesPane.setRightAnchor(rulesTable, 15.0);
 
         rulesPane.getChildren().add(rulesTable);
+    }
+
+    private void updateTextFields(Object obs, Object ov, Object nv) {
+        TextField srcIp = (TextField) rulesPane.getScene().lookup("#srcIpText");
+        TextField srcPort = (TextField) rulesPane.getScene().lookup("#srcPortText");
+        TextField dstIp = (TextField) rulesPane.getScene().lookup("#dstIpText");
+        TextField dstPort = (TextField) rulesPane.getScene().lookup("#dstPortText");
+
+        if (nv != null) {
+            Rule rule = (Rule) nv;
+            srcIp.setText(rule.get_srcIp());
+            srcPort.setText(rule.get_srcPort());
+            dstIp.setText(rule.get_dstIp());
+            dstPort.setText(rule.get_dstPort());
+        }
+
     }
 
     private void addRulesToTable() {
