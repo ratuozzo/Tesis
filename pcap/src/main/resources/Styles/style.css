@@ -15,10 +15,16 @@
 }
 
 .custom-button-left-menu {
-    -fx-background-color:
-            linear-gradient(#117736 0%, #138e40 25%, #138e40 75%, #117736 100%),
-            linear-gradient(#117736, #138e40),
-            linear-gradient(#117736 0%, #138e40 20%, #138e40 80%, #117736 100%);
+    -fx-background-color: #117736;
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
+    -fx-text-fill: white;
+    -fx-font-family: "Open Sans";
+    -fx-font-size: 14;
+}
+
+.custom-button-current-view {
+    -fx-background-color: #64B566;
     -fx-background-radius: 10;
     -fx-border-radius: 10;
     -fx-text-fill: white;
@@ -48,6 +54,10 @@
     -fx-text-fill: white;
     -fx-font-family: "Open Sans";
     -fx-font-size: 14;
+}
+
+.finishedPane {
+    -fx-background-color: white;
 }
 
 .basePane {

@@ -8,6 +8,7 @@ import com.DataAccessLayer.NonAnomaly.NonAnomalyBean;
 import com.DataAccessLayer.NonAnomaly.NonAnomalyDao;
 import com.DomainLogicLayer.Commands.*;
 import com.DomainLogicLayer.Filters.*;
+import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXMasonryPane;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -62,7 +63,7 @@ public class MainViewController implements Initializable {
     private JFXMasonryPane packetEvaluationPane;
 
     @FXML
-    private AnchorPane paneFilePicker, visualizationPane, rulesPane;
+    private AnchorPane paneFilePicker, visualizationPane, rulesPane, finishedPane;
 
     @FXML
     private GridPane trainFileListPane, evaluationFileListPane;
@@ -76,9 +77,14 @@ public class MainViewController implements Initializable {
     @FXML
     private TextField learningRate, epochNumber;
 
+    @FXML
+    private JFXButton filePicker, resultData, rulesTable, finishedButton;
+
     public void continueButtonAction() {
 
         if (_currentPane == 0) {
+
+            filePicker.setStyle("-fx-background-color: #64B566");
 
             getConnections(_rawPacketsTrain, true);
 
@@ -118,21 +124,29 @@ public class MainViewController implements Initializable {
             backButton.setDisable(false);
 
         } else if (_currentPane == 1) {
+
             trainAndEvaluationPane.toFront();
             continueButton.setDisable(true);
             _currentPane = 2;
         } else if (_currentPane == 2) {
-                trainAndEvaluate();
+            trainAndEvaluate();
             visualizationPane.toFront();
+            filePicker.setStyle("-fx-background-color: #117736");
+            resultData.setStyle("-fx-background-color: #64B566");
             loadImages();
             _currentPane = 3;
         } else if (_currentPane == 3) {
             createRulesTable();
             createNewRuleView();
             rulesPane.toFront();
+            resultData.setStyle("-fx-background-color: #117736");
+            rulesTable.setStyle("-fx-background-color: #64B566");
             addRulesToTable();
             _currentPane = 4;
         } else if (_currentPane == 4) {
+            finishedPane.toFront();
+            rulesTable.setStyle("-fx-background-color: #117736");
+            finishedButton.setStyle("-fx-background-color: #64B566");
             saveRulesToBd();
             translateRules();
         }
